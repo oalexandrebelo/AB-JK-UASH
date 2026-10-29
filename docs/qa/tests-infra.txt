@@ -1,0 +1,15 @@
+✔ online maintenance proves restore, preserves live sessions and writes private evidence (42.627747ms)
+✔ retention removes only verified older triplets and preserves unrelated or incomplete files (80.430218ms)
+✔ corrupted copies fail offline health and never count toward valid retention (51.729938ms)
+✔ failed restore makes maintenance unhealthy and preserves previous good backups (30.3595ms)
+✔ snapshot freezes the explicit source scope and excludes runtime data and dependencies (46.809376ms)
+✔ verification rejects source drift and extra staged files (39.326797ms)
+✔ snapshot rejects symlinks and oversized files without preserving partial output (17.699787ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 271.222922

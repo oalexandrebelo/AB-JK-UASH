@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=1280,height=720">
+<title>Da entrada à entrega · JK</title>
+<script src="assets/gsap.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0}html,body{width:1280px;height:720px;overflow:hidden;background:#f5f7f9;color:#1c3041;font-family:Arial,system-ui,sans-serif}.screen{position:absolute;inset:0;padding:68px 76px}.eyebrow{color:#5f6f7f;font-size:16px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}h1,h2{font-size:76px;font-weight:600;letter-spacing:-.055em;line-height:1.06;max-width:950px}p{font-size:25px;line-height:1.6;max-width:830px}.rule{width:66px;height:4px;background:#3b63fb;margin:30px 0}.intro h1{margin-top:66px}.intro .lead{margin-top:30px;color:#5f6f7f}.corner{position:absolute;bottom:55px;right:76px;font-size:16px;color:#5f6f7f}.chapter{display:flex;align-items:center;justify-content:space-between}.chapter span{color:#5f6f7f;font-size:16px}.middle h2{font-size:40px;letter-spacing:-.04em;margin-top:26px}.scene{position:absolute;left:0;top:150px;width:1280px;height:550px;object-fit:cover}.end h2{margin-top:72px;font-size:72px}.end .lead{margin-top:25px;color:#5f6f7f}.end .handle{font-size:23px;color:#3156cf;margin-top:45px}.stamp{display:inline-block;margin-top:28px;border:1px solid #c7d7d3;border-radius:8px;padding:12px 20px;color:#218267;font-size:19px}.progress{height:5px;position:absolute;left:0;bottom:0;background:#3b63fb;width:1280px;transform-origin:left}.intro,.end{background:#f5f7f9}.rule{border:0}.middle .chapter,.middle h2{position:relative;z-index:3}
+</style></head><body>
+<div id="film" data-composition-id="jk-film" data-start="0" data-duration="18" data-width="1280" data-height="720" data-fps="24">
+  <section id="intro" class="screen intro clip" data-start="0" data-duration="4" data-track-index="0"><p class="eyebrow">Lava Rápido JK · Atendimento</p><h1>Cada etapa<br>tem seu lugar.</h1><hr class="rule"><p class="lead">Do orçamento à entrega,<br>com conferência e histórico.</p><span class="corner">AB-JK-UASH</span></section>
+  <section id="middle" class="screen middle clip" data-start="4" data-duration="8" data-track-index="1"><header class="chapter"><p class="eyebrow">Serviço → Conferência → Pronta</p><span>O fluxo da operação</span></header><h2>Conferir faz parte do serviço.</h2></section>
+  <video id="scene" class="scene clip" src="assets/order-flow-cfr.mp4" data-start="4" data-duration="8" data-track-index="0" data-has-audio="false" muted playsinline></video>
+  <section id="end" class="screen end clip" data-start="12" data-duration="6" data-track-index="2"><p class="eyebrow">Lava Rápido JK · Atendimento</p><h2>Pronto para<br>entregar.</h2><p class="lead">Entrega após quitação<br>ou para cliente pós-pago.</p><span class="stamp">Cada mudança fica no histórico.</span><p class="handle">instagram.com/lavar.apidojk/</p></section>
+  <audio id="cue-intro" src="assets/jk-ready.wav" data-start="0.6" data-duration="0.425" data-track-index="3"></audio>
+  <audio id="cue-end" src="assets/jk-ready.wav" data-start="12.5" data-duration="0.425" data-track-index="3"></audio>
+  <div class="progress" id="progress"></div>
+</div>
+<script>
+window.__timelines = window.__timelines || {};
+const tl=gsap.timeline({paused:true});
+tl.fromTo('#intro h1',{y:24,opacity:0},{y:0,opacity:1,duration:.65,ease:'power2.out'},.1);
+tl.fromTo('#intro .lead',{y:14,opacity:0},{y:0,opacity:1,duration:.55},.5);
+tl.fromTo('#middle h2',{opacity:0,y:10},{opacity:1,y:0,duration:.45},4);
+tl.fromTo('#end h2',{opacity:0,y:24},{opacity:1,y:0,duration:.6,ease:'power2.out'},12);
+tl.fromTo('#end .lead, #end .stamp, #end .handle',{opacity:0},{opacity:1,duration:.65,stagger:.12},12.5);
+tl.fromTo('#progress',{scaleX:0},{scaleX:1,duration:18,ease:'none'},0);
+window.__timelines['jk-film']=tl;tl.seek(0);
+</script></body></html>

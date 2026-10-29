@@ -1,0 +1,93 @@
+{
+  "release": "AB-JK-UASH 0.1.0",
+  "recordedAt": "2026-10-28T23:38:03Z",
+  "runtime": "Node.js 24.22.1",
+  "sourceSnapshotSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+  "sourceFiles": 116,
+  "sourceBytes": 972743,
+  "distIndexSha256": "c623c168e8774454430afdc7be40f3bc59300c19544c71ef640ff0ae3f55d108",
+  "checks": {
+    "build": "passed",
+    "sdk": "passed",
+    "main": {
+      "tests": 164,
+      "passed": 159,
+      "failed": 0,
+      "skipped": 5,
+      "skipReason": "4 PostgreSQL tests require an external test server; 1 standalone distribution test requires the packaged runtime/linux-x64/node, absent from the source checkout",
+      "skipBreakdown": {
+        "postgresql": 4,
+        "standalonePackagedRuntime": 1
+      }
+    },
+    "infrastructure": {
+      "tests": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    "dom": {
+      "tests": 23,
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0
+    },
+    "npmAudit": {
+      "knownAdvisories": 0,
+      "dependencies": 150
+    },
+    "releaseStaticGates": 13
+  },
+  "browser": {
+    "verified": [
+      "landing render and public navigation",
+      "login render",
+      "exact requested Instagram href"
+    ],
+    "screenshots": [
+      "landing-jk-20261028.jpg",
+      "login-jk-20261028.jpg"
+    ],
+    "notVerified": [
+      "authenticated browser workflows",
+      "mobile/touch device",
+      "physical printer"
+    ],
+    "environment": "Temporary isolated Vercel Sandbox with synthetic administrator only; stopped after checks; no real customer data"
+  },
+  "deployment": {
+    "oficinaProjectCreated": true,
+    "project": "ab-jk-uash",
+    "portRange": [
+      9220,
+      9229
+    ],
+    "sourceUpload": "blocked_before_plan",
+    "build": "not_executed",
+    "reason": "Oficina connector returns MCP internal error -32603 for lock renewal, capacity and source upload",
+    "bootstrap": "pending_private_channel"
+  },
+  "realDataMigration": {
+    "exportObtained": false,
+    "imported": false
+  },
+  "providers": {
+    "pixHomologated": false,
+    "whatsappHomologated": false,
+    "fiscalHomologated": false
+  },
+  "limits": [
+    "Test success is not a statement of full proprietary-product parity.",
+    "npm audit is a registry advisory query, not a security guarantee.",
+    "REA coverage and constraints are in docs/rea/summary-jk.json.",
+    "No benchmark, high availability, PostgreSQL deployment or provider approval was claimed."
+  ],
+  "reaEvidenceDistribution": {
+    "public": "Readable reports, per-source coverage, source manifests and evidence hashes",
+    "completeEvidence": "Private deliverable, excluded from public Git history",
+    "archiveFilename": "AB-JK-UASH-REA-20261028.zip",
+    "archiveBytes": 20305635,
+    "archiveSha256": "d38592abc191252355598c30f319f6b9be8fe1d3b0b4258b22c759a4b4980387",
+    "reason": "Automatic approval review rejected public GitHub publication of the full opaque compressed evidence payload; no alternate public upload was attempted"
+  }
+}

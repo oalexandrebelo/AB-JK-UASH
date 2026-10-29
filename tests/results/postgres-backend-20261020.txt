@@ -1,0 +1,45 @@
+✔ first-run setup is atomic, hashes secrets, and survives a database restart (1382.269242ms)
+✔ authenticated writes enforce CSRF, origin, JSON, roles, and final administrator protection (1062.078044ms)
+✔ password change revokes old sessions and accepts passwords without changing whitespace (1105.702131ms)
+✔ malformed input, oversized body, injection strings, and unsupported routes fail safely (436.831487ms)
+✔ idempotent writes commit once, reject changed payloads, and roll back the mutation and audit together (408.39364ms)
+✔ parallel failed logins cannot bypass the rate limit and disabled users lose all sessions (957.734403ms)
+✔ master records enforce uniqueness, versions, real pagination, and role boundaries (1969.440322ms)
+✔ order snapshots, exact cents, idempotent creation, and unpaid delivery are enforced (817.209933ms)
+✔ cash payments roll back on failure, concurrent versions serialize, and closing reconciles physical cash (623.943351ms)
+✔ stock movements cannot go negative, consumed orders cannot cancel, and reversal happens once (517.968171ms)
+✔ appointments reject overlaps, permit adjacent slots, and convert into only one order (455.108538ms)
+✔ postpaid invoices group once and allocate partial receipts atomically without overpayment (707.933718ms)
+✔ package sales create one receipt, credits respect service quantities, and reversals preserve rounding cents (576.071254ms)
+✔ payroll snapshots local salary and earned commissions, recalculates drafts, and pays only once (461.810774ms)
+✔ messages remain local, report dates respect business timezone, and exports disclose pagination (452.897829ms)
+✔ receivable aggregation subtracts direct, invoice, and package allocations once per order (584.148177ms)
+✔ fotos autenticadas persistem no SQLite com idempotência, limites e bloqueio após entrega (1206.498266ms)
+✔ PostgreSQL private runtime role has RLS access but cannot change schema or truncate (590.454982ms)
+✔ PostgreSQL read snapshot stays consistent while an independent writer commits (889.975209ms)
+✔ PostgreSQL schema advisory lock times out and releases clients for later work (5541.508721ms)
+✔ PostgreSQL order numbering and the last administrator are protected across instances (1015.804875ms)
+✔ recebimentos concorrentes respeitam chave, versão e atomicidade com caixa fechado (1430.407105ms)
+✔ consumo concorrente não cria estoque negativo e reversão restaura uma única vez (724.890978ms)
+✔ crédito com valor arredondado zero impede reescrita e cancelamento até ser revertido (642.337761ms)
+✔ alterar responsável preserva preços capturados até uma alteração explícita dos itens (510.333459ms)
+✔ revogação durante leitura HTTP bloqueia mutação nova e replay de domínio/foto (713.549426ms)
+✔ arquivos fora de dist não são servidos por symlink e origem incompatível é rejeitada (549.36347ms)
+✔ fotos rejeitam dimensões exageradas, formato incompatível e alteração concorrente ou após entrega (602.109352ms)
+✔ store async rolls back awaited, queued and caught query failures, then recovers (744.541809ms)
+✔ transaction contexts reject delayed use and nested transactions without poisoning later work (622.698299ms)
+✔ safe integer parsing preserves booleans and rejects oversized totals without rounding (212.411856ms)
+✔ bootstrap and persistent rate reservations serialize across independent applications (1278.89481ms)
+﹣ opening another SQLite instance waits asynchronously for an active migration queue (0.263828ms) # SKIP
+✔ setup token gates bootstrap and session responses identify storage consistently (594.188448ms)
+✔ origin lists bind each exact Origin to its Host and reject wildcards or URL paths (2.786733ms)
+✔ SQL placeholder scanner leaves strings, comments and dollar quotes intact (0.377228ms)
+✔ SQLite application imports and runs without node_modules (242.850229ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 8327.904621

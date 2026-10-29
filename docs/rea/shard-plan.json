@@ -1,0 +1,822 @@
+{
+  "format": "ab-jk-rea-shard-plan-v1",
+  "snapshot": "/tmp/ab-jk-uash-release-source-v2",
+  "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+  "toolPackage": "rea-agents@6.7.0",
+  "toolScript": "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+  "maxHeapMb": 512,
+  "analysisTimeoutMs": 120000,
+  "externalTimeoutSeconds": 180,
+  "purpose": "Resolve observed aggregate parent-result and semantic-result resource limits for selected critical sources. No implicit dependencies; outside-source unknowns remain.",
+  "shards": [
+    {
+      "id": "auth",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "server/application.mjs",
+          "bytes": 18699,
+          "sha256": "521f7e26f204e24e86c0f85969da4057572a54f72103c398f0ae00d1118db455"
+        },
+        {
+          "path": "server/security.mjs",
+          "bytes": 5810,
+          "sha256": "e9f093be420ea4e3c323b1c4ed7c0227a251b5279ab4b44160ed68a0e8277b1c"
+        },
+        {
+          "path": "server/http.mjs",
+          "bytes": 6669,
+          "sha256": "cb51b25fdb916c707b4c7c46343fb44b01f550f807a7f757d160cafce444a9ac"
+        },
+        {
+          "path": "server/validation.mjs",
+          "bytes": 2715,
+          "sha256": "ae664a0cb23bb083ce0f97010dc75db9c6f42ded2cb2169c34b64ba0f6a4895a"
+        },
+        {
+          "path": "server/errors.mjs",
+          "bytes": 1203,
+          "sha256": "a87f96f9f645ee0be8ad3fd263389e8751320047f9fe1b85fa32d0e6d591c742"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "server/application.mjs",
+        "--source-path",
+        "server/security.mjs",
+        "--source-path",
+        "server/http.mjs",
+        "--source-path",
+        "server/validation.mjs",
+        "--source-path",
+        "server/errors.mjs"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/auth.json"
+    },
+    {
+      "id": "bootstrap",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "scripts/start.mjs",
+          "bytes": 3322,
+          "sha256": "58d93b5ddfab2fe1d5079a78bd868be96f27f9d86578a6616f2e5b752f69bcf6"
+        },
+        {
+          "path": "scripts/bootstrap-token.mjs",
+          "bytes": 3849,
+          "sha256": "f9866b7f3dcdbdcc5c4c7731b749687f6958cf138445c5b5e1b9e22b0c22f7be"
+        },
+        {
+          "path": "scripts/jk-bootstrap-admin.mjs",
+          "bytes": 3958,
+          "sha256": "dbee2e9a5107f460d068d499429c600391873cfc994a164578894a28bf755d9e"
+        },
+        {
+          "path": "server/jk-public.mjs",
+          "bytes": 638,
+          "sha256": "7645c54924b2fc3b1c814a5636f803e5157a1ea42de25cb56b50709452107e22"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "scripts/start.mjs",
+        "--source-path",
+        "scripts/bootstrap-token.mjs",
+        "--source-path",
+        "scripts/jk-bootstrap-admin.mjs",
+        "--source-path",
+        "server/jk-public.mjs"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/bootstrap.json"
+    },
+    {
+      "id": "database",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "server/db.mjs",
+          "bytes": 21081,
+          "sha256": "139510e50d8da1dd6c14d52cae9e1ea72c4b5b745a1282b6dfcc41317ea4b5a8"
+        },
+        {
+          "path": "server/domain-schema.mjs",
+          "bytes": 11827,
+          "sha256": "9d1946311f77718f3a51c566e985e72e066218d47039460170be1c0765779ab5"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "server/db.mjs",
+        "--source-path",
+        "server/domain-schema.mjs"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/database.json"
+    },
+    {
+      "id": "migration",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "server/jk-migration.mjs",
+          "bytes": 28781,
+          "sha256": "2f7a5e975b34ab77ae0837ebc44245a7f614053112cbc93f20b5a6c255018f3e"
+        },
+        {
+          "path": "server/jk-migration-schema.mjs",
+          "bytes": 3377,
+          "sha256": "3c75e7059a48145df7af7136bb11774f933b12fd3062b71cd069d75175693d83"
+        },
+        {
+          "path": "scripts/jk-import.mjs",
+          "bytes": 5122,
+          "sha256": "c7514a525ec62a4d4bc178f254f44f49c4a14fe76bc9811dcdc6a0bb6c270f8e"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "server/jk-migration.mjs",
+        "--source-path",
+        "server/jk-migration-schema.mjs",
+        "--source-path",
+        "scripts/jk-import.mjs"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/migration.json"
+    },
+    {
+      "id": "migration-parse",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "server/jk-migration-parse.mjs",
+          "bytes": 11996,
+          "sha256": "f3b2f9e49bcc5fd9ca0ad309ecb31ed665b5be5108848259f9625b42347f7002"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "server/jk-migration-parse.mjs"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/migration-parse.json"
+    },
+    {
+      "id": "integrations-api",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "server/jk-integrations.mjs",
+          "bytes": 28306,
+          "sha256": "21c2fedf43cb17761dbbd125fa78a764b78b9650e9ce1b469169b10894ecd583"
+        },
+        {
+          "path": "integrations/jk/runtime.mjs",
+          "bytes": 8560,
+          "sha256": "9a525b0ea194ec481f91bf233334696a3a4d86c18f1787fa19bda88a397f9ea9"
+        },
+        {
+          "path": "integrations/jk/journal.mjs",
+          "bytes": 1356,
+          "sha256": "97bf7011921195f28c6201da077704a25ebe8b409eeeb6e55914ae0ae94aae67"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "server/jk-integrations.mjs",
+        "--source-path",
+        "integrations/jk/runtime.mjs",
+        "--source-path",
+        "integrations/jk/journal.mjs"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/integrations-api.json"
+    },
+    {
+      "id": "banking",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "integrations/jk/vendor/connectors/banking/index.mjs",
+          "bytes": 21990,
+          "sha256": "29eb252f08b2d9e120b8cace253d2142005618f890a5bb0675b734c1b49d9e43"
+        },
+        {
+          "path": "integrations/jk/vendor/connectors/banking/profiles.mjs",
+          "bytes": 1507,
+          "sha256": "2449c2c289e08655cd97bd7e9562c585f89f4936e9bcd1b95aec6a031160e9eb"
+        },
+        {
+          "path": "integrations/jk/vendor/connectors/banking/validation.mjs",
+          "bytes": 5738,
+          "sha256": "f51142b211f1ab1d083b9aa8fcd52e83f92f7ab67ad3d80551e28d01148c1425"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "integrations/jk/vendor/connectors/banking/index.mjs",
+        "--source-path",
+        "integrations/jk/vendor/connectors/banking/profiles.mjs",
+        "--source-path",
+        "integrations/jk/vendor/connectors/banking/validation.mjs"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/banking.json"
+    },
+    {
+      "id": "transport",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "integrations/jk/vendor/connectors/transport.mjs",
+          "bytes": 14032,
+          "sha256": "57c52af0161a0010552d2870501fbe065a5837f8520c1c8e43419251f9592d7d"
+        },
+        {
+          "path": "integrations/jk/vendor/connectors/messaging/whatsapp.mjs",
+          "bytes": 7440,
+          "sha256": "afb06aab0d0164677d4f179a4926e583b729ce483529a9f94b49f13c387cc20f"
+        },
+        {
+          "path": "integrations/jk/vendor/connectors/messaging/validation.mjs",
+          "bytes": 1448,
+          "sha256": "db974ff1d3c8907c4f11d43e431497a8aa6934481e5155dc1de9779f6b5c6e65"
+        },
+        {
+          "path": "integrations/jk/vendor/integrations/secrets.mjs",
+          "bytes": 2740,
+          "sha256": "830e23395cd77d57983ad3b17aced3b8ea042226490fc7b60d0aca0b9e99aa43"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "integrations/jk/vendor/connectors/transport.mjs",
+        "--source-path",
+        "integrations/jk/vendor/connectors/messaging/whatsapp.mjs",
+        "--source-path",
+        "integrations/jk/vendor/connectors/messaging/validation.mjs",
+        "--source-path",
+        "integrations/jk/vendor/integrations/secrets.mjs"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/transport.json"
+    },
+    {
+      "id": "deliveries",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "server/jk-deliveries.mjs",
+          "bytes": 14952,
+          "sha256": "393a0a8159cef47999812ca2bc759075181d5de401191af886475611c09e971a"
+        },
+        {
+          "path": "server/jk-deliveries-schema.mjs",
+          "bytes": 2360,
+          "sha256": "fd4fc87042871e01948c04be9f09bd8dfa5427ba01cd459f983ccb81911fa107"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "server/jk-deliveries.mjs",
+        "--source-path",
+        "server/jk-deliveries-schema.mjs"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/deliveries.json"
+    },
+    {
+      "id": "ui-auth",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "src/RootApp.tsx",
+          "bytes": 6334,
+          "sha256": "661ee19327e8dba60eb11b68480ac256dddef62cd1b483d088333ccb73a4a85e"
+        },
+        {
+          "path": "src/App.tsx",
+          "bytes": 1105,
+          "sha256": "813c3b522c49ec22de51df29d4a124544426f6852bac328943fa0c1ce8eee00d"
+        },
+        {
+          "path": "src/pages/AuthPage.tsx",
+          "bytes": 4211,
+          "sha256": "10f2776de63f18e2a265e29062e11e982cd68b48226eeed4c38ba5c5633ea45a"
+        },
+        {
+          "path": "src/lib/api.ts",
+          "bytes": 9113,
+          "sha256": "0beb7607d860f60fecd6510c9c873a67d048f5fdfe2bae33c6482c9f8fa4610b"
+        },
+        {
+          "path": "src/lib/jk.ts",
+          "bytes": 1648,
+          "sha256": "f9b9c8173ab18f7b8ab8ea2e3f08373c088bf9db580ee42802836a0018e7c9fb"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "src/RootApp.tsx",
+        "--source-path",
+        "src/App.tsx",
+        "--source-path",
+        "src/pages/AuthPage.tsx",
+        "--source-path",
+        "src/lib/api.ts",
+        "--source-path",
+        "src/lib/jk.ts"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/ui-auth.json"
+    },
+    {
+      "id": "ui-migration",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "src/pages/MigrationPage.tsx",
+          "bytes": 18156,
+          "sha256": "a2d79cde3251c55640868f6fda039c5fe37164d849ed94e05f596d26b2c79019"
+        },
+        {
+          "path": "src/lib/api.ts",
+          "bytes": 9113,
+          "sha256": "0beb7607d860f60fecd6510c9c873a67d048f5fdfe2bae33c6482c9f8fa4610b"
+        },
+        {
+          "path": "src/lib/jk.ts",
+          "bytes": 1648,
+          "sha256": "f9b9c8173ab18f7b8ab8ea2e3f08373c088bf9db580ee42802836a0018e7c9fb"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "src/pages/MigrationPage.tsx",
+        "--source-path",
+        "src/lib/api.ts",
+        "--source-path",
+        "src/lib/jk.ts"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/ui-migration.json"
+    },
+    {
+      "id": "ui-integrations",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "src/pages/IntegrationsPage.tsx",
+          "bytes": 13058,
+          "sha256": "a3e956697140544d09c21ddcd82848a6d2c5799a56b2a4d3ce9b0336393afa41"
+        },
+        {
+          "path": "src/features/integrations/IntegrationDialog.tsx",
+          "bytes": 6907,
+          "sha256": "f69745a06c478d5ccb68244b43cb28aef62ac4e7b3d3ce686afb7589c7fa0635"
+        },
+        {
+          "path": "src/lib/api.ts",
+          "bytes": 9113,
+          "sha256": "0beb7607d860f60fecd6510c9c873a67d048f5fdfe2bae33c6482c9f8fa4610b"
+        },
+        {
+          "path": "src/lib/jk.ts",
+          "bytes": 1648,
+          "sha256": "f9b9c8173ab18f7b8ab8ea2e3f08373c088bf9db580ee42802836a0018e7c9fb"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "src/pages/IntegrationsPage.tsx",
+        "--source-path",
+        "src/features/integrations/IntegrationDialog.tsx",
+        "--source-path",
+        "src/lib/api.ts",
+        "--source-path",
+        "src/lib/jk.ts"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/ui-integrations.json"
+    },
+    {
+      "id": "ui-deliveries",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "src/pages/DeliveriesPage.tsx",
+          "bytes": 15298,
+          "sha256": "cf4e93161ad9180d01a519732ef550fff34afb73e8d17dd2bc8fad78c1e93a2a"
+        },
+        {
+          "path": "src/lib/api.ts",
+          "bytes": 9113,
+          "sha256": "0beb7607d860f60fecd6510c9c873a67d048f5fdfe2bae33c6482c9f8fa4610b"
+        },
+        {
+          "path": "src/lib/jk.ts",
+          "bytes": 1648,
+          "sha256": "f9b9c8173ab18f7b8ab8ea2e3f08373c088bf9db580ee42802836a0018e7c9fb"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "src/pages/DeliveriesPage.tsx",
+        "--source-path",
+        "src/lib/api.ts",
+        "--source-path",
+        "src/lib/jk.ts"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/ui-deliveries.json"
+    },
+    {
+      "id": "maintenance",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "scripts/jk-maintenance.mjs",
+          "bytes": 10572,
+          "sha256": "3369050f0ce6068e38ec52ee0952c22063c7e7ee60ba947c4c60cd7b2cc2e99d"
+        },
+        {
+          "path": "scripts/storage.mjs",
+          "bytes": 8453,
+          "sha256": "179fc454fcd90874b856b50c53820725f8216922bf26e30b032320c723696e12"
+        },
+        {
+          "path": "scripts/backup.mjs",
+          "bytes": 800,
+          "sha256": "2f539f4f330795f3ef15748b4bdb4c0e80094bfb3a6b529093c03c5bff7670ba"
+        },
+        {
+          "path": "scripts/restore.mjs",
+          "bytes": 668,
+          "sha256": "75268bc20525802c938b29a1cf6f362ba2121fcc3dfb6360bf9ec9ac579e174b"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "scripts/jk-maintenance.mjs",
+        "--source-path",
+        "scripts/storage.mjs",
+        "--source-path",
+        "scripts/backup.mjs",
+        "--source-path",
+        "scripts/restore.mjs"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/maintenance.json"
+    },
+    {
+      "id": "ui-invoices",
+      "sources": [
+        {
+          "path": "package.json",
+          "bytes": 1571,
+          "sha256": "a7d1e16cb1772c04b89e3dbfb985729217a730533f9e6d6a0d1e388b6d652b8a"
+        },
+        {
+          "path": "src/pages/InvoicesPage.tsx",
+          "bytes": 10926,
+          "sha256": "6d83d0468d1a04016536a9b2b2004b9c1e52b0ff85ad3b369a538d95dc2e8a7e"
+        },
+        {
+          "path": "src/lib/api.ts",
+          "bytes": 9113,
+          "sha256": "0beb7607d860f60fecd6510c9c873a67d048f5fdfe2bae33c6482c9f8fa4610b"
+        },
+        {
+          "path": "src/lib/jk.ts",
+          "bytes": 1648,
+          "sha256": "f9b9c8173ab18f7b8ab8ea2e3f08373c088bf9db580ee42802836a0018e7c9fb"
+        }
+      ],
+      "command": [
+        "timeout",
+        "--signal=TERM",
+        "--kill-after=10s",
+        "180s",
+        "node",
+        "--max-old-space-size=512",
+        "/tmp/ab-jk-rea-runtime/node_modules/rea-agents/scripts/rea.mjs",
+        "analyze-javascript-application",
+        "/tmp/ab-jk-uash-release-source-v2",
+        "--max-heap-mb",
+        "512",
+        "--analysis-timeout-ms",
+        "120000",
+        "--format",
+        "json",
+        "--full-output",
+        "--source-path",
+        "package.json",
+        "--source-path",
+        "src/pages/InvoicesPage.tsx",
+        "--source-path",
+        "src/lib/api.ts",
+        "--source-path",
+        "src/lib/jk.ts"
+      ],
+      "output": "/tmp/ab-jk-rea-v2-shards/ui-invoices.json",
+      "reason": "V2 changed the financial UI; the aggregate retained no semantic body for this path."
+    }
+  ]
+}

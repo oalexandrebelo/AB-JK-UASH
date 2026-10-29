@@ -1,0 +1,51 @@
+AB-UASH — revisão de backend e armazenamento — 2026-10-20 UTC
+
+Ambiente verificado
+- Node incluído runtime/linux-x64/node, linha 24.
+- pg 8.23.1, importado dinamicamente apenas no modo PostgreSQL.
+- PostgreSQL 18.4 local, porta 55433. Todos os dados de testes são sintéticos.
+- Nenhuma operação executada no Supabase remoto: a permissão continua indisponível.
+- CLI Supabase 2.121.0 instalada em /tmp; init e migration new usados somente localmente.
+
+Resultados
+1. SQLite: 35 testes, 35 passaram, 0 falhas/skip. Arquivo tests/results/sqlite-backend-20261020.txt.
+2. PostgreSQL: 37 testes, 36 passaram, 0 falhas, 1 skip intencional do teste exclusivo de fila de inicialização SQLite. Arquivo tests/results/postgres-backend-20261020.txt.
+3. Mudança final de mapeamento de lock_timeout/SQLITE_BUSY para HTTP 503: 1 teste, passou. Arquivo tests/results/store-error-mapping-20261020.txt.
+
+Comandos reproduzíveis (da raiz)
+runtime/linux-x64/node --test --test-reporter=spec tests/backend.test.mjs tests/domain.test.mjs tests/security-review.test.mjs tests/media.test.mjs tests/storage.test.mjs tests/store.test.mjs
+AB_UASH_TEST_DATABASE_URL=postgresql://ab_uash_review@127.0.0.1:55433/postgres runtime/linux-x64/node --test --test-reporter=spec tests/backend.test.mjs tests/domain.test.mjs tests/security-review.test.mjs tests/media.test.mjs tests/store.test.mjs tests/postgres.test.mjs
+runtime/linux-x64/node --test --test-reporter=spec --test-name-pattern='database lock timeouts' tests/store.test.mjs
+
+Os comandos precisam permitir sockets locais. Neste ambiente, foram executados com a autorização ampliada do executor; resultados limitados pelo sandbox não foram usados como prova.
+
+Contrato implementado
+- createApplication é async e aceita databaseUrl, databaseSchema='ab_uash', databaseCa (PEM), databasePoolSize=1, setupToken, publicOrigin string|array, clientAddress(request), fiscalEnv e fiscalTransport.
+- Retorna handler(req,res), server, store, db, listen e close. db mantém DatabaseSync bruto em SQLite; em PostgreSQL aponta para o store. As rotas usam o store assíncrono.
+- store.prepare(sql).get/all/run retornam Promises. setReadBigInts(true) mantém inteiros exatos; no modo padrão, excesso de Number.MAX_SAFE_INTEGER é recusado.
+- transaction(store, async callback) usa AsyncLocalStorage, fila por contexto e mutex SQLite por arquivo canônico. Operações enfileiradas terminam antes do commit/rollback; consultas de contexto encerrado e transações aninhadas são rejeitadas.
+- PostgreSQL usa transações no mesmo client, consultas sem nome, SET LOCAL por transação e advisory lock global por esquema para escritas. GET usa REPEATABLE READ READ ONLY sem adquirir esse lock.
+- SQLite usa node:sqlite e roda em cópia isolada sem node_modules. As migrações locais são aditivas e preservam user_version=2 para backup/restore.
+- PostgreSQL não aplica DDL no runtime. Migração em supabase/migrations/20261020122216_private_application_store.sql cria esquema privado, tabelas, RLS forçada e papel ab_uash_app limitado a DML (versão do esquema: somente SELECT).
+- auth_attempts compartilha as reservas de login/setup entre processos/instâncias antes de scrypt. Chaves de endereço/conta são hashes; nenhuma tabela contém setupToken.
+- SETUP_TOKEN opcional exige 32–256 caracteres base64url, header X-Setup-Token e comparação de SHA-256 com timingSafeEqual. O código descarta a referência local ao valor depois do hash.
+- Todas as respostas que representam sessão informam storageMode e setupTokenRequired; flags também são retornadas no logout.
+- Origens são validadas por pares Host/Origin exatos. Proxy headers não são considerados automaticamente; clientAddress é injetado pelo adaptador confiável.
+- TLS remoto usa validação de certificado; databaseCa opcional não pode ser substituída por sslmode da URL. Falhas temporárias de locks/conexão retornam DATABASE_BUSY/503.
+
+Cobertura concreta adicional
+- Bootstrap concorrente entre instâncias; limite de 12 tentativas compartilhado, inclusive após nova instância.
+- Fila de 20 consultas, falha intermediária, rollback de alterações e auditoria, rejeição de contextos atrasados.
+- MAX_SAFE_INTEGER, int8/NUMERIC de SUM, preservação de 0/1 e bytes de fotos.
+- PostgreSQL sem privilégio de CREATE/TRUNCATE/update da versão e sem ACL PUBLIC no esquema.
+- Snapshot de leitura estável durante commit de outro escritor.
+- lock_timeout de cinco segundos seguido de reutilização bem-sucedida do client.
+- Dezesseis ordens simultâneas com numeração única e proteção concorrente do último administrador.
+- Adaptação portátil do MAX(a,b) da folha para CASE e posição explícita dos itens de ordem.
+
+Limitações
+- Não houve conexão com o pooler/Supabase real, aplicação remota da migração, teste de certificado real nem ensaio de produção Vercel. Consultas sem nome e configuração local por transação foram verificadas no PostgreSQL local.
+- A migração precisa ser aplicada por um administrador antes de configurar DATABASE_URL. A senha do papel de runtime deve ser provisionada por um canal seguro; não há senha em código/migração.
+- O advisory lock serializa escritas por esquema para preservar invariantes existentes; não é uma prova de throughput de produção.
+- app.db bruto é compatibilidade de manutenção SQLite; o código da aplicação deve continuar usando app.store para respeitar fila/transações.
+- Não é uma afirmação de segurança absoluta nem de conformidade fiscal. A revisão fiscal tem suas próprias evidências.

@@ -1,0 +1,108 @@
+{
+  "tool": "earshot",
+  "version": "0.4.0",
+  "sourceCommit": "591fa3e028032e6dce56620a20e932e35667e8d8",
+  "path": "earshot.forge.bank.render + earshot.forge.sfx.check",
+  "modelsLoaded": false,
+  "networkRequiredAtRender": false,
+  "recipe": {
+    "sound_id": "notify/mid_tine",
+    "seed": 51,
+    "peak_db": -16.0
+  },
+  "metadata": {
+    "id": "notify/mid_tine",
+    "seed": 51,
+    "sr": 48000,
+    "onset_s": 0.003,
+    "peak_s": 0.0375,
+    "end_s": 0.361,
+    "dur_s": 0.425,
+    "peak_db": -16.0,
+    "lufs_m_max": -28.63,
+    "edits": {},
+    "checks": {
+      "ok": true,
+      "warnings": [],
+      "notes": [],
+      "summary": "notify/mid_tine: clean",
+      "measures": {
+        "clicks": 0,
+        "edge_db": -240.0,
+        "clip_runs": 0,
+        "overs": 0,
+        "dc_db": -193.0,
+        "ring_z": 5.2,
+        "trunc_db": null,
+        "silence_ms": 0.0,
+        "bump_db": 0.0,
+        "attack_ms": 22.5,
+        "t40_ms": 280.0,
+        "crest_db": 6.6,
+        "res_db": 33.0,
+        "res_hz": 835,
+        "peak_dbfs": -16.0,
+        "live_ms": 280.75
+      },
+      "glide": {
+        "tonal_share": 1.0,
+        "rise_st": 0.0,
+        "from_s": null,
+        "to_s": null
+      },
+      "layers": {
+        "attacks": [
+          0.037
+        ],
+        "count": 1,
+        "pre_swell_ms": 5.0
+      },
+      "context": {
+        "category": "notify",
+        "sound": "notify/mid_tine"
+      }
+    }
+  },
+  "checks": {
+    "ok": true,
+    "warnings": [],
+    "notes": [],
+    "summary": "sound: clean",
+    "measures": {
+      "clicks": 0,
+      "edge_db": -240.0,
+      "clip_runs": 0,
+      "overs": 0,
+      "dc_db": -193.0,
+      "ring_z": 5.2,
+      "trunc_db": null,
+      "silence_ms": 0.0,
+      "bump_db": 0.0,
+      "attack_ms": 22.5,
+      "t40_ms": 280.0,
+      "crest_db": 6.6,
+      "res_db": 33.0,
+      "res_hz": 835,
+      "peak_dbfs": -16.0,
+      "live_ms": 280.75
+    },
+    "glide": {
+      "tonal_share": 1.0,
+      "rise_st": 0.0,
+      "from_s": null,
+      "to_s": null
+    },
+    "layers": {
+      "attacks": [
+        0.037
+      ],
+      "count": 1,
+      "pre_swell_ms": 5.0
+    },
+    "context": {
+      "category": "notify"
+    }
+  },
+  "output": "jk-ready.wav",
+  "sha256": "9cd07ba072bd1cbe885f1bc3688eace558d56450c7e2075fc5903d4b35ebe51b"
+}

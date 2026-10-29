@@ -1,0 +1,43 @@
+✔ first-run setup is atomic, hashes secrets, and survives a database restart (549.639868ms)
+✔ authenticated writes enforce CSRF, origin, JSON, roles, and final administrator protection (867.912799ms)
+✔ password change revokes old sessions and accepts passwords without changing whitespace (1032.600652ms)
+✔ malformed input, oversized body, injection strings, and unsupported routes fail safely (309.133193ms)
+✔ idempotent writes commit once, reject changed payloads, and roll back the mutation and audit together (263.035483ms)
+✔ parallel failed logins cannot bypass the rate limit and disabled users lose all sessions (828.896489ms)
+✔ master records enforce uniqueness, versions, real pagination, and role boundaries (923.350806ms)
+✔ order snapshots, exact cents, idempotent creation, and unpaid delivery are enforced (460.340079ms)
+✔ cash payments roll back on failure, concurrent versions serialize, and closing reconciles physical cash (426.542972ms)
+✔ stock movements cannot go negative, consumed orders cannot cancel, and reversal happens once (303.364386ms)
+✔ appointments reject overlaps, permit adjacent slots, and convert into only one order (277.913274ms)
+✔ postpaid invoices group once and allocate partial receipts atomically without overpayment (382.190618ms)
+✔ package sales create one receipt, credits respect service quantities, and reversals preserve rounding cents (341.378128ms)
+✔ payroll snapshots local salary and earned commissions, recalculates drafts, and pays only once (341.412261ms)
+✔ messages remain local, report dates respect business timezone, and exports disclose pagination (400.405057ms)
+✔ receivable aggregation subtracts direct, invoice, and package allocations once per order (407.869795ms)
+✔ fotos autenticadas persistem no SQLite com idempotência, limites e bloqueio após entrega (456.326563ms)
+✔ recebimentos concorrentes respeitam chave, versão e atomicidade com caixa fechado (531.354309ms)
+✔ consumo concorrente não cria estoque negativo e reversão restaura uma única vez (378.10214ms)
+✔ crédito com valor arredondado zero impede reescrita e cancelamento até ser revertido (540.291595ms)
+✔ alterar responsável preserva preços capturados até uma alteração explícita dos itens (390.284246ms)
+✔ revogação durante leitura HTTP bloqueia mutação nova e replay de domínio/foto (625.019879ms)
+✔ arquivos fora de dist não são servidos por symlink e origem incompatível é rejeitada (554.258092ms)
+✔ fotos rejeitam dimensões exageradas, formato incompatível e alteração concorrente ou após entrega (386.936103ms)
+✔ backup online preserva WAL, destino existente e restauração revoga sessões sem alterar origem (174.235735ms)
+✔ backup de versão futura pode ser preservado mas restauração incompatível não é publicada (177.565937ms)
+✔ store async rolls back awaited, queued and caught query failures, then recovers (227.86616ms)
+✔ transaction contexts reject delayed use and nested transactions without poisoning later work (173.802466ms)
+✔ safe integer parsing preserves booleans and rejects oversized totals without rounding (206.632272ms)
+✔ bootstrap and persistent rate reservations serialize across independent applications (1103.036634ms)
+✔ opening another SQLite instance waits asynchronously for an active migration queue (415.038457ms)
+✔ setup token gates bootstrap and session responses identify storage consistently (375.587914ms)
+✔ origin lists bind each exact Origin to its Host and reject wildcards or URL paths (3.788022ms)
+✔ SQL placeholder scanner leaves strings, comments and dollar quotes intact (0.682509ms)
+✔ SQLite application imports and runs without node_modules (259.416204ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4364.455423

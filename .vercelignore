@@ -1,0 +1,12 @@
+runtime/
+data/
+backups/
+internal/*
+!internal/ocr/
+docs/rea/evidence.json
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite-*
+*.log

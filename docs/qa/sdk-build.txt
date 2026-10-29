@@ -1,0 +1,6 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ab-jk-uash@0.1.0 sdk:build
+> node scripts/sdk-build.mjs
+
+SDK compilado: sdk/dist (ESM + declarações TypeScript; zero dependências de execução).

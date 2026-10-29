@@ -1,0 +1,11 @@
+export const JK_INSTAGRAM = 'https://www.instagram.com/lavar.apidojk/';
+export type PublicService = {id: string; name: string; durationMinutes?: number | null; priceCents?: number | null};
+export type PublicProfile = {name: string; product: string; instagram: string; location: {city?: string; state?: string; address?: string}; services: PublicService[]; acceptingOnlineBookings: boolean};
+export const migrationEntities = ['customers', 'vehicles', 'services', 'orders', 'orderItems', 'payments'] as const;
+export type MigrationEntity = typeof migrationEntities[number];
+export const migrationEntityNames: Record<MigrationEntity, string> = {customers: 'Clientes', vehicles: 'Veículos', services: 'Serviços', orders: 'Ordens de serviço', orderItems: 'Itens das ordens', payments: 'Recebimentos'};
+export type MigrationCounts = Record<MigrationEntity, {received: number; insert: number; unchanged: number; rejected: number}>;
+export type MigrationIssue = {entity: string; row: number; code: string; message: string};
+export type MigrationPreview = {previewHash: string; canCommit: boolean; mode: 'historical'; counts: Partial<MigrationCounts>; issues: MigrationIssue[]; warnings?: Array<MigrationIssue | string>; reconciliation: Record<string, unknown>};
+export type MigrationInput = {source: 'jumpcar'; dataset?: Record<string, unknown>; files?: {entity: MigrationEntity; format: 'csv' | 'jumpcar-html'; content: string}[]};
+export type MigrationCommit = {status: 'COMMITTED' | 'REPLAYED'; batchId: string; previewHash: string; mode: 'historical'; counts: Partial<MigrationCounts>; reconciliation: Record<string, unknown>; committedAt: string};

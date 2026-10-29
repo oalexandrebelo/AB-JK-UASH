@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-28T23:22:05.360501+00:00",
+  "source": "design/diagram/order-lifecycle.html",
+  "sourceSha256": "deaef50d10b9c4a4de108a2653cffafa301d5192ebaeec608e6a650939c7dc4e",
+  "checks": [
+    {
+      "check": "self-check",
+      "upstreamCommit": "0cf73c3fcc56667ad91a9a04c439ac6ccfabc9d1",
+      "scriptSha256": "444851f6e53f83d50920381df17cdd5f1b7a23cfba9c0ddda27786d78e53e2de",
+      "exitCode": 0,
+      "output": "OK design/diagram/order-lifecycle.html\n"
+    },
+    {
+      "check": "verify-geometry",
+      "upstreamCommit": "0cf73c3fcc56667ad91a9a04c439ac6ccfabc9d1",
+      "scriptSha256": "33fb89edbdc8b9cf625a388ba47147bf46ec9e8ae84b7110e240de165732001f",
+      "exitCode": 0,
+      "output": "Summary: 1 file(s) checked, 0 finding(s).\n"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "attempts": [
+    {
+      "stage": "dependency-resolution",
+      "result": "numpy 2.3.4 rejected; ManimGX 0.1.1 requires >=2.4.3",
+      "resolution": "Resolved compatible set and froze all versions in requirements.lock.txt"
+    },
+    {
+      "stage": "hyperframes-render",
+      "result": "EPERM inside restricted subprocess environment",
+      "resolution": "Authorized local browser render outside restriction; no provider credentials or data"
+    },
+    {
+      "stage": "hyperframes-frame-extraction",
+      "result": "Raw ManimGX VFR clip yielded 167/192 frames; coverage gate aborted",
+      "resolution": "Normalize to 24 fps CFR with FFmpeg; keep coverage gate enabled. Successful extraction reports ratio 1."
+    },
+    {
+      "stage": "receipt-serialization",
+      "result": "MP4 rendered and ffprobe verified; receipt writer rejected temporary directory EISDIR",
+      "resolution": "Record regular output files only, exclude .part, rerun complete pipeline"
+    }
+  ]
+}

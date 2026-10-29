@@ -1,0 +1,2211 @@
+{
+  "format": "ab-jk-rea-file-coverage-v2",
+  "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+  "provenance": "Derived from original graph observations and semantic nodes; full Evidence archives retain source facts and limitations.",
+  "interpretation": "Non-module semantic nodes demonstrate retained static facts, not complete semantics or runtime execution. Per-file parse_status partial can reflect unknown static findings.",
+  "files": [
+    {
+      "path": "integrations/fiscal/index.mjs",
+      "sha256": "71e679724ac685b5b0f16831d798eee694a7387a7db2e86181ab95fc4c8fd42a",
+      "bytes": 5546,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 311,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "integrations/fiscal/payload.mjs",
+      "sha256": "b83e9c7e503351e5496c7885d891542a0540ce77755d4698be7da26f8eebce64",
+      "bytes": 11422,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1132,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "integrations/fiscal/transport.mjs",
+      "sha256": "03007bb0054f8d9d5ecc2f54fa9e30b880f40bb84c23f909c341c35041f7e54c",
+      "bytes": 7336,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 723,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "integrations/jk/journal.mjs",
+      "sha256": "97bf7011921195f28c6201da077704a25ebe8b409eeeb6e55914ae0ae94aae67",
+      "bytes": 1356,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 124,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-integrations-api",
+          "evidenceId": "ev_2ee2131981a1799b712f8e4b371a81749a3c8d3e1a60f852016024166a74c706",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 124,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "integrations/jk/runtime.mjs",
+      "sha256": "9a525b0ea194ec481f91bf233334696a3a4d86c18f1787fa19bda88a397f9ea9",
+      "bytes": 8560,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 778,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-integrations-api",
+          "evidenceId": "ev_2ee2131981a1799b712f8e4b371a81749a3c8d3e1a60f852016024166a74c706",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 778,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "integrations/jk/vendor/connectors/banking/index.mjs",
+      "sha256": "29eb252f08b2d9e120b8cace253d2142005618f890a5bb0675b734c1b49d9e43",
+      "bytes": 21990,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1743,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-banking",
+          "evidenceId": "ev_cb1438f878125cf4e4f73c401ab4f98f21b475523ecd4e5cbe3b5f598b767c25",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1743,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "integrations/jk/vendor/connectors/banking/profiles.mjs",
+      "sha256": "2449c2c289e08655cd97bd7e9562c585f89f4936e9bcd1b95aec6a031160e9eb",
+      "bytes": 1507,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 78,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-banking",
+          "evidenceId": "ev_cb1438f878125cf4e4f73c401ab4f98f21b475523ecd4e5cbe3b5f598b767c25",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 78,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "integrations/jk/vendor/connectors/banking/validation.mjs",
+      "sha256": "f51142b211f1ab1d083b9aa8fcd52e83f92f7ab67ad3d80551e28d01148c1425",
+      "bytes": 5738,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 578,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-banking",
+          "evidenceId": "ev_cb1438f878125cf4e4f73c401ab4f98f21b475523ecd4e5cbe3b5f598b767c25",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 578,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "integrations/jk/vendor/connectors/messaging/validation.mjs",
+      "sha256": "db974ff1d3c8907c4f11d43e431497a8aa6934481e5155dc1de9779f6b5c6e65",
+      "bytes": 1448,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 175,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-transport",
+          "evidenceId": "ev_6591c7f552d8f4b4b9a1c36bce3ad0c762e629ece674ba971a6725ce9a88bc7a",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 175,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "integrations/jk/vendor/connectors/messaging/whatsapp.mjs",
+      "sha256": "afb06aab0d0164677d4f179a4926e583b729ce483529a9f94b49f13c387cc20f",
+      "bytes": 7440,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 552,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-transport",
+          "evidenceId": "ev_6591c7f552d8f4b4b9a1c36bce3ad0c762e629ece674ba971a6725ce9a88bc7a",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 552,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "integrations/jk/vendor/connectors/transport.mjs",
+      "sha256": "57c52af0161a0010552d2870501fbe065a5837f8520c1c8e43419251f9592d7d",
+      "bytes": 14032,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1222,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-transport",
+          "evidenceId": "ev_6591c7f552d8f4b4b9a1c36bce3ad0c762e629ece674ba971a6725ce9a88bc7a",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1222,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "integrations/jk/vendor/integrations/secrets.mjs",
+      "sha256": "830e23395cd77d57983ad3b17aced3b8ea042226490fc7b60d0aca0b9e99aa43",
+      "bytes": 2740,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 268,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-transport",
+          "evidenceId": "ev_6591c7f552d8f4b4b9a1c36bce3ad0c762e629ece674ba971a6725ce9a88bc7a",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 268,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "scripts/architecture.mjs",
+      "sha256": "661583e4971d3c1d05a7df99bdad7fdd52735e1bf11705aab78645916b3f7f24",
+      "bytes": 7395,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 495,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "scripts/backup.mjs",
+      "sha256": "2f539f4f330795f3ef15748b4bdb4c0e80094bfb3a6b529093c03c5bff7670ba",
+      "bytes": 800,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-maintenance",
+          "evidenceId": "ev_799dd42e034c47d4525646b6b6f38fff71511dd96cc88699cb151a890998b51d",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 101,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "scripts/bootstrap-token.mjs",
+      "sha256": "f9866b7f3dcdbdcc5c4c7731b749687f6958cf138445c5b5e1b9e22b0c22f7be",
+      "bytes": 3849,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-bootstrap",
+          "evidenceId": "ev_7501be3618d652049921e085a451796b6b4432074566687629338cbbf40e4c76",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 316,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "scripts/generate-notices.mjs",
+      "sha256": "ac16bff2416059e7fb3de2d92cfd4a86a7092b716eb527d316ace2db6839e47d",
+      "bytes": 2388,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "scripts/healthcheck.mjs",
+      "sha256": "0e6d5c8c6d22cd07bd6e7bf80f7e1461f311bfb6b360c68bd447e72ee471ea45",
+      "bytes": 2367,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "scripts/jk-bootstrap-admin.mjs",
+      "sha256": "dbee2e9a5107f460d068d499429c600391873cfc994a164578894a28bf755d9e",
+      "bytes": 3958,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-bootstrap",
+          "evidenceId": "ev_7501be3618d652049921e085a451796b6b4432074566687629338cbbf40e4c76",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 328,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "scripts/jk-import.mjs",
+      "sha256": "c7514a525ec62a4d4bc178f254f44f49c4a14fe76bc9811dcdc6a0bb6c270f8e",
+      "bytes": 5122,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-migration",
+          "evidenceId": "ev_35bf11b158d0b863e331af94d68dbb678aabeeb42feab4dbed90da66d9eae899",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 467,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "scripts/jk-maintenance.mjs",
+      "sha256": "3369050f0ce6068e38ec52ee0952c22063c7e7ee60ba947c4c60cd7b2cc2e99d",
+      "bytes": 10572,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-maintenance",
+          "evidenceId": "ev_799dd42e034c47d4525646b6b6f38fff71511dd96cc88699cb151a890998b51d",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1163,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "scripts/jk-release-check.mjs",
+      "sha256": "75bd75bc8f03ed7db622f11925742a5704ebbfac118403dbcec37b24eb2aa5b4",
+      "bytes": 10974,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "scripts/prepare-assets.mjs",
+      "sha256": "008307d99ee30e3c24469e9c552f304f8b4594ca74a4af31910c5529a30801bf",
+      "bytes": 1250,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "scripts/restore.mjs",
+      "sha256": "75268bc20525802c938b29a1cf6f362ba2121fcc3dfb6360bf9ec9ac579e174b",
+      "bytes": 668,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-maintenance",
+          "evidenceId": "ev_799dd42e034c47d4525646b6b6f38fff71511dd96cc88699cb151a890998b51d",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 62,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "scripts/sdk-build.mjs",
+      "sha256": "7ad3fbd307356440d3f1c4e526ae11953f363f31c34eb245efb7dde7ec07a345",
+      "bytes": 833,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "scripts/sdk-contract.mjs",
+      "sha256": "fa6a5a6c3a538f658295afb6bac36f90929438bb4e63fafe4f40c4436835fc86",
+      "bytes": 46134,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "scripts/start.mjs",
+      "sha256": "58d93b5ddfab2fe1d5079a78bd868be96f27f9d86578a6616f2e5b752f69bcf6",
+      "bytes": 3322,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-bootstrap",
+          "evidenceId": "ev_7501be3618d652049921e085a451796b6b4432074566687629338cbbf40e4c76",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 348,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "scripts/storage.mjs",
+      "sha256": "179fc454fcd90874b856b50c53820725f8216922bf26e30b032320c723696e12",
+      "bytes": 8453,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-maintenance",
+          "evidenceId": "ev_799dd42e034c47d4525646b6b6f38fff71511dd96cc88699cb151a890998b51d",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 876,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "scripts/test.mjs",
+      "sha256": "76f30f7e46924fd2608d6d3f1de5f2e363bb4a9b4c4f66e33f7079767fb310d8",
+      "bytes": 792,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "scripts/verify-package.mjs",
+      "sha256": "d831609fc2faafcd549a064cc816897a253cf6d48545fe769d0b533f2cbe3251",
+      "bytes": 1543,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "server/application.mjs",
+      "sha256": "521f7e26f204e24e86c0f85969da4057572a54f72103c398f0ae00d1118db455",
+      "bytes": 18699,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-auth",
+          "evidenceId": "ev_9d18ef7d262798085dcf911443dbe1cde91d5efde8f66d97c8023efb0ba17be6",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1988,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/db.mjs",
+      "sha256": "139510e50d8da1dd6c14d52cae9e1ea72c4b5b745a1282b6dfcc41317ea4b5a8",
+      "bytes": 21081,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-database",
+          "evidenceId": "ev_48492a03be8f628553c66d2f1cf46adc7320a9cb09fa28d977c7ef182d59757d",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1980,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/domain-core.mjs",
+      "sha256": "21d8a12b82fdc0a88bd6f0516f435bc661afeb5f9833e44269246d6a2059d58c",
+      "bytes": 19926,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "server/domain-finance.mjs",
+      "sha256": "e941e36f8eefcb33f5a067a1a8a04355acedda9c12396b07cb94671aea2293f8",
+      "bytes": 19193,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "server/domain-office.mjs",
+      "sha256": "8d09583273b32e1bfb32d315c7a0c82691d77ee28aa9218fc783e2a5c0a538cd",
+      "bytes": 15387,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "server/domain-orders.mjs",
+      "sha256": "64a6368553f25ada8333c4790523985eec621a4b1777fd2f7b623b5ef94c74a7",
+      "bytes": 23693,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "server/domain-reports.mjs",
+      "sha256": "4d23e7c348580a25a9417722bb4edf74782474973f6a06e758e1043d09962f13",
+      "bytes": 7016,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "server/domain-schema.mjs",
+      "sha256": "9d1946311f77718f3a51c566e985e72e066218d47039460170be1c0765779ab5",
+      "bytes": 11827,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-database",
+          "evidenceId": "ev_48492a03be8f628553c66d2f1cf46adc7320a9cb09fa28d977c7ef182d59757d",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 92,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/domain.mjs",
+      "sha256": "399205795f5f95a4a2e175d762e951a70b2194856b5acfca223af247e15df60a",
+      "bytes": 772,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "server/errors.mjs",
+      "sha256": "a87f96f9f645ee0be8ad3fd263389e8751320047f9fe1b85fa32d0e6d591c742",
+      "bytes": 1203,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-auth",
+          "evidenceId": "ev_9d18ef7d262798085dcf911443dbe1cde91d5efde8f66d97c8023efb0ba17be6",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 90,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/fiscal.mjs",
+      "sha256": "7f5504985192eb50613f0b8d8707409e765c7189ffd35d84afb7773a80753399",
+      "bytes": 18039,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "server/http.mjs",
+      "sha256": "cb51b25fdb916c707b4c7c46343fb44b01f550f807a7f757d160cafce444a9ac",
+      "bytes": 6669,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-auth",
+          "evidenceId": "ev_9d18ef7d262798085dcf911443dbe1cde91d5efde8f66d97c8023efb0ba17be6",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 673,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/index.mjs",
+      "sha256": "f96169bef149614edb30d3dddd9c5f90a638f8c3a65fa8a018845c574db1f5ab",
+      "bytes": 262,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "server/jk-deliveries-schema.mjs",
+      "sha256": "fd4fc87042871e01948c04be9f09bd8dfa5427ba01cd459f983ccb81911fa107",
+      "bytes": 2360,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-deliveries",
+          "evidenceId": "ev_a53d0c874200af307cefae1d0dc862c4ad5689747ef42f4ce8e0d726e5a2ba9a",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 31,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/jk-deliveries.mjs",
+      "sha256": "393a0a8159cef47999812ca2bc759075181d5de401191af886475611c09e971a",
+      "bytes": 14952,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-deliveries",
+          "evidenceId": "ev_a53d0c874200af307cefae1d0dc862c4ad5689747ef42f4ce8e0d726e5a2ba9a",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1820,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/jk-integrations.mjs",
+      "sha256": "21c2fedf43cb17761dbbd125fa78a764b78b9650e9ce1b469169b10894ecd583",
+      "bytes": 28306,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-integrations-api",
+          "evidenceId": "ev_2ee2131981a1799b712f8e4b371a81749a3c8d3e1a60f852016024166a74c706",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 3086,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/jk-migration-parse.mjs",
+      "sha256": "f3b2f9e49bcc5fd9ca0ad309ecb31ed665b5be5108848259f9625b42347f7002",
+      "bytes": 11996,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-migration-parse",
+          "evidenceId": "ev_ce857cb0d956f23dfc62e52bbd091f7fe2711292eb848556b722ce70fb85a60b",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1178,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/jk-migration-schema.mjs",
+      "sha256": "3c75e7059a48145df7af7136bb11774f933b12fd3062b71cd069d75175693d83",
+      "bytes": 3377,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-migration",
+          "evidenceId": "ev_35bf11b158d0b863e331af94d68dbb678aabeeb42feab4dbed90da66d9eae899",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 10,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/jk-migration.mjs",
+      "sha256": "2f7a5e975b34ab77ae0837ebc44245a7f614053112cbc93f20b5a6c255018f3e",
+      "bytes": 28781,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-migration",
+          "evidenceId": "ev_35bf11b158d0b863e331af94d68dbb678aabeeb42feab4dbed90da66d9eae899",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 3262,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/jk-public.mjs",
+      "sha256": "7645c54924b2fc3b1c814a5636f803e5157a1ea42de25cb56b50709452107e22",
+      "bytes": 638,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-bootstrap",
+          "evidenceId": "ev_7501be3618d652049921e085a451796b6b4432074566687629338cbbf40e4c76",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 37,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/media.mjs",
+      "sha256": "7ea0eca4542ad630b7d63d323109ecc0470df5961787b81e8ac6ac58b0056485",
+      "bytes": 7461,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "server/security.mjs",
+      "sha256": "e9f093be420ea4e3c323b1c4ed7c0227a251b5279ab4b44160ed68a0e8277b1c",
+      "bytes": 5810,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-auth",
+          "evidenceId": "ev_9d18ef7d262798085dcf911443dbe1cde91d5efde8f66d97c8023efb0ba17be6",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 656,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/validation.mjs",
+      "sha256": "ae664a0cb23bb083ce0f97010dc75db9c6f42ded2cb2169c34b64ba0f6a4895a",
+      "bytes": 2715,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-auth",
+          "evidenceId": "ev_9d18ef7d262798085dcf911443dbe1cde91d5efde8f66d97c8023efb0ba17be6",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 333,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "server/vercel-runtime.mjs",
+      "sha256": "c842451e898d64dfe5ecb602ab3c71abb1664c1b552d876ddb4929e9cc0770a9",
+      "bytes": 4189,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/App.tsx",
+      "sha256": "813c3b522c49ec22de51df29d4a124544426f6852bac328943fa0c1ce8eee00d",
+      "bytes": 1105,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-ui-auth",
+          "evidenceId": "ev_9137d629a122623ee7c2ac40353043420ea296ac57d2aeb581283c77316fff5d",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 109,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "src/RootApp.tsx",
+      "sha256": "661ee19327e8dba60eb11b68480ac256dddef62cd1b483d088333ccb73a4a85e",
+      "bytes": 6334,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-ui-auth",
+          "evidenceId": "ev_9137d629a122623ee7c2ac40353043420ea296ac57d2aeb581283c77316fff5d",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 607,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "src/components/Brand.tsx",
+      "sha256": "0c661f6960209b7ee97c81666eb87b23f64d993c63488ae124f15708795fa066",
+      "bytes": 882,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/components/CarArtwork.tsx",
+      "sha256": "b33d67c7001b581771a89c942d3b9a7cbeae4ce2fd7c3719f1ff8801d02f17bb",
+      "bytes": 4245,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/components/FormFields.tsx",
+      "sha256": "3644ac073d260e897cebbba653ee8097ce6eb772614d581622203f128fbbbce8",
+      "bytes": 7897,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/components/HelpFlow.tsx",
+      "sha256": "c2d3a2b6e71876d4024be20d3c6205afedbc48792134fcc59ee547e361fae2e8",
+      "bytes": 3252,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/components/RemotePicker.tsx",
+      "sha256": "b4c4ca35bb76fc7795d05ce6a5d042979fdadc049dcfff15194f25cc600b00b5",
+      "bytes": 2242,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/components/Shell.tsx",
+      "sha256": "2b2b2f023725a3e2d4f400525e7a2169229dd514e3d3abd27b39e3716542f4fe",
+      "bytes": 7764,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/components/ui.tsx",
+      "sha256": "40893513cbaee3d4ae7434ce595f2d99e3d42ab1a02fd6c87d7a6e57f4f9b30c",
+      "bytes": 8903,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/features/integrations/IntegrationDialog.tsx",
+      "sha256": "f69745a06c478d5ccb68244b43cb28aef62ac4e7b3d3ce686afb7589c7fa0635",
+      "bytes": 6907,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-ui-integrations",
+          "evidenceId": "ev_2cf2069954b52d68ccf5e5704239dfa3b5f1e4b5f8f67c4e1f681341b163834b",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 418,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "src/features/ocr/PlateReader.tsx",
+      "sha256": "6df82065f97e9b9ca452b62f3fac07b37189ba280969c97ecc946b6f062c0b91",
+      "bytes": 6068,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/features/ocr/client.ts",
+      "sha256": "38600679cbb863e07d69d4a60e8eb86edbcb0216da102012549a8ff18cc33a15",
+      "bytes": 5517,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/features/ocr/image.ts",
+      "sha256": "70c221ac79717f1fb5d742e416d892cf9259bb8050782bebc827c6baccbd738c",
+      "bytes": 4887,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/features/ocr/plate.ts",
+      "sha256": "fcec920b76f7d377236de9406896a02071fbfab157d82cc7fc6a3dcc592fe572",
+      "bytes": 761,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/features/photos/OrderPhotos.tsx",
+      "sha256": "3be493c17b2efcee424f0c0bd2e9f4c1f250539f90278763ef867def525facac",
+      "bytes": 5693,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/lib/api.ts",
+      "sha256": "0beb7607d860f60fecd6510c9c873a67d048f5fdfe2bae33c6482c9f8fa4610b",
+      "bytes": 9113,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-ui-auth",
+          "evidenceId": "ev_9137d629a122623ee7c2ac40353043420ea296ac57d2aeb581283c77316fff5d",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1160,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-ui-migration",
+          "evidenceId": "ev_68e3ec74268d20d0a13df94527008a8035aad779f1559bc91dec24bdf96bb500",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1160,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-ui-integrations",
+          "evidenceId": "ev_2cf2069954b52d68ccf5e5704239dfa3b5f1e4b5f8f67c4e1f681341b163834b",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1160,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-ui-deliveries",
+          "evidenceId": "ev_a0567d95b58c79429aa0021ef942f79aff95da3271215d46b3bb545123f66174",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1160,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-ui-invoices",
+          "evidenceId": "ev_92d9eb0b400255466bee061d1f8ccc6dad81a3719f0ab602290fcab36cbd80bc",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1160,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "src/lib/csv.ts",
+      "sha256": "8d02d0836ce38d784a27440e2d507fe4b9482f6072bd4e9bfdb2c6c9564d2798",
+      "bytes": 292,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/lib/domain.ts",
+      "sha256": "b3f87c193a06f5b11bfc0f8a3c695e4064bded2d1dd23615010919962a51db96",
+      "bytes": 1489,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/lib/fiscal.ts",
+      "sha256": "11ce7be95952ed507c7c21f116a1a8654966525825664756f6d7113cb380cf8a",
+      "bytes": 7927,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/lib/jk.ts",
+      "sha256": "f9b9c8173ab18f7b8ab8ea2e3f08373c088bf9db580ee42802836a0018e7c9fb",
+      "bytes": 1648,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-ui-auth",
+          "evidenceId": "ev_9137d629a122623ee7c2ac40353043420ea296ac57d2aeb581283c77316fff5d",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 98,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-ui-migration",
+          "evidenceId": "ev_68e3ec74268d20d0a13df94527008a8035aad779f1559bc91dec24bdf96bb500",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 98,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-ui-integrations",
+          "evidenceId": "ev_2cf2069954b52d68ccf5e5704239dfa3b5f1e4b5f8f67c4e1f681341b163834b",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 98,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-ui-deliveries",
+          "evidenceId": "ev_a0567d95b58c79429aa0021ef942f79aff95da3271215d46b3bb545123f66174",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 98,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        },
+        {
+          "analysis": "v2-ui-invoices",
+          "evidenceId": "ev_92d9eb0b400255466bee061d1f8ccc6dad81a3719f0ab602290fcab36cbd80bc",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 98,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "src/main.tsx",
+      "sha256": "68bc4fbd60ca5e19f882bac72b1b02892f89eb6c55a58bc7cd2f74c1da11e2d5",
+      "bytes": 464,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/AppointmentsPage.tsx",
+      "sha256": "bc5b682543aa4c26be0b0011c50a217bbb6a1778db4e689ee4763cb93c0a988d",
+      "bytes": 3331,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/AuthPage.tsx",
+      "sha256": "10f2776de63f18e2a265e29062e11e982cd68b48226eeed4c38ba5c5633ea45a",
+      "bytes": 4211,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-ui-auth",
+          "evidenceId": "ev_9137d629a122623ee7c2ac40353043420ea296ac57d2aeb581283c77316fff5d",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 172,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "src/pages/CashPage.tsx",
+      "sha256": "59a012cd4cd833a300672c3bfe142668235d83b84558890ac8cdc663197cfd76",
+      "bytes": 8219,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/DashboardPage.tsx",
+      "sha256": "287515f9638da0e6d9dafc75b5437c99ef061143d8d1a5af08b996784d123448",
+      "bytes": 7365,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/DeliveriesPage.tsx",
+      "sha256": "cf4e93161ad9180d01a519732ef550fff34afb73e8d17dd2bc8fad78c1e93a2a",
+      "bytes": 15298,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-ui-deliveries",
+          "evidenceId": "ev_a0567d95b58c79429aa0021ef942f79aff95da3271215d46b3bb545123f66174",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1262,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "src/pages/EntityPage.tsx",
+      "sha256": "a442b7f8c8e909dedb3efd9fabc5a71895be94e58ef758d767020f8a1cc686ba",
+      "bytes": 8187,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/FiscalPage.tsx",
+      "sha256": "dcac9765d33a55a0c72d4f4165397119abe2e90d7c6f36d770dc8e98f9bce37d",
+      "bytes": 26888,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/IntegrationsPage.tsx",
+      "sha256": "a3e956697140544d09c21ddcd82848a6d2c5799a56b2a4d3ce9b0336393afa41",
+      "bytes": 13058,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-ui-integrations",
+          "evidenceId": "ev_2cf2069954b52d68ccf5e5704239dfa3b5f1e4b5f8f67c4e1f681341b163834b",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 770,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "src/pages/InvoicesPage.tsx",
+      "sha256": "6d83d0468d1a04016536a9b2b2004b9c1e52b0ff85ad3b369a538d95dc2e8a7e",
+      "bytes": 10926,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        },
+        {
+          "analysis": "v2-ui-invoices",
+          "evidenceId": "ev_92d9eb0b400255466bee061d1f8ccc6dad81a3719f0ab602290fcab36cbd80bc",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1067,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "src/pages/LandingPage.tsx",
+      "sha256": "04250a80a9c09b322ce7bef9dc17b283837da14363afd9633574e2a00352e8a6",
+      "bytes": 8924,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/MessagesPage.tsx",
+      "sha256": "b03ce059ace06a1f07ae82390a62feb54f23727472f8fe2ad2d6e9723b02b0b3",
+      "bytes": 5976,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/MigrationPage.tsx",
+      "sha256": "a2d79cde3251c55640868f6fda039c5fe37164d849ed94e05f596d26b2c79019",
+      "bytes": 18156,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        },
+        {
+          "analysis": "v2-ui-migration",
+          "evidenceId": "ev_68e3ec74268d20d0a13df94527008a8035aad779f1559bc91dec24bdf96bb500",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 1389,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    },
+    {
+      "path": "src/pages/OrderDetailPage.tsx",
+      "sha256": "abc5cf92461a66d91bd1427eabd347fd3ed4bfa8afbf897f2fa95be8f5473b9a",
+      "bytes": 16700,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/OrderEditor.tsx",
+      "sha256": "71601aa69b307c356d9e60e19a4edf13a50a7020bff7e0ca10b81f81499161e3",
+      "bytes": 7294,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "partial",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/OrdersPage.tsx",
+      "sha256": "27cd7e4898920dc900214400b995a8db99ccbd2a8f6940f11fdb8c2784133406",
+      "bytes": 4073,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/PackageSalesPage.tsx",
+      "sha256": "0b27971e936719d4d55164b0ca9ae8f5bcc26ad2f2a33eac45f47d3e2cd3133c",
+      "bytes": 1709,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/PayrollPage.tsx",
+      "sha256": "9810a9eac93afda4e8e4cb79da334b024fd6eeaae1271fec86b8c34e7ff6452c",
+      "bytes": 8874,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "project-javascript-application",
+            "analyze-javascript-source"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/ReportsPage.tsx",
+      "sha256": "a3feb8018c402be761df140205b8f20c7830271fbfc6155c61e32e0b384f06a7",
+      "bytes": 7686,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/SettingsPage.tsx",
+      "sha256": "ccf779271b4aedb746160ce5108ceaab04497390508be46ecd89a8f742bc8ec6",
+      "bytes": 6937,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "src/pages/entitySchemas.tsx",
+      "sha256": "5efbeedd4ed03d88566c7e05c4cc3d3a1d955b25637e8954df04280fbb53b52a",
+      "bytes": 6573,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": true,
+          "semanticNonModuleNodesRetained": 0,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": [
+            "analyze-javascript-source",
+            "project-javascript-application"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "9918acaf0468f64f9cf66a952c7ecc6d39a74fc3915c75a768fd71a7d556c4f3",
+      "bytes": 1442,
+      "analyses": [
+        {
+          "analysis": "aggregate-v2",
+          "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+          "staticParseStatus": "complete",
+          "retainedStaticFacts": false,
+          "semanticNonModuleNodesRetained": 66,
+          "semanticModuleNodesRetained": 1,
+          "resourceFailures": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "ab-jk-uash-dom-qa",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Runtime opcional de DOM emulado para o bundle de produção; não integra o aplicativo.",
+  "engines": {
+    "node": ">=24.15.0 <25"
+  },
+  "dependencies": {
+    "jsdom": "30.1.3"
+  }
+}

@@ -1,0 +1,61 @@
+<!doctype html>
+<!-- Adapted from diagram-design/assets/template.html at 0cf73c3fcc56667ad91a9a04c439ac6ccfabc9d1. MIT; see LICENSE.diagram-design. -->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Da entrada à entrega · AB-JK-UASH</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;padding:40px 24px;background:#f5f7f9;color:#1c3041;font:16px/1.6 Arial,system-ui,sans-serif}.frame{max-width:1280px;min-width:0;margin:auto}.eyebrow{font-size:12px;letter-spacing:.14em;font-weight:700;color:#5f6f7f;text-transform:uppercase}h1{font:600 clamp(28px,4vw,44px)/1.15 Arial,system-ui,sans-serif;letter-spacing:-.04em;margin:12px 0 16px}.intro{max-width:760px;color:#5f6f7f;margin:0 0 28px}.diagram-container{width:100%;overflow-x:auto;border:1px solid #e0e6ec;border-radius:8px;background:white}svg{display:block;width:100%;min-width:1280px}svg text{font-family:Arial,system-ui,sans-serif;fill:#1c3041}.label{font-size:10px;font-weight:700;letter-spacing:.04em}.node-title{font-size:17px;font-weight:600}.code{font-family:ui-monospace,monospace;font-size:11px;fill:#5f6f7f}.note{font-size:13px;fill:#5f6f7f}.band{font-size:11px;letter-spacing:.12em;fill:#5f6f7f;font-weight:700}.summary{max-width:950px;margin-top:26px}.summary p{margin:12px 0}.summary code{font-size:.9em}.source{font-size:12px;color:#5f6f7f;margin-top:28px}a{color:#3156cf}@media print{body{padding:0}.diagram-container{overflow-x:visible;border:0}svg{min-width:0}.summary{font-size:12px}}@media(max-width:600px){body{padding:24px 16px}}
+  </style>
+</head>
+<body><main class="frame">
+  <p class="eyebrow">Lava Rápido JK · Guia da operação</p>
+  <h1>Da entrada à entrega.</h1>
+  <p class="intro">Uma ordem acompanha o veículo e mantém os serviços, a conferência e o saldo no mesmo registro. A conferência pode devolver o atendimento para execução antes da entrega.</p>
+  <div class="diagram-container" tabindex="0" role="region" aria-label="Fluxo de atendimento. Role horizontalmente em telas pequenas.">
+  <svg viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="order-lifecycle-title order-lifecycle-desc">
+    <title id="order-lifecycle-title">Da entrada à entrega</title>
+    <desc id="order-lifecycle-desc">Orçamento e agendamento antecedem a espera, o serviço, a conferência e a entrega, com retorno ao serviço para correção e cancelamento condicionado aos vínculos financeiros.</desc>
+    <defs><marker id="order-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#5f6f7f"/></marker></defs>
+    <rect width="1280" height="720" fill="#ffffff"/>
+    <text x="56" y="48" class="band">PREPARAÇÃO</text><text x="56" y="276" class="band">ATENDIMENTO</text><text x="56" y="568" class="band">ENCERRAMENTO</text>
+    <g fill="none" stroke="#5f6f7f" stroke-width="1.5" marker-end="url(#order-arrow)">
+      <path d="M232 132 H296"/><path d="M144 180 V300"/>
+      <path d="M384 180 V232 Q384 240 376 240 H200 Q192 240 192 248 V300"/>
+      <path d="M232 348 H296"/><path d="M472 348 H536"/><path d="M712 348 H776"/><path d="M952 348 H1016"/>
+      <path d="M624 396 V452 Q624 460 616 460 H416 Q408 460 408 452 V396" stroke-dasharray="5 4"/>
+      <path d="M864 396 V508 Q864 516 856 516 H360 Q352 516 352 508 V396" stroke-dasharray="5 4"/>
+    </g>
+    <g class="label" text-anchor="middle">
+      <rect x="236" y="106" width="56" height="16" fill="#fff"/><text x="264" y="117">AGENDAR</text>
+      <rect x="72" y="226" width="64" height="16" fill="#fff"/><text x="104" y="237">INICIAR OS</text>
+      <rect x="248" y="214" width="72" height="16" fill="#fff"/><text x="284" y="225">RECEBER</text>
+      <rect x="236" y="322" width="56" height="16" fill="#fff"/><text x="264" y="333">INICIAR</text>
+      <rect x="476" y="322" width="56" height="16" fill="#fff"/><text x="504" y="333">CONFERIR</text>
+      <rect x="716" y="322" width="56" height="16" fill="#fff"/><text x="744" y="333">APROVAR</text>
+      <rect x="956" y="322" width="56" height="16" fill="#fff"/><text x="984" y="333">ENTREGAR</text>
+      <rect x="444" y="434" width="88" height="16" fill="#fff"/><text x="488" y="445">CORRIGIR</text>
+      <rect x="588" y="490" width="96" height="16" fill="#fff"/><text x="636" y="501">RETRABALHAR</text>
+    </g>
+    <g><rect x="56" y="84" width="176" height="96" rx="8" fill="#f5f7f9" stroke="#e0e6ec"/><text x="76" y="124" class="node-title">Orçamento</text><text x="76" y="151" class="code">quote</text></g>
+    <g><rect x="296" y="84" width="176" height="96" rx="8" fill="#f5f7f9" stroke="#e0e6ec"/><text x="316" y="124" class="node-title">Agendada</text><text x="316" y="151" class="code">scheduled</text></g>
+    <g><rect x="56" y="300" width="176" height="96" rx="8" fill="#f5f7f9" stroke="#e0e6ec"/><text x="76" y="340" class="node-title">Aguardando</text><text x="76" y="367" class="code">waiting</text></g>
+    <g><rect x="296" y="300" width="176" height="96" rx="8" fill="#f5f7f9" stroke="#e0e6ec"/><text x="316" y="340" class="node-title">Em serviço</text><text x="316" y="367" class="code">in_progress</text></g>
+    <g><rect x="536" y="300" width="176" height="96" rx="8" fill="#edf1ff" stroke="#3b63fb"/><text x="556" y="340" class="node-title">Conferência</text><text x="556" y="367" class="code">quality_check</text></g>
+    <g><rect x="776" y="300" width="176" height="96" rx="8" fill="#f5f7f9" stroke="#e0e6ec"/><text x="796" y="340" class="node-title">Pronta</text><text x="796" y="367" class="code">ready</text></g>
+    <g><rect x="1016" y="300" width="176" height="96" rx="8" fill="#edf8f3" stroke="#218267"/><text x="1036" y="340" class="node-title">Entregue</text><text x="1036" y="367" class="code">delivered</text></g>
+    <g><rect x="56" y="588" width="176" height="80" rx="8" fill="#f5f7f9" stroke="#5f6f7f" stroke-dasharray="4 3"/><text x="76" y="622" class="node-title">Cancelada</text><text x="76" y="649" class="code">cancelled</text></g>
+    <text x="520" y="112" class="note">A OS também pode nascer diretamente em espera.</text><text x="520" y="140" class="note">O agendamento tem estados próprios e converte uma única OS.</text>
+    <text x="1008" y="432" class="note">Entrega: saldo quitado</text><text x="1008" y="454" class="note">ou cliente pós-pago.</text>
+    <text x="272" y="614" class="note">Qualquer etapa anterior à entrega pode cancelar, se não houver</text><text x="272" y="638" class="note">recebimento, resgate ou consumo ativo, nem fatura vinculada.</text>
+    <line x1="56" y1="688" x2="1224" y2="688" stroke="#e0e6ec"/>
+    <text x="56" y="710" class="note">Linha contínua: avanço · Linha tracejada: retorno · Estados encerrados não reabrem nesta versão.</text>
+  </svg></div>
+  <div class="summary">
+    <p><strong>Avanço:</strong> orçamento → agendada ou aguardando → em serviço → conferência → pronta → entregue. Uma OS pode começar em orçamento, agendada ou aguardando.</p>
+    <p><strong>Correção:</strong> conferência e pronta permitem retorno a em serviço. Entregar exige saldo zero ou cliente habilitado como pós-pago. Entregue e cancelada são estados finais.</p>
+    <p><strong>Cancelamento:</strong> a API rejeita cancelamento quando há pagamento, consumo de estoque ou resgate de pacote ativo, ou vínculo de fatura. É necessário resolver o vínculo pelo fluxo suportado; o diagrama não promete reembolso bancário.</p>
+    <p><strong>Disponibilidade:</strong> este é o fluxo implementado no código local. Não é certificação de paridade com uma conta Jumpcar nem evidência de migração de dados reais.</p>
+  </div>
+  <p class="source">Fonte: <a href="../../server/domain-orders.mjs">server/domain-orders.mjs</a>. Diagrama original adaptado do template MIT Diagram Design 2.6.136; perfil <a href="jk-spectrum-profile.json">JK/Spectrum</a>. Sem JavaScript, imagens remotas, dados de clientes ou fontes externas.</p>
+</main></body></html>

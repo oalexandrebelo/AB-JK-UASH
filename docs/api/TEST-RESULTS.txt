@@ -1,0 +1,57 @@
+AB-UASH SDK / API contract verification
+Date: 2026-10-20
+Runtime: bundled Node v24.19.0, Linux x64
+
+Build:
+  ./runtime/linux-x64/node scripts/sdk-build.mjs
+  Exit 0. ESM and TypeScript declarations emitted to sdk/dist.
+
+Final verification command:
+  ./runtime/linux-x64/node --test --test-reporter=tap tests/sdk.test.mjs tests/sdk-contract.test.mjs tests/sdk-types.test.mjs
+
+Actual TAP totals:
+  1..13
+  tests 13
+  suites 0
+  pass 13
+  fail 0
+  cancelled 0
+  skipped 0
+  todo 0
+  duration_ms 3146.484697
+
+Contract coverage:
+  97/97 distinct public API operations completed successfully over real HTTP.
+  89 base operations + 8 fiscal operations.
+  Request and response JSON schemas checked.
+  All 6 report response variants checked.
+  Independent route inventory and generated OpenAPI consistency checked.
+  OpenAPI: 3.1.0; JSON Schema dialect: 2020-12.
+
+Verification cases:
+  1. Complete route inventory, exact envelopes, roles, pagination and idempotency headers.
+  2. Real SQLite fixtures exercise all 97 operations, including the fiscal lifecycle.
+  3. TypeScript signatures and browser example compile; incorrect calls fail statically.
+  4. Compiled SDK contains no server imports or runtime dependencies.
+  5. HTTPS/loopback URL validation and argument rejection before dispatch.
+  6. Cookie Domain/host/port/Path/Secure/SameSite/expiry/deletion/prefix rules.
+  7. Browser credentials and CSRF with no forged/read HttpOnly Cookie.
+  8. Admin, manager, operator and viewer permissions; role-limited fields; revocation.
+  9. Setup token header and password rotation invalidating previous sessions.
+  10. Lost real payment response; no automatic retry; same snapshot/key replay;
+      no duplicate receipt; account switch cannot replay another user's operation.
+  11. Real HTTP body timeout and cancellation; pre-abort; no redirect follow;
+      injected fetch ignoring AbortSignal still stops waiting.
+  12. Timed-out real mutation reports unknown outcome and replays safely.
+  13. Documented Node example authenticates and logs out over real HTTP;
+      output contains no credentials or session tokens.
+
+Scope:
+  SDK runtime has no third-party dependencies.
+  TypeScript is a development/build dependency from the root project.
+  Fiscal calls use a fixture transport; no real fiscal document was issued.
+  These SDK tests use SQLite. They do not prove a live Supabase/Vercel deployment
+  or provider homologation; those are separate integration/release gates.
+  The browser behavior test injects fetch; it does not replace browser CORS testing.
+  The cookie jar intentionally rejects parent-domain cookies without a public-suffix
+  dependency. AB-UASH's own session cookie is host-only and supported.

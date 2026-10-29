@@ -1,0 +1,104 @@
+name: ab-uash
+
+services:
+  app:
+    image: ab-uash:0.2.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    user: "1000:1000"
+    init: true
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 512m
+    cpus: "1.0"
+    pids_limit: 128
+    stop_grace_period: 30s
+    environment:
+      NODE_ENV: production
+      NODE_OPTIONS: --max-old-space-size=320
+      HOST: 0.0.0.0
+      PORT: "4173"
+      DB_PATH: /data/ab-uash.sqlite
+      DIST_DIR: /app/dist
+      SETUP_TOKEN_FILE: /data/setup-token
+      PUBLIC_ORIGIN: https://ab-srv.tail6bac78.ts.net:${AB_PORTA:-8455}
+      COOKIE_SECURE: "true"
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data
+        bind:
+          create_host_path: false
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,uid=1000,gid=1000,mode=1777
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "node", "scripts/healthcheck.mjs"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  proxy:
+    image: nginx:1.31.5-alpine
+    user: "1000:1000"
+    entrypoint: ["nginx"]
+    command: ["-g", "daemon off;"]
+    init: true
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 128m
+    cpus: "0.25"
+    pids_limit: 64
+    stop_grace_period: 15s
+    environment:
+      AB_PUBLIC_HOST: ab-srv.tail6bac78.ts.net:${AB_PORTA:-8455}
+    depends_on:
+      app:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${AB_PORTA:-8455}:8080"
+    volumes:
+      - type: bind
+        source: ./deploy/nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+        bind:
+          create_host_path: false
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=32m,uid=1000,gid=1000,mode=1777
+    networks:
+      - web
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -T 3 -O- --header=\"Host: $$AB_PUBLIC_HOST\" http://127.0.0.1:8080/api/health | grep -q '\"status\":\"ok\"'"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+networks:
+  internal:
+    internal: true
+  web:
+    driver: bridge

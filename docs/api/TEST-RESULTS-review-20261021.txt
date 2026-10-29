@@ -1,0 +1,270 @@
+TAP version 13
+# Subtest: fiscal snapshot and generated service description preserve order positions and exact cents
+ok 1 - fiscal snapshot and generated service description preserve order positions and exact cents
+  ---
+  duration_ms: 556.749619
+  type: 'test'
+  ...
+# Subtest: contradictory provider errors remain uncertain and cannot release a second emission
+ok 2 - contradictory provider errors remain uncertain and cannot release a second emission
+  ---
+  duration_ms: 396.732345
+  type: 'test'
+  ...
+# Subtest: replay after a lost fiscal lease returns terminal HTTP status without repeating dispatch
+ok 3 - replay after a lost fiscal lease returns terminal HTTP status without repeating dispatch
+  ---
+  duration_ms: 362.633711
+  type: 'test'
+  ...
+# Subtest: default transport is inert; configuration never exposes credentials
+ok 4 - default transport is inert; configuration never exposes credentials
+  ---
+  duration_ms: 3.280868
+  type: 'test'
+  ...
+# Subtest: transport rejects private and special IPs plus protocol, hostname, port and credential URL tricks
+ok 5 - transport rejects private and special IPs plus protocol, hostname, port and credential URL tricks
+  ---
+  duration_ms: 9.98273
+  type: 'test'
+  ...
+# Subtest: DNS is pinned to the validated IP with certificate hostname preserved
+ok 6 - DNS is pinned to the validated IP with certificate hostname preserved
+  ---
+  duration_ms: 1.381298
+  type: 'test'
+  ...
+# Subtest: total timeout covers DNS and prevents sockets from late DNS completion
+ok 7 - total timeout covers DNS and prevents sockets from late DNS completion
+  ---
+  duration_ms: 20.79496
+  type: 'test'
+  ...
+# Subtest: real loopback fixture enforces redirect, response size, malformed JSON and total response timeout
+    # Subtest: redirect
+    ok 1 - redirect
+      ---
+      duration_ms: 27.315436
+      type: 'test'
+      ...
+    # Subtest: declared oversized
+    ok 2 - declared oversized
+      ---
+      duration_ms: 13.418124
+      type: 'test'
+      ...
+    # Subtest: stream oversized
+    ok 3 - stream oversized
+      ---
+      duration_ms: 5.537072
+      type: 'test'
+      ...
+    # Subtest: malformed JSON
+    ok 4 - malformed JSON
+      ---
+      duration_ms: 2.435156
+      type: 'test'
+      ...
+    # Subtest: compressed
+    ok 5 - compressed
+      ---
+      duration_ms: 2.598086
+      type: 'test'
+      ...
+    # Subtest: slow response
+    ok 6 - slow response
+      ---
+      duration_ms: 102.335692
+      type: 'test'
+      ...
+    1..6
+ok 8 - real loopback fixture enforces redirect, response size, malformed JSON and total response timeout
+  ---
+  duration_ms: 156.118456
+  type: 'test'
+  ...
+# Subtest: provider status allowlist never returns raw error data and mismatched reference stays uncertain
+ok 9 - provider status allowlist never returns raw error data and mismatched reference stays uncertain
+  ---
+  duration_ms: 0.470621
+  type: 'test'
+  ...
+# Subtest: CNPJ alphanumeric check digits and fiscal discount/IBS choices are explicit
+ok 10 - CNPJ alphanumeric check digits and fiscal discount/IBS choices are explicit
+  ---
+  duration_ms: 7.282203
+  type: 'test'
+  ...
+# Subtest: disabled fiscal flow prepares immutable local drafts, persists, redacts and cancels locally
+ok 11 - disabled fiscal flow prepares immutable local drafts, persists, redacts and cancels locally
+  ---
+  duration_ms: 681.8987
+  type: 'test'
+  ...
+# Subtest: HTTP fixture receives Focus Basic POST once; accepted submission is reconciled only by GET
+ok 12 - HTTP fixture receives Focus Basic POST once; accepted submission is reconciled only by GET
+  ---
+  duration_ms: 376.251681
+  type: 'test'
+  ...
+# Subtest: unknown outcome is durable; neither new nor replayed submit can repeat POST, including 404 reconciliation
+ok 13 - unknown outcome is durable; neither new nor replayed submit can repeat POST, including 404 reconciliation
+  ---
+  duration_ms: 577.542347
+  type: 'test'
+  ...
+# Subtest: leases fence late POST results; unrelated API writes proceed during provider wait
+ok 14 - leases fence late POST results; unrelated API writes proceed during provider wait
+  ---
+  duration_ms: 485.026097
+  type: 'test'
+  ...
+# Subtest: crash after durable claim recovers with GET without sending a new POST
+ok 15 - crash after durable claim recovers with GET without sending a new POST
+  ---
+  duration_ms: 490.698592
+  type: 'test'
+  ...
+# Subtest: accepted provider result with failed local commit remains a durable claim recoverable by GET
+ok 16 - accepted provider result with failed local commit remains a durable claim recoverable by GET
+  ---
+  duration_ms: 516.295514
+  type: 'test'
+  ...
+# Subtest: fiscal routes require live admin/manager, CSRF, idempotency and correct version
+ok 17 - fiscal routes require live admin/manager, CSRF, idempotency and correct version
+  ---
+  duration_ms: 1394.433349
+  type: 'test'
+  ...
+# Subtest: drafts demand explicit fiscal fields and customer data; snapshot change blocks submission
+ok 18 - drafts demand explicit fiscal fields and customer data; snapshot change blocks submission
+  ---
+  duration_ms: 378.585061
+  type: 'test'
+  ...
+# Subtest: concurrent create and submit have one owner; provider changes cannot misroute reconciliation
+ok 19 - concurrent create and submit have one owner; provider changes cannot misroute reconciliation
+  ---
+  duration_ms: 449.416577
+  type: 'test'
+  ...
+# Subtest: two application instances sharing one store cannot create or dispatch duplicate fiscal work
+ok 20 - two application instances sharing one store cannot create or dispatch duplicate fiscal work
+  ---
+  duration_ms: 417.537604
+  type: 'test'
+  ...
+# Subtest: OpenAPI 3.1 and generated SDK cover all 89 base plus 8 fiscal routes with exact envelopes
+ok 21 - OpenAPI 3.1 and generated SDK cover all 89 base plus 8 fiscal routes with exact envelopes
+  ---
+  duration_ms: 22.108499
+  type: 'test'
+  ...
+# Subtest: real SQLite HTTP response and request schemas cover every one of 97 SDK operations
+ok 22 - real SQLite HTTP response and request schemas cover every one of 97 SDK operations
+  ---
+  duration_ms: 1982.95639
+  type: 'test'
+  ...
+# 97/97 distinct operations verified over a real HTTP server with SQLite, including all six report shapes.
+# Subtest: SDK rejects contradictory HTTP envelopes without clearing a valid local session
+ok 23 - SDK rejects contradictory HTTP envelopes without clearing a valid local session
+  ---
+  duration_ms: 17.734916
+  type: 'test'
+  ...
+# Subtest: JavaScript callers cannot use coercible keys or setup tokens that change after prepare
+ok 24 - JavaScript callers cannot use coercible keys or setup tokens that change after prepare
+  ---
+  duration_ms: 0.608023
+  type: 'test'
+  ...
+# Subtest: payroll response schemas accept gross aggregates above per-entry limits while preserving integer cents
+ok 25 - payroll response schemas accept gross aggregates above per-entry limits while preserving integer cents
+  ---
+  duration_ms: 536.252549
+  type: 'test'
+  ...
+# Subtest: a payroll line can aggregate commissions above an individual money input limit
+ok 26 - a payroll line can aggregate commissions above an individual money input limit
+  ---
+  duration_ms: 410.733725
+  type: 'test'
+  ...
+# Subtest: SDK TypeScript signatures and browser example compile while incorrect contracts fail at compile time
+ok 27 - SDK TypeScript signatures and browser example compile while incorrect contracts fail at compile time
+  ---
+  duration_ms: 326.89457
+  type: 'test'
+  ...
+# Subtest: compiled SDK and package have no server imports or runtime dependencies
+ok 28 - compiled SDK and package have no server imports or runtime dependencies
+  ---
+  duration_ms: 24.755586
+  type: 'test'
+  ...
+# Subtest: SDK validates HTTPS/loopback origins, rejects credential URLs and unknown parameters before fetch
+ok 29 - SDK validates HTTPS/loopback origins, rejects credential URLs and unknown parameters before fetch
+  ---
+  duration_ms: 10.281484
+  type: 'test'
+  ...
+# Subtest: memory cookie jar enforces host, port, Path, Secure, SameSite, expiry, deletion and prefixes
+ok 30 - memory cookie jar enforces host, port, Path, Secure, SameSite, expiry, deletion and prefixes
+  ---
+  duration_ms: 3.572506
+  type: 'test'
+  ...
+# Subtest: browser mode uses credentials and session CSRF, without reading or forging HttpOnly cookies
+ok 31 - browser mode uses credentials and session CSRF, without reading or forging HttpOnly cookies
+  ---
+  duration_ms: 7.293942
+  type: 'test'
+  ...
+# Subtest: real HTTP SDK login, role restrictions, limited fields and revoked session handling
+ok 32 - real HTTP SDK login, role restrictions, limited fields and revoked session handling
+  ---
+  duration_ms: 1469.736904
+  type: 'test'
+  ...
+# Subtest: setup token is a scoped header; password rotation revokes other real HTTP sessions
+ok 33 - setup token is a scoped header; password rotation revokes other real HTTP sessions
+  ---
+  duration_ms: 836.115909
+  type: 'test'
+  ...
+# Subtest: stable prepared payment survives a lost real HTTP response without duplicate receipts
+ok 34 - stable prepared payment survives a lost real HTTP response without duplicate receipts
+  ---
+  duration_ms: 824.989058
+  type: 'test'
+  ...
+# Subtest: HTTP cancellation and deadlines stop waiting through headers/body and never auto-follow redirects
+ok 35 - HTTP cancellation and deadlines stop waiting through headers/body and never auto-follow redirects
+  ---
+  duration_ms: 128.508954
+  type: 'test'
+  ...
+# Subtest: real HTTP mutation cancellation exposes ambiguous outcome and replay uses same key
+ok 36 - real HTTP mutation cancellation exposes ambiguous outcome and replay uses same key
+  ---
+  duration_ms: 569.565175
+  type: 'test'
+  ...
+# Subtest: documented Node example logs in against real HTTP and emits no credentials or tokens
+ok 37 - documented Node example logs in against real HTTP and emits no credentials or tokens
+  ---
+  duration_ms: 741.183661
+  type: 'test'
+  ...
+1..37
+# tests 43
+# suites 0
+# pass 43
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5935.396589

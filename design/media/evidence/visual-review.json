@@ -1,0 +1,30 @@
+{
+  "browser": "HeadlessChrome/153.0.8010.0",
+  "checks": [
+    {
+      "width": 1400,
+      "pageWidth": 1400,
+      "diagramScrollable": true,
+      "svgWidth": 1280,
+      "title": "Da entrada à entrega",
+      "staticNoScript": true
+    },
+    {
+      "width": 390,
+      "pageWidth": 390,
+      "diagramScrollable": true,
+      "svgWidth": 1280,
+      "title": "Da entrada à entrega",
+      "staticNoScript": true
+    }
+  ],
+  "review": {
+    "controls": true,
+    "muted": true,
+    "autoplay": false,
+    "preload": "none",
+    "paused": true,
+    "hasTextEquivalent": true
+  },
+  "externalRequests": []
+}

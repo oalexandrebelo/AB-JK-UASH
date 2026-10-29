@@ -1,0 +1,1887 @@
+{
+  "format": "ab-jk-rea-release-summary-v2",
+  "generatedAt": "2026-10-28T23:42:55.928007+00:00",
+  "distribution": {
+    "publicRepository": {
+      "contents": "Readable reports, coverage, execution plans and logs, source manifests, and evidence names and digests.",
+      "completeEvidenceIncluded": false,
+      "files": [
+        "README.md",
+        "SHA256SUMS",
+        "command-log.json",
+        "coverage-files-v2.json",
+        "evidence-manifest.json",
+        "shard-plan.json",
+        "source-v1.manifest.json",
+        "source-v2.manifest.json",
+        "summary-jk.json"
+      ]
+    },
+    "completeEvidence": {
+      "delivery": "private_bundle_delivered_to_user",
+      "publicPublicationBlocked": true,
+      "reason": "Automatic approval review rejected publishing opaque compressed full evidence payloads to the public GitHub repository.",
+      "archiveReferences": "The archive file fields identify paths inside the private bundle, not public repository downloads.",
+      "archiveCount": 17,
+      "bundle": {
+        "fileName": "AB-JK-UASH-REA-20261028.zip",
+        "fileCount": 26,
+        "bytes": 20305635,
+        "sha256": "d38592abc191252355598c30f319f6b9be8fe1d3b0b4258b22c759a4b4980387"
+      },
+      "originalReportsAndFullChecksumsPreserved": true
+    },
+    "checksumScope": "Public SHA256SUMS covers only the published files in this directory, excluding itself. The private bundle preserves the original complete SHA256SUMS."
+  },
+  "status": "completed_with_explicit_static_coverage_limits",
+  "toolPackage": {
+    "name": "rea-agents",
+    "version": "6.7.0",
+    "cliScriptSha256": "ed06cee49505b95a3cc5fceb1b4b279167e26df86227c644bb366ffffdbaf738"
+  },
+  "frozenSource": {
+    "version": "v2",
+    "treeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+    "files": 116,
+    "bytes": 972743,
+    "manifest": "source-v2.manifest.json",
+    "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833"
+  },
+  "sourceChangesSinceV1": [
+    {
+      "path": "integrations/jk/README.md",
+      "v1Sha256": "82937296bce097c6837492f89183f1ab2a36c2be414f3e864c354bce9e05eed4",
+      "v2Sha256": "8286e924ccfc65147ca702dce54ec3d41760bc75701358f5d97d8fb6aa2de790"
+    },
+    {
+      "path": "server/jk-integrations.mjs",
+      "v1Sha256": "14d405fc7e744f36d2f46f1a1f463fbf9e9aa761617017bd655e160c506fd404",
+      "v2Sha256": "21c2fedf43cb17761dbbd125fa78a764b78b9650e9ce1b469169b10894ecd583"
+    },
+    {
+      "path": "src/jk.css",
+      "v1Sha256": "0bfd67767e60192917566c6a192f82dadba33e45e4fb79da4daa3f63951155eb",
+      "v2Sha256": "cb10e6ef91b86628db5eb0e4538eaefec589aeebfa0f279afb5f3c6430b2b866"
+    },
+    {
+      "path": "src/pages/IntegrationsPage.tsx",
+      "v1Sha256": "f04d8e2a369e101ba37d6876ed9b1893f05e7a1dbab87131cac445a1c5eb92b1",
+      "v2Sha256": "a3e956697140544d09c21ddcd82848a6d2c5799a56b2a4d3ce9b0336393afa41"
+    },
+    {
+      "path": "src/pages/InvoicesPage.tsx",
+      "v1Sha256": "5f4917e863da046dea1c884c521ad72aa28853555e252629d4cb7cdc0ce3a1f5",
+      "v2Sha256": "6d83d0468d1a04016536a9b2b2004b9c1e52b0ff85ad3b369a538d95dc2e8a7e"
+    }
+  ],
+  "conclusion": {
+    "syntacticFilesParsed": 95,
+    "syntaxParseFailures": 0,
+    "aggregateSemanticSourcesWithNonModuleNodes": 14,
+    "aggregateSourcesWithoutSemanticNodes": 81,
+    "aggregateProjectionResourceFailures": 80,
+    "aggregateSemanticResourceFailures": 81,
+    "criticalShardsCompleted": 15,
+    "criticalUniqueCodeSources": 41,
+    "criticalSources": [
+      "integrations/jk/journal.mjs",
+      "integrations/jk/runtime.mjs",
+      "integrations/jk/vendor/connectors/banking/index.mjs",
+      "integrations/jk/vendor/connectors/banking/profiles.mjs",
+      "integrations/jk/vendor/connectors/banking/validation.mjs",
+      "integrations/jk/vendor/connectors/messaging/validation.mjs",
+      "integrations/jk/vendor/connectors/messaging/whatsapp.mjs",
+      "integrations/jk/vendor/connectors/transport.mjs",
+      "integrations/jk/vendor/integrations/secrets.mjs",
+      "scripts/backup.mjs",
+      "scripts/bootstrap-token.mjs",
+      "scripts/jk-bootstrap-admin.mjs",
+      "scripts/jk-import.mjs",
+      "scripts/jk-maintenance.mjs",
+      "scripts/restore.mjs",
+      "scripts/start.mjs",
+      "scripts/storage.mjs",
+      "server/application.mjs",
+      "server/db.mjs",
+      "server/domain-schema.mjs",
+      "server/errors.mjs",
+      "server/http.mjs",
+      "server/jk-deliveries-schema.mjs",
+      "server/jk-deliveries.mjs",
+      "server/jk-integrations.mjs",
+      "server/jk-migration-parse.mjs",
+      "server/jk-migration-schema.mjs",
+      "server/jk-migration.mjs",
+      "server/jk-public.mjs",
+      "server/security.mjs",
+      "server/validation.mjs",
+      "src/App.tsx",
+      "src/RootApp.tsx",
+      "src/features/integrations/IntegrationDialog.tsx",
+      "src/lib/api.ts",
+      "src/lib/jk.ts",
+      "src/pages/AuthPage.tsx",
+      "src/pages/DeliveriesPage.tsx",
+      "src/pages/IntegrationsPage.tsx",
+      "src/pages/InvoicesPage.tsx",
+      "src/pages/MigrationPage.tsx"
+    ],
+    "criticalResourceFailures": 0,
+    "criticalSemanticTruncations": 0,
+    "criticalSourcesMissingSemanticNodes": [],
+    "unionSourcesWithSemanticNodes": 46,
+    "sourceFilesWithoutSemanticNodesInAnyResult": [
+      "scripts/generate-notices.mjs",
+      "scripts/healthcheck.mjs",
+      "scripts/jk-release-check.mjs",
+      "scripts/prepare-assets.mjs",
+      "scripts/sdk-build.mjs",
+      "scripts/sdk-contract.mjs",
+      "scripts/test.mjs",
+      "scripts/verify-package.mjs",
+      "server/domain-core.mjs",
+      "server/domain-finance.mjs",
+      "server/domain-office.mjs",
+      "server/domain-orders.mjs",
+      "server/domain-reports.mjs",
+      "server/domain.mjs",
+      "server/fiscal.mjs",
+      "server/index.mjs",
+      "server/media.mjs",
+      "server/vercel-runtime.mjs",
+      "src/components/Brand.tsx",
+      "src/components/CarArtwork.tsx",
+      "src/components/FormFields.tsx",
+      "src/components/HelpFlow.tsx",
+      "src/components/RemotePicker.tsx",
+      "src/components/Shell.tsx",
+      "src/components/ui.tsx",
+      "src/features/ocr/PlateReader.tsx",
+      "src/features/ocr/client.ts",
+      "src/features/ocr/image.ts",
+      "src/features/ocr/plate.ts",
+      "src/features/photos/OrderPhotos.tsx",
+      "src/lib/csv.ts",
+      "src/lib/domain.ts",
+      "src/lib/fiscal.ts",
+      "src/main.tsx",
+      "src/pages/AppointmentsPage.tsx",
+      "src/pages/CashPage.tsx",
+      "src/pages/DashboardPage.tsx",
+      "src/pages/EntityPage.tsx",
+      "src/pages/FiscalPage.tsx",
+      "src/pages/LandingPage.tsx",
+      "src/pages/MessagesPage.tsx",
+      "src/pages/OrderDetailPage.tsx",
+      "src/pages/OrderEditor.tsx",
+      "src/pages/OrdersPage.tsx",
+      "src/pages/PackageSalesPage.tsx",
+      "src/pages/PayrollPage.tsx",
+      "src/pages/ReportsPage.tsx",
+      "src/pages/SettingsPage.tsx",
+      "src/pages/entitySchemas.tsx"
+    ],
+    "globalSemanticCompletenessClaimed": false,
+    "runtimeBehaviorObservedByRea": false,
+    "vulnerabilityAbsenceClaimed": false
+  },
+  "interpretation": [
+    "The reported parse_failures counter is distinct from per-file parse_status and semantic relation coverage. REA 6.7.0 marks parse_status partial when parser errors OR unknown static findings exist; partial is preserved verbatim rather than treated as a parser failure.",
+    "Aggregate resource omissions motivated smaller caller-selected analyses; source selection does not implicitly analyze dependencies.",
+    "All selected critical code sources have retained non-module semantic nodes and no reported resource omission in their shard. This is not proof of complete semantics.",
+    "Shard graphs remain partial because unselected files and dynamic calls, properties, values or targets stay unknown. Cross-shard relationships were not joined or proven.",
+    "Counts of findings, unknowns or zero parser/integrity errors are not vulnerability counts and do not mean zero vulnerabilities.",
+    "Evidence inspects inert source bytes; execution, provider delivery, database behavior, browser behavior, deployment and credentials require separate runtime evidence.",
+    "The V1 aggregate is historical and must not certify the modified V2 integration code.",
+    "Manifest tree SHA-256 and REA artifact SHA-256 use different identity schemes; both are retained."
+  ],
+  "aggregateV1Historical": {
+    "id": "aggregate-v1",
+    "file": "evidence/aggregate-v1.json.gz",
+    "compressedBytes": 2873203,
+    "compressedSha256": "c5d3de2bcd2bdb140accf4f079c5d9b5d460e7f4dfe65a95d8fe806d632f0892",
+    "uncompressedBytes": 17459541,
+    "uncompressedSha256": "5f0b64eb22f7e70fb8c3f0526b075a210cb657e4a6f0d268ef62b7bbba73d562",
+    "evidenceId": "ev_aa196019e7015ba33c1e7e20ae8c90fbf8aa869d16f14965f8913128f819b836",
+    "snapshotTreeSha256": "dc0bb432bf1ddae6f61a11fbbfb508f964576bff27fabc27ddb2020182600f62",
+    "reaArtifactSha256": "e2ed95e8e3dc534da9d93e386d0a86dc876156483a8827d8b5c785984aa89731",
+    "ok": true,
+    "cliMeta": {
+      "command": "analyze-javascript-application",
+      "duration": "11114ms"
+    },
+    "statistics": {
+      "relevant_files": 102,
+      "nested_asar_containers": 0,
+      "text_bytes_read": 858195,
+      "invalid_utf8_files": 0,
+      "parsed_javascript_files": 95,
+      "skipped_javascript_files": 0,
+      "visited_ast_nodes": 120574,
+      "findings": 640,
+      "modules": 0,
+      "parse_failures": 0
+    },
+    "sourceSelection": {
+      "requested_paths": null,
+      "unselected_files": 0
+    },
+    "selectedSourceCount": 95,
+    "selectedSourcesWithSemanticNodes": 14,
+    "selectedSourcesWithoutSemanticNodes": [
+      "scripts/backup.mjs",
+      "scripts/bootstrap-token.mjs",
+      "scripts/generate-notices.mjs",
+      "scripts/healthcheck.mjs",
+      "scripts/jk-bootstrap-admin.mjs",
+      "scripts/jk-import.mjs",
+      "scripts/jk-maintenance.mjs",
+      "scripts/jk-release-check.mjs",
+      "scripts/prepare-assets.mjs",
+      "scripts/restore.mjs",
+      "scripts/sdk-build.mjs",
+      "scripts/sdk-contract.mjs",
+      "scripts/start.mjs",
+      "scripts/storage.mjs",
+      "scripts/test.mjs",
+      "scripts/verify-package.mjs",
+      "server/application.mjs",
+      "server/db.mjs",
+      "server/domain-core.mjs",
+      "server/domain-finance.mjs",
+      "server/domain-office.mjs",
+      "server/domain-orders.mjs",
+      "server/domain-reports.mjs",
+      "server/domain-schema.mjs",
+      "server/domain.mjs",
+      "server/errors.mjs",
+      "server/fiscal.mjs",
+      "server/http.mjs",
+      "server/index.mjs",
+      "server/jk-deliveries-schema.mjs",
+      "server/jk-deliveries.mjs",
+      "server/jk-integrations.mjs",
+      "server/jk-migration-parse.mjs",
+      "server/jk-migration-schema.mjs",
+      "server/jk-migration.mjs",
+      "server/jk-public.mjs",
+      "server/media.mjs",
+      "server/security.mjs",
+      "server/validation.mjs",
+      "server/vercel-runtime.mjs",
+      "src/App.tsx",
+      "src/RootApp.tsx",
+      "src/components/Brand.tsx",
+      "src/components/CarArtwork.tsx",
+      "src/components/FormFields.tsx",
+      "src/components/HelpFlow.tsx",
+      "src/components/RemotePicker.tsx",
+      "src/components/Shell.tsx",
+      "src/components/ui.tsx",
+      "src/features/integrations/IntegrationDialog.tsx",
+      "src/features/ocr/PlateReader.tsx",
+      "src/features/ocr/client.ts",
+      "src/features/ocr/image.ts",
+      "src/features/ocr/plate.ts",
+      "src/features/photos/OrderPhotos.tsx",
+      "src/lib/api.ts",
+      "src/lib/csv.ts",
+      "src/lib/domain.ts",
+      "src/lib/fiscal.ts",
+      "src/lib/jk.ts",
+      "src/main.tsx",
+      "src/pages/AppointmentsPage.tsx",
+      "src/pages/AuthPage.tsx",
+      "src/pages/CashPage.tsx",
+      "src/pages/DashboardPage.tsx",
+      "src/pages/DeliveriesPage.tsx",
+      "src/pages/EntityPage.tsx",
+      "src/pages/FiscalPage.tsx",
+      "src/pages/IntegrationsPage.tsx",
+      "src/pages/InvoicesPage.tsx",
+      "src/pages/LandingPage.tsx",
+      "src/pages/MessagesPage.tsx",
+      "src/pages/MigrationPage.tsx",
+      "src/pages/OrderDetailPage.tsx",
+      "src/pages/OrderEditor.tsx",
+      "src/pages/OrdersPage.tsx",
+      "src/pages/PackageSalesPage.tsx",
+      "src/pages/PayrollPage.tsx",
+      "src/pages/ReportsPage.tsx",
+      "src/pages/SettingsPage.tsx",
+      "src/pages/entitySchemas.tsx"
+    ],
+    "selectedSourcesWithParseNotComplete": [
+      "integrations/jk/vendor/connectors/banking/index.mjs",
+      "integrations/jk/vendor/connectors/transport.mjs",
+      "scripts/storage.mjs",
+      "server/application.mjs",
+      "src/lib/api.ts",
+      "src/pages/OrderEditor.tsx"
+    ],
+    "integrityContradictionCount": 0,
+    "applicationGraph": {
+      "nodes": 398,
+      "edges": 470,
+      "coverage": {
+        "status": "partial",
+        "truncated": false,
+        "omitted_count": null
+      },
+      "limitGroups": [
+        {
+          "name": "javascript_analysis_parent_available_result_budget_bytes",
+          "unit": "bytes",
+          "minimum": 0,
+          "maximum": 220440,
+          "distinctValues": 26
+        },
+        {
+          "name": "javascript_analysis_parent_result_budget_bytes",
+          "unit": "bytes",
+          "minimum": 175101176,
+          "maximum": 175101176,
+          "distinctValues": 1
+        },
+        {
+          "name": "javascript_analysis_semantic_result_budget_bytes",
+          "unit": "bytes",
+          "minimum": 0,
+          "maximum": 8708,
+          "distinctValues": 2
+        },
+        {
+          "name": "javascript_analysis_worker_heap_limit_bytes",
+          "unit": "bytes",
+          "minimum": 562036736,
+          "maximum": 562036736,
+          "distinctValues": 1
+        },
+        {
+          "name": "javascript_analysis_worker_timeout_ms",
+          "unit": "milliseconds",
+          "minimum": 120000,
+          "maximum": 120000,
+          "distinctValues": 1
+        }
+      ]
+    },
+    "semanticGraph": {
+      "nodes": 8340,
+      "relations": 7511,
+      "unknowns": 3706,
+      "coverage": {
+        "status": "partial",
+        "truncated": true,
+        "omitted_nodes": null,
+        "omitted_relations": null
+      },
+      "limitGroups": [
+        {
+          "name": "javascript_analysis_semantic_result_budget_bytes",
+          "unit": "bytes",
+          "minimum": 0,
+          "maximum": 8708,
+          "distinctValues": 2
+        },
+        {
+          "name": "javascript_analysis_worker_heap_limit_bytes",
+          "unit": "bytes",
+          "minimum": 562036736,
+          "maximum": 562036736,
+          "distinctValues": 1
+        },
+        {
+          "name": "javascript_analysis_worker_timeout_ms",
+          "unit": "milliseconds",
+          "minimum": 120000,
+          "maximum": 120000,
+          "distinctValues": 1
+        }
+      ],
+      "unknownReasons": {
+        "unknown-value": 671,
+        "ambiguous-target": 1273,
+        "dynamic-call": 709,
+        "resource-limit": 972,
+        "dynamic-property": 81
+      },
+      "selectedSourceUnknownReasons": {
+        "unknown-value": 671,
+        "ambiguous-target": 1273,
+        "dynamic-call": 709,
+        "resource-limit": 972,
+        "dynamic-property": 81
+      }
+    },
+    "resourceFailureCounts": {
+      "analyze-javascript-source": 81,
+      "project-javascript-application": 80
+    },
+    "limitationsCount": 167,
+    "limitationsSource": "Full original Evidence in evidence/aggregate-v1.json.gz"
+  },
+  "aggregateV2": {
+    "id": "aggregate-v2",
+    "file": "evidence/aggregate-v2.json.gz",
+    "compressedBytes": 2873958,
+    "compressedSha256": "027d291e5d367b58fe9537d25619646dd0dff0093865fead5ed04f0ed349e551",
+    "uncompressedBytes": 17459187,
+    "uncompressedSha256": "adedeca8668176c80f6296f7cb8b1d5bc73cfa050f6b8681a15236bc9a63025a",
+    "evidenceId": "ev_ec02b2e2edb6fc4e99048b0f1ffb399318708987025783163b273b907a73900c",
+    "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+    "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+    "ok": true,
+    "cliMeta": {
+      "command": "analyze-javascript-application",
+      "duration": "10252ms"
+    },
+    "statistics": {
+      "relevant_files": 102,
+      "nested_asar_containers": 0,
+      "text_bytes_read": 862151,
+      "invalid_utf8_files": 0,
+      "parsed_javascript_files": 95,
+      "skipped_javascript_files": 0,
+      "visited_ast_nodes": 121381,
+      "findings": 641,
+      "modules": 0,
+      "parse_failures": 0
+    },
+    "sourceSelection": {
+      "requested_paths": null,
+      "unselected_files": 0
+    },
+    "selectedSourceCount": 95,
+    "selectedSourcesWithSemanticNodes": 14,
+    "selectedSourcesWithoutSemanticNodes": [
+      "scripts/backup.mjs",
+      "scripts/bootstrap-token.mjs",
+      "scripts/generate-notices.mjs",
+      "scripts/healthcheck.mjs",
+      "scripts/jk-bootstrap-admin.mjs",
+      "scripts/jk-import.mjs",
+      "scripts/jk-maintenance.mjs",
+      "scripts/jk-release-check.mjs",
+      "scripts/prepare-assets.mjs",
+      "scripts/restore.mjs",
+      "scripts/sdk-build.mjs",
+      "scripts/sdk-contract.mjs",
+      "scripts/start.mjs",
+      "scripts/storage.mjs",
+      "scripts/test.mjs",
+      "scripts/verify-package.mjs",
+      "server/application.mjs",
+      "server/db.mjs",
+      "server/domain-core.mjs",
+      "server/domain-finance.mjs",
+      "server/domain-office.mjs",
+      "server/domain-orders.mjs",
+      "server/domain-reports.mjs",
+      "server/domain-schema.mjs",
+      "server/domain.mjs",
+      "server/errors.mjs",
+      "server/fiscal.mjs",
+      "server/http.mjs",
+      "server/index.mjs",
+      "server/jk-deliveries-schema.mjs",
+      "server/jk-deliveries.mjs",
+      "server/jk-integrations.mjs",
+      "server/jk-migration-parse.mjs",
+      "server/jk-migration-schema.mjs",
+      "server/jk-migration.mjs",
+      "server/jk-public.mjs",
+      "server/media.mjs",
+      "server/security.mjs",
+      "server/validation.mjs",
+      "server/vercel-runtime.mjs",
+      "src/App.tsx",
+      "src/RootApp.tsx",
+      "src/components/Brand.tsx",
+      "src/components/CarArtwork.tsx",
+      "src/components/FormFields.tsx",
+      "src/components/HelpFlow.tsx",
+      "src/components/RemotePicker.tsx",
+      "src/components/Shell.tsx",
+      "src/components/ui.tsx",
+      "src/features/integrations/IntegrationDialog.tsx",
+      "src/features/ocr/PlateReader.tsx",
+      "src/features/ocr/client.ts",
+      "src/features/ocr/image.ts",
+      "src/features/ocr/plate.ts",
+      "src/features/photos/OrderPhotos.tsx",
+      "src/lib/api.ts",
+      "src/lib/csv.ts",
+      "src/lib/domain.ts",
+      "src/lib/fiscal.ts",
+      "src/lib/jk.ts",
+      "src/main.tsx",
+      "src/pages/AppointmentsPage.tsx",
+      "src/pages/AuthPage.tsx",
+      "src/pages/CashPage.tsx",
+      "src/pages/DashboardPage.tsx",
+      "src/pages/DeliveriesPage.tsx",
+      "src/pages/EntityPage.tsx",
+      "src/pages/FiscalPage.tsx",
+      "src/pages/IntegrationsPage.tsx",
+      "src/pages/InvoicesPage.tsx",
+      "src/pages/LandingPage.tsx",
+      "src/pages/MessagesPage.tsx",
+      "src/pages/MigrationPage.tsx",
+      "src/pages/OrderDetailPage.tsx",
+      "src/pages/OrderEditor.tsx",
+      "src/pages/OrdersPage.tsx",
+      "src/pages/PackageSalesPage.tsx",
+      "src/pages/PayrollPage.tsx",
+      "src/pages/ReportsPage.tsx",
+      "src/pages/SettingsPage.tsx",
+      "src/pages/entitySchemas.tsx"
+    ],
+    "selectedSourcesWithParseNotComplete": [
+      "integrations/jk/vendor/connectors/banking/index.mjs",
+      "integrations/jk/vendor/connectors/transport.mjs",
+      "scripts/storage.mjs",
+      "server/application.mjs",
+      "src/lib/api.ts",
+      "src/pages/OrderEditor.tsx"
+    ],
+    "integrityContradictionCount": 0,
+    "applicationGraph": {
+      "nodes": 398,
+      "edges": 471,
+      "coverage": {
+        "status": "partial",
+        "truncated": false,
+        "omitted_count": null
+      },
+      "limitGroups": [
+        {
+          "name": "javascript_analysis_parent_available_result_budget_bytes",
+          "unit": "bytes",
+          "minimum": 0,
+          "maximum": 238108,
+          "distinctValues": 11
+        },
+        {
+          "name": "javascript_analysis_parent_result_budget_bytes",
+          "unit": "bytes",
+          "minimum": 175118844,
+          "maximum": 175118844,
+          "distinctValues": 1
+        },
+        {
+          "name": "javascript_analysis_semantic_result_budget_bytes",
+          "unit": "bytes",
+          "minimum": 0,
+          "maximum": 14758,
+          "distinctValues": 2
+        },
+        {
+          "name": "javascript_analysis_worker_heap_limit_bytes",
+          "unit": "bytes",
+          "minimum": 562036736,
+          "maximum": 562036736,
+          "distinctValues": 1
+        },
+        {
+          "name": "javascript_analysis_worker_timeout_ms",
+          "unit": "milliseconds",
+          "minimum": 120000,
+          "maximum": 120000,
+          "distinctValues": 1
+        }
+      ]
+    },
+    "semanticGraph": {
+      "nodes": 8340,
+      "relations": 7511,
+      "unknowns": 3706,
+      "coverage": {
+        "status": "partial",
+        "truncated": true,
+        "omitted_nodes": null,
+        "omitted_relations": null
+      },
+      "limitGroups": [
+        {
+          "name": "javascript_analysis_semantic_result_budget_bytes",
+          "unit": "bytes",
+          "minimum": 0,
+          "maximum": 14758,
+          "distinctValues": 2
+        },
+        {
+          "name": "javascript_analysis_worker_heap_limit_bytes",
+          "unit": "bytes",
+          "minimum": 562036736,
+          "maximum": 562036736,
+          "distinctValues": 1
+        },
+        {
+          "name": "javascript_analysis_worker_timeout_ms",
+          "unit": "milliseconds",
+          "minimum": 120000,
+          "maximum": 120000,
+          "distinctValues": 1
+        }
+      ],
+      "unknownReasons": {
+        "unknown-value": 671,
+        "ambiguous-target": 1273,
+        "dynamic-call": 709,
+        "resource-limit": 972,
+        "dynamic-property": 81
+      },
+      "selectedSourceUnknownReasons": {
+        "unknown-value": 671,
+        "ambiguous-target": 1273,
+        "dynamic-call": 709,
+        "resource-limit": 972,
+        "dynamic-property": 81
+      }
+    },
+    "resourceFailureCounts": {
+      "analyze-javascript-source": 81,
+      "project-javascript-application": 80
+    },
+    "limitationsCount": 167,
+    "limitationsSource": "Full original Evidence in evidence/aggregate-v2.json.gz"
+  },
+  "criticalShards": [
+    {
+      "id": "v2-auth",
+      "file": "evidence/v2-auth.json.gz",
+      "compressedBytes": 1344222,
+      "compressedSha256": "0ab0b1949dbe38a5114d2970264ca4e1a66c3692d01b6d293a06265c330edb20",
+      "uncompressedBytes": 8125604,
+      "uncompressedSha256": "90aedfc0f709cb47b20d3d0a7979a75e2e6d43dd191f1665b42950812c15c276",
+      "evidenceId": "ev_9d18ef7d262798085dcf911443dbe1cde91d5efde8f66d97c8023efb0ba17be6",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "2949ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 36667,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 5,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 5216,
+        "findings": 123,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "server/application.mjs",
+          "server/security.mjs",
+          "server/http.mjs",
+          "server/validation.mjs",
+          "server/errors.mjs"
+        ],
+        "unselected_files": 96
+      },
+      "selectedSourceCount": 5,
+      "selectedSourcesWithSemanticNodes": 5,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [
+        "server/application.mjs"
+      ],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 255,
+        "edges": 327,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 3835,
+        "relations": 3327,
+        "unknowns": 2357,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "unknown-value": 362,
+          "incomplete-module": 1080,
+          "dynamic-call": 404,
+          "ambiguous-target": 508,
+          "dynamic-property": 3
+        },
+        "selectedSourceUnknownReasons": {
+          "unknown-value": 362,
+          "dynamic-call": 404,
+          "ambiguous-target": 508,
+          "dynamic-property": 3
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-auth.json.gz"
+    },
+    {
+      "id": "v2-bootstrap",
+      "file": "evidence/v2-bootstrap.json.gz",
+      "compressedBytes": 549621,
+      "compressedSha256": "d6193390bcf2edba2d2ba9fce775d9e7fd13dcdfc55d9ca1ac152c5edf4a0615",
+      "uncompressedBytes": 3323028,
+      "uncompressedSha256": "3fa9df955847feab0364776b65b4d7b487c3aab44ac053d6421f1c3ad5de5401",
+      "evidenceId": "ev_7501be3618d652049921e085a451796b6b4432074566687629338cbbf40e4c76",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "1703ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 13338,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 4,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 1654,
+        "findings": 46,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "scripts/start.mjs",
+          "scripts/bootstrap-token.mjs",
+          "scripts/jk-bootstrap-admin.mjs",
+          "server/jk-public.mjs"
+        ],
+        "unselected_files": 97
+      },
+      "selectedSourceCount": 4,
+      "selectedSourcesWithSemanticNodes": 4,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 235,
+        "edges": 250,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 1124,
+        "relations": 765,
+        "unknowns": 1475,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1092,
+          "dynamic-call": 108,
+          "ambiguous-target": 176,
+          "unknown-value": 95,
+          "dynamic-property": 4
+        },
+        "selectedSourceUnknownReasons": {
+          "dynamic-call": 108,
+          "ambiguous-target": 176,
+          "unknown-value": 95,
+          "dynamic-property": 4
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-bootstrap.json.gz"
+    },
+    {
+      "id": "v2-database",
+      "file": "evidence/v2-database.json.gz",
+      "compressedBytes": 857596,
+      "compressedSha256": "5e95d08ddd01dece5b26683b3f096263025608b146995ff5de98a434c4c931e2",
+      "uncompressedBytes": 5075244,
+      "uncompressedSha256": "5301856c2085eecb5bdea1a73757951ee494b734bc837536ecb5cb938d7b8f6a",
+      "evidenceId": "ev_48492a03be8f628553c66d2f1cf46adc7320a9cb09fa28d977c7ef182d59757d",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "2348ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 34479,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 2,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 2999,
+        "findings": 34,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "server/db.mjs",
+          "server/domain-schema.mjs"
+        ],
+        "unselected_files": 99
+      },
+      "selectedSourceCount": 2,
+      "selectedSourcesWithSemanticNodes": 2,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 228,
+        "edges": 238,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 2167,
+        "relations": 1819,
+        "unknowns": 1847,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1116,
+          "dynamic-call": 239,
+          "ambiguous-target": 304,
+          "unknown-value": 182,
+          "dynamic-property": 6
+        },
+        "selectedSourceUnknownReasons": {
+          "dynamic-call": 239,
+          "ambiguous-target": 304,
+          "unknown-value": 182,
+          "dynamic-property": 6
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-database.json.gz"
+    },
+    {
+      "id": "v2-migration",
+      "file": "evidence/v2-migration.json.gz",
+      "compressedBytes": 1285494,
+      "compressedSha256": "c396df406b45c360b02b71ba53f166037739787b0538b2fd4a8006dd0c4975d4",
+      "uncompressedBytes": 7863828,
+      "uncompressedSha256": "50b09e72cff74a65bdc3f7a6705d20085dd2022829a1e9b57fb0c0645c287c29",
+      "evidenceId": "ev_35bf11b158d0b863e331af94d68dbb678aabeeb42feab4dbed90da66d9eae899",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "2614ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 38851,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 3,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 5242,
+        "findings": 55,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "server/jk-migration.mjs",
+          "server/jk-migration-schema.mjs",
+          "scripts/jk-import.mjs"
+        ],
+        "unselected_files": 98
+      },
+      "selectedSourceCount": 3,
+      "selectedSourcesWithSemanticNodes": 3,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 227,
+        "edges": 263,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 3834,
+        "relations": 3426,
+        "unknowns": 2253,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1104,
+          "unknown-value": 277,
+          "ambiguous-target": 588,
+          "dynamic-call": 254,
+          "dynamic-property": 30
+        },
+        "selectedSourceUnknownReasons": {
+          "unknown-value": 277,
+          "ambiguous-target": 588,
+          "dynamic-call": 254,
+          "dynamic-property": 30
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-migration.json.gz"
+    },
+    {
+      "id": "v2-migration-parse",
+      "file": "evidence/v2-migration-parse.json.gz",
+      "compressedBytes": 587618,
+      "compressedSha256": "18bf497ade939ae016608112f651992b779ca4dc147d13929727e872fbc38fa4",
+      "uncompressedBytes": 3576636,
+      "uncompressedSha256": "155e284bf7fcdc954000a34dcd3e6783fa11c3565a7148b444a7d4b6d892d85c",
+      "evidenceId": "ev_ce857cb0d956f23dfc62e52bbd091f7fe2711292eb848556b722ce70fb85a60b",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "1629ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 13567,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 1,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 1767,
+        "findings": 16,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "server/jk-migration-parse.mjs"
+        ],
+        "unselected_files": 100
+      },
+      "selectedSourceCount": 1,
+      "selectedSourcesWithSemanticNodes": 1,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 219,
+        "edges": 220,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 1273,
+        "relations": 1063,
+        "unknowns": 1476,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1128,
+          "unknown-value": 92,
+          "dynamic-call": 95,
+          "ambiguous-target": 151,
+          "dynamic-property": 10
+        },
+        "selectedSourceUnknownReasons": {
+          "unknown-value": 92,
+          "dynamic-call": 95,
+          "ambiguous-target": 151,
+          "dynamic-property": 10
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-migration-parse.json.gz"
+    },
+    {
+      "id": "v2-integrations-api",
+      "file": "evidence/v2-integrations-api.json.gz",
+      "compressedBytes": 1433757,
+      "compressedSha256": "f94191d5d907d63482c83a4217606210e69e29f9a78712f7c2c1d0131ffe8767",
+      "uncompressedBytes": 8666297,
+      "uncompressedSha256": "97218e8a71bab0094ad89f63d6dd27729f6172c1c7a30de9228b47ff47bae660",
+      "evidenceId": "ev_2ee2131981a1799b712f8e4b371a81749a3c8d3e1a60f852016024166a74c706",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "3140ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 39793,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 3,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 5741,
+        "findings": 53,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "server/jk-integrations.mjs",
+          "integrations/jk/runtime.mjs",
+          "integrations/jk/journal.mjs"
+        ],
+        "unselected_files": 98
+      },
+      "selectedSourceCount": 3,
+      "selectedSourcesWithSemanticNodes": 3,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 219,
+        "edges": 257,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 4083,
+        "relations": 4111,
+        "unknowns": 2452,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "ambiguous-target": 752,
+          "incomplete-module": 1104,
+          "unknown-value": 272,
+          "dynamic-call": 315,
+          "dynamic-property": 9
+        },
+        "selectedSourceUnknownReasons": {
+          "ambiguous-target": 752,
+          "unknown-value": 272,
+          "dynamic-call": 315,
+          "dynamic-property": 9
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-integrations-api.json.gz"
+    },
+    {
+      "id": "v2-banking",
+      "file": "evidence/v2-banking.json.gz",
+      "compressedBytes": 904233,
+      "compressedSha256": "16d5b846d4768dc982212a05f6ea20046bab70afbb4972cc4161df6e14c27400",
+      "uncompressedBytes": 5766318,
+      "uncompressedSha256": "1135dd6d172c52e547567e4b9944e8724ffcf0ef24256a5c99015803b67c3d55",
+      "evidenceId": "ev_cb1438f878125cf4e4f73c401ab4f98f21b475523ecd4e5cbe3b5f598b767c25",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "2339ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 30806,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 3,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 4019,
+        "findings": 39,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "integrations/jk/vendor/connectors/banking/index.mjs",
+          "integrations/jk/vendor/connectors/banking/profiles.mjs",
+          "integrations/jk/vendor/connectors/banking/validation.mjs"
+        ],
+        "unselected_files": 98
+      },
+      "selectedSourceCount": 3,
+      "selectedSourcesWithSemanticNodes": 3,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [
+        "integrations/jk/vendor/connectors/banking/index.mjs"
+      ],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 225,
+        "edges": 246,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 2494,
+        "relations": 1869,
+        "unknowns": 1974,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1104,
+          "dynamic-call": 226,
+          "ambiguous-target": 402,
+          "unknown-value": 184,
+          "dynamic-property": 58
+        },
+        "selectedSourceUnknownReasons": {
+          "dynamic-call": 226,
+          "ambiguous-target": 402,
+          "unknown-value": 184,
+          "dynamic-property": 58
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-banking.json.gz"
+    },
+    {
+      "id": "v2-transport",
+      "file": "evidence/v2-transport.json.gz",
+      "compressedBytes": 908126,
+      "compressedSha256": "9b4b09d50a55d38280ee7412ca3e64a2272e6f51e889516f1dd05bfc6852b9b1",
+      "uncompressedBytes": 5661267,
+      "uncompressedSha256": "ab6d33fd0ed19884a5fc870ce55abfc7cd05b1b2380dfcec3fa8f681d9490089",
+      "evidenceId": "ev_6591c7f552d8f4b4b9a1c36bce3ad0c762e629ece674ba971a6725ce9a88bc7a",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "2483ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 27231,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 4,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 3455,
+        "findings": 52,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "integrations/jk/vendor/connectors/transport.mjs",
+          "integrations/jk/vendor/connectors/messaging/whatsapp.mjs",
+          "integrations/jk/vendor/connectors/messaging/validation.mjs",
+          "integrations/jk/vendor/integrations/secrets.mjs"
+        ],
+        "unselected_files": 97
+      },
+      "selectedSourceCount": 4,
+      "selectedSourcesWithSemanticNodes": 4,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [
+        "integrations/jk/vendor/connectors/transport.mjs"
+      ],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 242,
+        "edges": 256,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 2312,
+        "relations": 2017,
+        "unknowns": 1817,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1092,
+          "unknown-value": 182,
+          "ambiguous-target": 347,
+          "dynamic-call": 187,
+          "dynamic-property": 9
+        },
+        "selectedSourceUnknownReasons": {
+          "unknown-value": 182,
+          "ambiguous-target": 347,
+          "dynamic-call": 187,
+          "dynamic-property": 9
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-transport.json.gz"
+    },
+    {
+      "id": "v2-deliveries",
+      "file": "evidence/v2-deliveries.json.gz",
+      "compressedBytes": 768890,
+      "compressedSha256": "a80be89e533307de7077124b927bfd9d9ed0cff0256112038f46406b6c5a0889",
+      "uncompressedBytes": 4716900,
+      "uncompressedSha256": "c7fbf36f8bc640f5f09fc10041cf0a18d6bb353fe1efb5076c8b55af16b19051",
+      "evidenceId": "ev_a53d0c874200af307cefae1d0dc862c4ad5689747ef42f4ce8e0d726e5a2ba9a",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "1947ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 18883,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 2,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 2465,
+        "findings": 33,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "server/jk-deliveries.mjs",
+          "server/jk-deliveries-schema.mjs"
+        ],
+        "unselected_files": 99
+      },
+      "selectedSourceCount": 2,
+      "selectedSourcesWithSemanticNodes": 2,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 213,
+        "edges": 238,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 1946,
+        "relations": 1736,
+        "unknowns": 1708,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "ambiguous-target": 307,
+          "incomplete-module": 1116,
+          "dynamic-call": 143,
+          "unknown-value": 141,
+          "dynamic-property": 1
+        },
+        "selectedSourceUnknownReasons": {
+          "ambiguous-target": 307,
+          "dynamic-call": 143,
+          "unknown-value": 141,
+          "dynamic-property": 1
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-deliveries.json.gz"
+    },
+    {
+      "id": "v2-ui-auth",
+      "file": "evidence/v2-ui-auth.json.gz",
+      "compressedBytes": 881450,
+      "compressedSha256": "aafaa5c5a0f0379086526cafb59dc03a4d0f0b81108018f48b13edca4d31e5fe",
+      "uncompressedBytes": 5341914,
+      "uncompressedSha256": "7236b22224bcdf54298b3a4b419bc193237f9224e80896dd521e224f7792b417",
+      "evidenceId": "ev_9137d629a122623ee7c2ac40353043420ea296ac57d2aeb581283c77316fff5d",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "2176ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 23982,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 5,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 4075,
+        "findings": 126,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "src/RootApp.tsx",
+          "src/App.tsx",
+          "src/pages/AuthPage.tsx",
+          "src/lib/api.ts",
+          "src/lib/jk.ts"
+        ],
+        "unselected_files": 96
+      },
+      "selectedSourceCount": 5,
+      "selectedSourcesWithSemanticNodes": 5,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [
+        "src/lib/api.ts"
+      ],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 295,
+        "edges": 311,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 2241,
+        "relations": 1718,
+        "unknowns": 1735,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1080,
+          "dynamic-call": 188,
+          "ambiguous-target": 243,
+          "unknown-value": 223,
+          "dynamic-property": 1
+        },
+        "selectedSourceUnknownReasons": {
+          "dynamic-call": 188,
+          "ambiguous-target": 243,
+          "unknown-value": 223,
+          "dynamic-property": 1
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-ui-auth.json.gz"
+    },
+    {
+      "id": "v2-ui-migration",
+      "file": "evidence/v2-ui-migration.json.gz",
+      "compressedBytes": 1026034,
+      "compressedSha256": "1e64c6aa0b449edde10f0c30f86c9e059a2a23ec4140f650093a8af025bdd35b",
+      "uncompressedBytes": 6181473,
+      "uncompressedSha256": "dbc103582b23f138e72b570d2392141f972cd39135b6ebc81646d2e08bd7788d",
+      "evidenceId": "ev_68e3ec74268d20d0a13df94527008a8035aad779f1559bc91dec24bdf96bb500",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "2288ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 30488,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 3,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 5343,
+        "findings": 94,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "src/pages/MigrationPage.tsx",
+          "src/lib/api.ts",
+          "src/lib/jk.ts"
+        ],
+        "unselected_files": 98
+      },
+      "selectedSourceCount": 3,
+      "selectedSourcesWithSemanticNodes": 3,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [
+        "src/lib/api.ts"
+      ],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 251,
+        "edges": 277,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 2742,
+        "relations": 2288,
+        "unknowns": 1935,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1104,
+          "dynamic-call": 234,
+          "unknown-value": 255,
+          "ambiguous-target": 336,
+          "dynamic-property": 6
+        },
+        "selectedSourceUnknownReasons": {
+          "dynamic-call": 234,
+          "unknown-value": 255,
+          "ambiguous-target": 336,
+          "dynamic-property": 6
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-ui-migration.json.gz"
+    },
+    {
+      "id": "v2-ui-integrations",
+      "file": "evidence/v2-ui-integrations.json.gz",
+      "compressedBytes": 983910,
+      "compressedSha256": "51b2ecf386156c3cee28ace7a517b4cf8953cf00bbe086d59361bd5cb6660b35",
+      "uncompressedBytes": 6019493,
+      "uncompressedSha256": "3009a201b1cb2fd347f4527cc2a0724bfc408eb0a1aa8a4d6cf3d665ec3b2482",
+      "evidenceId": "ev_2cf2069954b52d68ccf5e5704239dfa3b5f1e4b5f8f67c4e1f681341b163834b",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "2308ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 32297,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 4,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 5297,
+        "findings": 99,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "src/pages/IntegrationsPage.tsx",
+          "src/features/integrations/IntegrationDialog.tsx",
+          "src/lib/api.ts",
+          "src/lib/jk.ts"
+        ],
+        "unselected_files": 97
+      },
+      "selectedSourceCount": 4,
+      "selectedSourcesWithSemanticNodes": 4,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [
+        "src/lib/api.ts"
+      ],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 263,
+        "edges": 283,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 2541,
+        "relations": 2363,
+        "unknowns": 1818,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1092,
+          "unknown-value": 205,
+          "dynamic-call": 201,
+          "ambiguous-target": 311,
+          "dynamic-property": 9
+        },
+        "selectedSourceUnknownReasons": {
+          "unknown-value": 205,
+          "dynamic-call": 201,
+          "ambiguous-target": 311,
+          "dynamic-property": 9
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-ui-integrations.json.gz"
+    },
+    {
+      "id": "v2-ui-deliveries",
+      "file": "evidence/v2-ui-deliveries.json.gz",
+      "compressedBytes": 990491,
+      "compressedSha256": "61e6bad4c7b705befb3c088f4eca8baacd9c8a7e657088f74282414b23de15a8",
+      "uncompressedBytes": 5975000,
+      "uncompressedSha256": "c9cf5749cd495ba92da9ccc087a08caa0d50b3b5c29ec7e5cf0b5dc9ab3733b2",
+      "evidenceId": "ev_a0567d95b58c79429aa0021ef942f79aff95da3271215d46b3bb545123f66174",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "2239ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 27630,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 3,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 5202,
+        "findings": 84,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "src/pages/DeliveriesPage.tsx",
+          "src/lib/api.ts",
+          "src/lib/jk.ts"
+        ],
+        "unselected_files": 98
+      },
+      "selectedSourceCount": 3,
+      "selectedSourcesWithSemanticNodes": 3,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [
+        "src/lib/api.ts"
+      ],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 247,
+        "edges": 268,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 2615,
+        "relations": 2280,
+        "unknowns": 1873,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1104,
+          "ambiguous-target": 322,
+          "dynamic-call": 211,
+          "unknown-value": 227,
+          "dynamic-property": 9
+        },
+        "selectedSourceUnknownReasons": {
+          "ambiguous-target": 322,
+          "dynamic-call": 211,
+          "unknown-value": 227,
+          "dynamic-property": 9
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-ui-deliveries.json.gz"
+    },
+    {
+      "id": "v2-maintenance",
+      "file": "evidence/v2-maintenance.json.gz",
+      "compressedBytes": 853593,
+      "compressedSha256": "9535a8dac2eb0f51b1156023bcc8143d4da222d25401a9e131a17848fa500739",
+      "uncompressedBytes": 5278507,
+      "uncompressedSha256": "435e0559c2f83e6b85ee4a0b8d925e2ed3b38adea2a1df485f7cfd8505e277ca",
+      "evidenceId": "ev_799dd42e034c47d4525646b6b6f38fff71511dd96cc88699cb151a890998b51d",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "2087ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 22064,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 4,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 3074,
+        "findings": 76,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "scripts/jk-maintenance.mjs",
+          "scripts/storage.mjs",
+          "scripts/backup.mjs",
+          "scripts/restore.mjs"
+        ],
+        "unselected_files": 97
+      },
+      "selectedSourceCount": 4,
+      "selectedSourcesWithSemanticNodes": 4,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [
+        "scripts/storage.mjs"
+      ],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 247,
+        "edges": 280,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 2297,
+        "relations": 1615,
+        "unknowns": 1898,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1092,
+          "unknown-value": 206,
+          "dynamic-call": 249,
+          "ambiguous-target": 345,
+          "dynamic-property": 6
+        },
+        "selectedSourceUnknownReasons": {
+          "unknown-value": 206,
+          "dynamic-call": 249,
+          "ambiguous-target": 345,
+          "dynamic-property": 6
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-maintenance.json.gz"
+    },
+    {
+      "id": "v2-ui-invoices",
+      "file": "evidence/v2-ui-invoices.json.gz",
+      "compressedBytes": 940297,
+      "compressedSha256": "2fcb1fd3490876fc8ff4ed7259ed29466de526d029d7e68a140cbd333a7266db",
+      "uncompressedBytes": 5679782,
+      "uncompressedSha256": "c3a6fa90371baae3f487df67ff7c99fa26ae6e2c1c8334613013edf7bdafa304",
+      "evidenceId": "ev_92d9eb0b400255466bee061d1f8ccc6dad81a3719f0ab602290fcab36cbd80bc",
+      "snapshotTreeSha256": "0fd848376f48ce6bf3a2280ec864cf7d1a42085d8a6eb0f982b919638dfc7307",
+      "reaArtifactSha256": "ae294dd1cf58df889ebc87c32db459934efae7ed834e05a9eeca60bf75c22833",
+      "ok": true,
+      "cliMeta": {
+        "command": "analyze-javascript-application",
+        "duration": "2729ms"
+      },
+      "statistics": {
+        "relevant_files": 102,
+        "nested_asar_containers": 0,
+        "text_bytes_read": 23258,
+        "invalid_utf8_files": 0,
+        "parsed_javascript_files": 3,
+        "skipped_javascript_files": 0,
+        "visited_ast_nodes": 4472,
+        "findings": 83,
+        "modules": 0,
+        "parse_failures": 0
+      },
+      "sourceSelection": {
+        "requested_paths": [
+          "package.json",
+          "src/pages/InvoicesPage.tsx",
+          "src/lib/api.ts",
+          "src/lib/jk.ts"
+        ],
+        "unselected_files": 98
+      },
+      "selectedSourceCount": 3,
+      "selectedSourcesWithSemanticNodes": 3,
+      "selectedSourcesWithoutSemanticNodes": [],
+      "selectedSourcesWithParseNotComplete": [
+        "src/lib/api.ts"
+      ],
+      "integrityContradictionCount": 0,
+      "applicationGraph": {
+        "nodes": 247,
+        "edges": 269,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_count": null
+        },
+        "limitGroups": []
+      },
+      "semanticGraph": {
+        "nodes": 2420,
+        "relations": 2121,
+        "unknowns": 1825,
+        "coverage": {
+          "status": "partial",
+          "truncated": false,
+          "omitted_nodes": null,
+          "omitted_relations": null
+        },
+        "limitGroups": [],
+        "unknownReasons": {
+          "incomplete-module": 1104,
+          "unknown-value": 199,
+          "dynamic-call": 220,
+          "ambiguous-target": 295,
+          "dynamic-property": 7
+        },
+        "selectedSourceUnknownReasons": {
+          "unknown-value": 199,
+          "dynamic-call": 220,
+          "ambiguous-target": 295,
+          "dynamic-property": 7
+        }
+      },
+      "resourceFailureCounts": {},
+      "limitationsCount": 7,
+      "limitationsSource": "Full original Evidence in evidence/v2-ui-invoices.json.gz"
+    }
+  ],
+  "detailFiles": {
+    "perSourceCoverage": "coverage-files-v2.json",
+    "completeEvidenceAndDigests": "evidence-manifest.json",
+    "allSourceDigests": "source-v2.manifest.json",
+    "executedCommands": "shard-plan.json",
+    "measuredProcessResults": "command-log.json"
+  },
+  "toolInterpretation": {
+    "parseStatusRule": "partial when parserErrors > 0 OR accumulator.unknownFindings > 0",
+    "sourcePackage": "rea-agents@6.7.0",
+    "sourceFile": "dist/cli-runtime/application__javascript__JavaScriptApplicationService-o0uEsjEc.js",
+    "sourceSha256": "6288ac399f8e1ace7fe6388fd0ce54e9a10491b3ee040520ae4eef5a70ffdf5a"
+  }
+}

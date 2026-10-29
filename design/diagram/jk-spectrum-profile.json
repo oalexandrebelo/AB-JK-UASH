@@ -1,0 +1,17 @@
+{
+  "name": "JK Spectrum operational",
+  "provenance": "Tokens resolvidos de src/jk.css e composição própria; não é certificação da identidade histórica JK.",
+  "fontSource": "system",
+  "fontSans": "Arial, system-ui, sans-serif",
+  "fontMono": "ui-monospace, monospace",
+  "paper": "#f5f7f9",
+  "paper2": "#ffffff",
+  "ink": "#1c3041",
+  "muted": "#5f6f7f",
+  "rule": "#e0e6ec",
+  "accent": "#3b63fb",
+  "accentTint": "#edf1ff",
+  "positive": "#218267",
+  "spacing": [4, 8, 12, 16, 24, 32],
+  "radius": 8
+}

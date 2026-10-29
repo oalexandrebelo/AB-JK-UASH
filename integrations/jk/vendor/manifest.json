@@ -1,0 +1,44 @@
+{
+  "source": "audit-fontes/ab-uash (provided source snapshot)",
+  "adaptations": [
+    "TypeScript types erased with Node 24 stripTypeScriptTypes; module extensions changed to .mjs.",
+    "Banking adapter awaits journal.reserve/find and removes unused SQLite-only journal re-export; transport and validation logic preserved."
+  ],
+  "files": [
+    {
+      "source": "server/connectors/transport.ts",
+      "sha256": "d94640f24ee5e77215daf0b6ecfbfebc405f6ecdc5852666f6df5012d658d5de",
+      "destination": "integrations/jk/vendor/connectors/transport.mjs"
+    },
+    {
+      "source": "server/connectors/banking/index.ts",
+      "sha256": "119b88ba69b9e912cec10055f3747d24b4969ba77c3d8425504e2bc56afcfeea",
+      "destination": "integrations/jk/vendor/connectors/banking/index.mjs"
+    },
+    {
+      "source": "server/connectors/banking/validation.ts",
+      "sha256": "9f3014715232b53f9881466a69e33d5b13a50ce5e2829d8a6b1897dc97626cc2",
+      "destination": "integrations/jk/vendor/connectors/banking/validation.mjs"
+    },
+    {
+      "source": "server/connectors/banking/profiles.ts",
+      "sha256": "70d6460cf85a1f27ca65babcf9fe744cb5be0fc2bfcbbcb534bcff603df66e2a",
+      "destination": "integrations/jk/vendor/connectors/banking/profiles.mjs"
+    },
+    {
+      "source": "server/connectors/messaging/whatsapp.ts",
+      "sha256": "cdfc3ffab971bf86b8822ec263c68a0c6ecc71f12e45c86be7c4bac53233f8f7",
+      "destination": "integrations/jk/vendor/connectors/messaging/whatsapp.mjs"
+    },
+    {
+      "source": "server/connectors/messaging/validation.ts",
+      "sha256": "20108f71eba44ebba05b8ac894514f3629593c785447c86a3a84ad8ff65f5b89",
+      "destination": "integrations/jk/vendor/connectors/messaging/validation.mjs"
+    },
+    {
+      "source": "server/integrations/secrets.ts",
+      "sha256": "01e05e4682d187f88ef5b7e193fd5fbe97d26af25f25cafb4d865481d63ec37f",
+      "destination": "integrations/jk/vendor/integrations/secrets.mjs"
+    }
+  ]
+}

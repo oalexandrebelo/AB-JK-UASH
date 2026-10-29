@@ -1,0 +1,54 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ab-jk-uash@0.1.0 prebuild
+> node scripts/prepare-assets.mjs
+
+Assets OCR locais preparados e verificados: 28842472 bytes. Nenhuma requisição de rede foi usada pelo preparador.
+
+> ab-jk-uash@0.1.0 build
+> tsc -b && vite build
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 733 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                              1.11 kB │ gzip:  0.53 kB
+dist/assets/inter-vietnamese-wght-normal-CBcvBZtf.woff2     10.25 kB
+dist/assets/inter-greek-ext-wght-normal-DlzME5K_.woff2      11.23 kB
+dist/assets/inter-cyrillic-wght-normal-DqGufNeO.woff2       18.74 kB
+dist/assets/inter-greek-wght-normal-CkhJZR-_.woff2          18.99 kB
+dist/assets/inter-cyrillic-ext-wght-normal-BOeWTOD4.woff2   25.96 kB
+dist/assets/inter-latin-wght-normal-Dx4kXJAl.woff2          48.25 kB
+dist/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2      85.06 kB
+dist/assets/style-NnY_c7MT.css                             139.35 kB │ gzip: 30.25 kB
+dist/assets/rolldown-runtime-WkwZ5CU-.js                     0.59 kB │ gzip:  0.36 kB
+dist/assets/FileTrigger-C2HIVlJa.js                          0.70 kB │ gzip:  0.47 kB
+dist/assets/PackageSalesPage-CpLYUZz8.js                     1.56 kB │ gzip:  0.76 kB
+dist/assets/image-BPz-BIin.js                                2.55 kB │ gzip:  1.31 kB
+dist/assets/AppointmentsPage-e_Swi8G1.js                     2.85 kB │ gzip:  1.32 kB
+dist/assets/OrdersPage-JDo899iv.js                           3.42 kB │ gzip:  1.58 kB
+dist/assets/MessagesPage-0jB8beuc.js                         5.14 kB │ gzip:  2.11 kB
+dist/assets/OrderEditor-BMXv5lJl.js                          5.20 kB │ gzip:  2.32 kB
+dist/assets/SettingsPage-CGc5kzpD.js                         5.86 kB │ gzip:  2.27 kB
+dist/assets/FormFields-BlBJSmd2.js                           6.06 kB │ gzip:  2.57 kB
+dist/assets/ReportsPage-Bnf55jGi.js                          6.80 kB │ gzip:  2.70 kB
+dist/assets/PayrollPage-DdsLnuij.js                          7.22 kB │ gzip:  2.73 kB
+dist/assets/CashPage-BNlVAWOm.js                             7.68 kB │ gzip:  2.56 kB
+dist/assets/DashboardPage-DCJHnx6w.js                        9.95 kB │ gzip:  3.60 kB
+dist/assets/InvoicesPage-CLm-25uG.js                        10.47 kB │ gzip:  3.40 kB
+dist/assets/DeliveriesPage-DgTdeMB4.js                      12.41 kB │ gzip:  4.35 kB
+dist/assets/IntegrationsPage-Ck2naPuM.js                    16.64 kB │ gzip:  5.64 kB
+dist/assets/EntityPage-DiLb90g2.js                          17.38 kB │ gzip:  6.48 kB
+dist/assets/OrderDetailPage-DRvVRNat.js                     19.72 kB │ gzip:  6.34 kB
+dist/assets/FiscalPage-CTPBKjo7.js                          27.48 kB │ gzip:  8.92 kB
+dist/assets/NumberField-CGzV-baN.js                         28.08 kB │ gzip:  9.45 kB
+dist/assets/Checkbox-CiIHzCy3.js                            33.90 kB │ gzip:  9.82 kB
+dist/assets/ListBox-DFyZ7Bem.js                             71.30 kB │ gzip: 21.05 kB
+dist/assets/RootApp-bVFgk0OW.js                             79.09 kB │ gzip: 24.69 kB
+dist/assets/Picker-Bo_EbVb2.js                             129.54 kB │ gzip: 36.68 kB
+dist/assets/MigrationPage-_X2WDg0Z.js                      137.83 kB │ gzip: 37.59 kB
+dist/assets/api-BlvsnKfS.js                                151.24 kB │ gzip: 46.81 kB
+dist/assets/index-Dc6sGNeB.js                              234.93 kB │ gzip: 73.71 kB
+
+✓ built in 590ms

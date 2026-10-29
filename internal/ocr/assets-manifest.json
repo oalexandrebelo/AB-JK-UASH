@@ -1,0 +1,183 @@
+{
+  "created": "2026-10-20",
+  "purpose": "OCR local no navegador; imagens nunca são enviadas ao servidor",
+  "packages": {
+    "tesseract.js": {
+      "version": "7.0.0",
+      "resolved": "https://registry.npmjs.org/tesseract.js/-/tesseract.js-7.0.0.tgz",
+      "integrity": "sha512-exPBkd+z+wM1BuMkx/Bjv43OeLBxhL5kKWsz/9JY+DXcXdiBjiAch0V49QR3oAJqCaL5qURE0vx9Eo+G5YE7mA==",
+      "hasInstallScript": true,
+      "license": "Apache-2.0",
+      "dependencies": {
+        "bmp-js": "^0.1.0",
+        "idb-keyval": "^6.2.0",
+        "is-url": "^1.2.4",
+        "node-fetch": "^2.6.9",
+        "opencollective-postinstall": "^2.0.3",
+        "regenerator-runtime": "^0.13.3",
+        "tesseract.js-core": "^7.0.0",
+        "wasm-feature-detect": "^1.8.0",
+        "zlibjs": "^0.3.1"
+      }
+    },
+    "tesseract.js-core": {
+      "version": "7.0.0",
+      "resolved": "https://registry.npmjs.org/tesseract.js-core/-/tesseract.js-core-7.0.0.tgz",
+      "integrity": "sha512-WnNH518NzmbSq9zgTPeoF8c+xmilS8rFIl1YKbk/ptuuc7p6cLNELNuPAzcmsYw450ca6bLa8j3t0VAtq435Vw==",
+      "license": "Apache-2.0"
+    },
+    "@tesseract.js-data/eng": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/@tesseract.js-data/eng/-/eng-1.0.0.tgz",
+      "integrity": "sha512-mbTumm6KQPUHyzTPQaF3ObXYnx0SqqfV2nabqFVQBwD6Kl7PhGSLSzOlfFTWy0P3BjghaSKA2W9GB19Jk+ZcTg==",
+      "license": "MIT"
+    }
+  },
+  "files": [
+    {
+      "file": "public/ocr/worker.min.js",
+      "sourcePackage": "tesseract.js@7.0.0",
+      "sourcePath": "tesseract.js/dist/worker.min.js",
+      "bytes": 111307,
+      "sha256": "576b7df7e3393e137e51849357c9adb53fe7ac1bb69bfa06cf3d61520f182c6d"
+    },
+    {
+      "file": "public/ocr/worker.min.js.LICENSE.txt",
+      "sourcePackage": "tesseract.js@7.0.0",
+      "sourcePath": "tesseract.js/dist/worker.min.js.LICENSE.txt",
+      "bytes": 466,
+      "sha256": "45f54171aeaa1d10c0c1a66f374b7bba1f02472b1487fbe892eec04f840002ac"
+    },
+    {
+      "file": "public/ocr/core/tesseract-core-lstm.wasm.js",
+      "sourcePackage": "tesseract.js-core@7.0.0",
+      "sourcePath": "tesseract.js-core/tesseract-core-lstm.wasm.js",
+      "bytes": 3896484,
+      "sha256": "eef5f8b2f8e20e150680b20adaec4a60babafee3adbe8a94583c81fee46e8680"
+    },
+    {
+      "file": "public/ocr/core/tesseract-core-relaxedsimd-lstm.wasm.js",
+      "sourcePackage": "tesseract.js-core@7.0.0",
+      "sourcePath": "tesseract.js-core/tesseract-core-relaxedsimd-lstm.wasm.js",
+      "bytes": 3905767,
+      "sha256": "861a536cf9ef8e63cb644d57bab39c388f37f7d6b6f60024b741c5f6b39a59b3"
+    },
+    {
+      "file": "public/ocr/core/tesseract-core-relaxedsimd.wasm.js",
+      "sourcePackage": "tesseract.js-core@7.0.0",
+      "sourcePath": "tesseract.js-core/tesseract-core-relaxedsimd.wasm.js",
+      "bytes": 4697227,
+      "sha256": "843074aa5bad1cc6421b74a86201768ced9f244795e4d81435435a61a40ce535"
+    },
+    {
+      "file": "public/ocr/core/tesseract-core-simd-lstm.wasm.js",
+      "sourcePackage": "tesseract.js-core@7.0.0",
+      "sourcePath": "tesseract.js-core/tesseract-core-simd-lstm.wasm.js",
+      "bytes": 3899472,
+      "sha256": "c58b46a4c796c0b8afccf77591d5b875b6896b45d402bbce8caa6f5362447b38"
+    },
+    {
+      "file": "public/ocr/core/tesseract-core-simd.wasm.js",
+      "sourcePackage": "tesseract.js-core@7.0.0",
+      "sourcePath": "tesseract.js-core/tesseract-core-simd.wasm.js",
+      "bytes": 4690932,
+      "sha256": "6b61ef4e911b5cf57e656bbfe983d6e2b3711a02dd164154ddda064566e8e09d"
+    },
+    {
+      "file": "public/ocr/core/tesseract-core.wasm.js",
+      "sourcePackage": "tesseract.js-core@7.0.0",
+      "sourcePath": "tesseract.js-core/tesseract-core.wasm.js",
+      "bytes": 4687944,
+      "sha256": "0bc6ce3e5fbbd0cd89706cf2fd70960e3372f4f01ee24265b26990808aaeb286"
+    },
+    {
+      "file": "public/ocr/lang/eng.traineddata.gz",
+      "sourcePackage": "@tesseract.js-data/eng@1.0.0",
+      "sourcePath": "@tesseract.js-data/eng/4.0.0_best_int/eng.traineddata.gz",
+      "bytes": 2952873,
+      "sha256": "45b4cb346724ac1774f1c36f42f182b887bcdb28ebe63e6fff90ac41f3fcff91"
+    },
+    {
+      "file": "internal/ocr/licenses/tesseract.js-LICENSE.md",
+      "sourcePackage": "tesseract.js",
+      "sourcePath": "tesseract.js/LICENSE.md",
+      "bytes": 11357,
+      "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1"
+    },
+    {
+      "file": "internal/ocr/licenses/tesseract.js-core-LICENSE",
+      "sourcePackage": "tesseract.js-core",
+      "sourcePath": "tesseract.js-core/LICENSE",
+      "bytes": 11358,
+      "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08"
+    },
+    {
+      "file": "internal/ocr/licenses/bmp-js-LICENSE",
+      "sourcePackage": "bmp-js",
+      "sourcePath": "bmp-js/LICENSE",
+      "bytes": 1077,
+      "sha256": "9f165f5bd2b462122cacb8c6dc32028be1abb4d8ad0322e9a332f30b2ebdb833"
+    },
+    {
+      "file": "internal/ocr/licenses/idb-keyval-LICENCE",
+      "sourcePackage": "idb-keyval",
+      "sourcePath": "idb-keyval/LICENCE",
+      "bytes": 555,
+      "sha256": "20c27d6339619eeb3113cb865d4e98a3f559e52964fc75caea9cb5fa72674565"
+    },
+    {
+      "file": "internal/ocr/licenses/is-url-LICENSE-MIT",
+      "sourcePackage": "is-url",
+      "sourcePath": "is-url/LICENSE-MIT",
+      "bytes": 1036,
+      "sha256": "80957b522b0ea4ce24290953d74d818220c804d1f42cad02b8d7da1c12ce1fc1"
+    },
+    {
+      "file": "internal/ocr/licenses/regenerator-runtime-LICENSE",
+      "sourcePackage": "regenerator-runtime",
+      "sourcePath": "regenerator-runtime/LICENSE",
+      "bytes": 1080,
+      "sha256": "51887a3d47051ac2fce1210562e5b9fe0830a8a8fabeb272c2d586eeb18a05fd"
+    },
+    {
+      "file": "internal/ocr/licenses/wasm-feature-detect-LICENSE",
+      "sourcePackage": "wasm-feature-detect",
+      "sourcePath": "wasm-feature-detect/LICENSE",
+      "bytes": 11341,
+      "sha256": "bcf29b4fd3ec2cb5f9d40a0866da446f6da62170d2ccedf4aeca9cf9406dd20c"
+    },
+    {
+      "file": "internal/ocr/licenses/zlibjs-LICENSE",
+      "sourcePackage": "zlibjs",
+      "sourcePath": "zlibjs/LICENSE",
+      "bytes": 1222,
+      "sha256": "131afe3f7bdce1698beb292fb8de1a968de01bce876122a60ef5db230471c866"
+    },
+    {
+      "file": "internal/ocr/licenses/tessdata-LICENSE.txt",
+      "sourceUrl": "https://github.com/naptha/tessdata/blob/gh-pages/LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "file": "internal/ocr/licenses/buffer-LICENSE",
+      "sourceUrl": "https://raw.githubusercontent.com/feross/buffer/master/LICENSE",
+      "bytes": 2306,
+      "sha256": "ed2e878b5cbcda860c7640ce99838e3d83d7cf5e8ad31fc57c11f313b685ae00"
+    },
+    {
+      "file": "internal/ocr/licenses/ieee754-LICENSE",
+      "sourceUrl": "https://raw.githubusercontent.com/feross/ieee754/master/LICENSE",
+      "bytes": 1465,
+      "sha256": "18d45466ba3253deae04667e267a91ea8de8548f18c1125264d1c9db28194cc1"
+    }
+  ],
+  "runtimeNotes": {
+    "engineProtocol": "Tesseract.js 7.0.0 browser worker; native Worker allows immediate termination",
+    "wasm": "The *.wasm.js builds embed WASM bytes; no separate .wasm fetch required",
+    "model": "4.0.0_best_int/eng.traineddata.gz; alphanumeric OCR only",
+    "cacheMethod": "none",
+    "installScripts": "disabled via npm --ignore-scripts",
+    "modelLicensing": "npm package metadata declares MIT; repository model license Apache-2.0 is also preserved; no license wording was rewritten"
+  }
+}

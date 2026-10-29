@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-28",
+  "diagramDesign": {
+    "repository": "https://github.com/cathrynlavery/diagram-design",
+    "commit": "0cf73c3fcc56667ad91a9a04c439ac6ccfabc9d1",
+    "manifestVersion": "2.6.136",
+    "skillVersion": "2.6",
+    "license": "MIT",
+    "templateSha256": "f6978a9d50dd286f32ab149bcf505261b9fc331df7320071f87509a285dee7f4",
+    "upstreamFiles": {
+      "diagram-semantic-patterns.md": "7aa5f7a0840be234d2b10bc3742b17151f94f550a0d72afd820413859a898c8f",
+      "diagram-verify-geometry.py": "33fb89edbdc8b9cf625a388ba47147bf46ec9e8ae84b7110e240de165732001f",
+      "diagram-primitives-core.md": "bd011a9ed2e1b4e27d2ecc83872127eb8f5b1d91026a162a211974b3eeebc7e0",
+      "diagram-output-spec.md": "12dc0eed3514e387328651652604ef4fba1a76bce1823a79f4da2993336d1e69",
+      "diagram-style-guide.md": "74345f14edd26a69da6be3b619bfece61229f2873e6fbae17a39bb2503b7a7a4",
+      "diagram-self-check.py": "444851f6e53f83d50920381df17cdd5f1b7a23cfba9c0ddda27786d78e53e2de",
+      "diagram-LICENSE": "bb7e12e91fecef43024111123ff784cec6c485585561d8b552557c0173b3ed29",
+      "diagram-type-state.md": "9c8ed85762d5bbb3672907bc1664ebf94bcc72850efbacf33d5ee12731053122",
+      "diagram-template.html": "f6978a9d50dd286f32ab149bcf505261b9fc331df7320071f87509a285dee7f4",
+      "diagram-SKILL.md": "83fd5aa46965ce2b14bd42ade80c065a4e17a9f83d2a9f4f275b47cd45d72666"
+    }
+  },
+  "hyperframes": {
+    "repository": "https://github.com/heygen-com/hyperframes",
+    "version": "0.8.214",
+    "commit": "4719543e972548a261b8354f0a8dada479ae5d93",
+    "license": "Apache-2.0",
+    "package": "hyperframes",
+    "lockfile": "package-lock.json"
+  },
+  "earshot": {
+    "repository": "https://github.com/Leonxlnx/earshot",
+    "version": "0.4.0",
+    "commit": "591fa3e028032e6dce56620a20e932e35667e8d8",
+    "license": "MIT",
+    "archiveUrl": "https://codeload.github.com/Leonxlnx/earshot/tar.gz/591fa3e028032e6dce56620a20e932e35667e8d8",
+    "archiveSha256": "dff3b63247e11c01e4c433357071e38a686e98ea2598ac2a0b186a9e6dd1a670",
+    "sourceFiles": {
+      "earshot/__init__.py": "a9c3bf13e7ba6789f84a9d3e9d9e7b4e53638b973be762b52587e230e58bb297",
+      "earshot/forge/bank.py": "d1b35fa81ba381df21932109482a121e2f19b3d1dbec9b126aac09bac56868a9",
+      "earshot/forge/sfx.py": "a5083eb99ff81bd3b9d79169afd7c2e803bcc6c2faf30dc2d356482dc2bec1d3",
+      "earshot/forge/bank/forge_v2.json": "ec18dfd0c5684166786a2a4034daf718ae780e4fc7ff03a6393b29e029a8d632",
+      "earshot/forge/bank/forge04.json": "4bf245cb98146ddede4e650ad787c094d212681f005946e2127790369079b53b"
+    },
+    "execution": "procedural-source-path",
+    "models": false
+  },
+  "manimgx": {
+    "repository": "https://github.com/academa-labs/manimgx",
+    "version": "0.1.1",
+    "tagObject": "dabdde739b3565c84c30f6b7c8eb795ead09148b",
+    "commit": "0507708dc5d731478786de2f46ca8a1660d514d6",
+    "sourceLicense": "MIT",
+    "nativeWheelCombinedLicense": "GPL-3.0-or-later (bundled x264; see third-party notice)",
+    "python": "3.13.9",
+    "lockfile": "requirements.lock.txt"
+  },
+  "gsap": {
+    "version": "3.15.0",
+    "license": "Standard GSAP license",
+    "lockfile": "package-lock.json"
+  },
+  "ffmpeg": {
+    "versionObserved": "6.1.1-3ubuntu5",
+    "platform": "linux x86_64",
+    "distribution": "system tool only; binaries not vendored"
+  }
+}

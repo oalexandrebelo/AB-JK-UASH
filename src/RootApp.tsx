@@ -1,0 +1,60 @@
+import {lazy,Suspense,useEffect,useState} from 'react';
+import {Button} from '@react-spectrum/s2/Button';
+import {Shell} from './components/Shell';
+import {Brand} from './components/Brand';
+import {EmptyState,ErrorNotice,Loading} from './components/ui';
+import {AuthPage} from './pages/AuthPage';
+const DashboardPage=lazy(()=>import('./pages/DashboardPage').then(module=>({default:module.DashboardPage})));
+const EntityPage=lazy(()=>import('./pages/EntityPage').then(module=>({default:module.EntityPage})));
+const OrdersPage=lazy(()=>import('./pages/OrdersPage').then(module=>({default:module.OrdersPage})));
+const OrderDetailPage=lazy(()=>import('./pages/OrderDetailPage').then(module=>({default:module.OrderDetailPage})));
+const AppointmentsPage=lazy(()=>import('./pages/AppointmentsPage').then(module=>({default:module.AppointmentsPage})));
+const DeliveriesPage=lazy(()=>import('./pages/DeliveriesPage').then(module=>({default:module.DeliveriesPage})));
+const CashPage=lazy(()=>import('./pages/CashPage').then(module=>({default:module.CashPage})));
+const InvoicesPage=lazy(()=>import('./pages/InvoicesPage').then(module=>({default:module.InvoicesPage})));
+const FiscalPage=lazy(()=>import('./pages/FiscalPage').then(module=>({default:module.FiscalPage})));
+const PackageSalesPage=lazy(()=>import('./pages/PackageSalesPage').then(module=>({default:module.PackageSalesPage})));
+const PayrollPage=lazy(()=>import('./pages/PayrollPage').then(module=>({default:module.PayrollPage})));
+const MessagesPage=lazy(()=>import('./pages/MessagesPage').then(module=>({default:module.MessagesPage})));
+const ReportsPage=lazy(()=>import('./pages/ReportsPage').then(module=>({default:module.ReportsPage})));
+const SettingsPage=lazy(()=>import('./pages/SettingsPage').then(module=>({default:module.SettingsPage})));
+const MigrationPage=lazy(()=>import('./pages/MigrationPage').then(module=>({default:module.MigrationPage})));
+const IntegrationsPage=lazy(()=>import('./pages/IntegrationsPage').then(module=>({default:module.IntegrationsPage})));
+import {schemas} from './pages/entitySchemas';
+import {request,setSession,useResource,useRoute,navigate,type Session} from './lib/api';
+import {canManage} from './lib/domain';
+
+export function App() {
+  const status=useResource<Session>('/status');
+  const [session,setCurrentSession]=useState<Session|null>(null);
+  const [logoutError,setLogoutError]=useState<string|null>(null);
+  const route=useRoute();
+  function updateSession(value:Session) {setSession(value);setCurrentSession(value);}
+  useEffect(()=>{if(status.data)updateSession(status.data);},[status.data]);
+  useEffect(()=>{const expire=()=>{setSession({setupRequired:false,setupTokenRequired:false,storageMode:'local',user:null});setCurrentSession(previous=>previous?{...previous,setupRequired:false,setupTokenRequired:false,user:null,csrfToken:undefined}:null);};window.addEventListener('ab-uash-session-expired',expire);return()=>window.removeEventListener('ab-uash-session-expired',expire);},[]);
+  async function logout() {setLogoutError(null);try{await request('/auth/logout',{method:'POST',body:{}});if(session)updateSession({...session,setupRequired:false,setupTokenRequired:false,user:null,csrfToken:undefined});}catch(error){setLogoutError(error instanceof Error?error.message:'Não foi possível sair.');}}
+  if(!session) return <main className="startup-screen"><div className="brand"><Brand/></div>{status.failure?.code==='CONFIGURATION_REQUIRED'?<section className="startup-card"><EmptyState icon="settings" title="Instalação pendente" description="Esta instalação ainda precisa ser conectada ao banco da operação. O responsável pela implantação pode concluir a configuração para liberar o acesso." action={<Button variant="accent" onPress={status.refresh}>Verificar novamente</Button>}/></section>:status.error?<ErrorNotice message={status.error} retry={status.refresh}/>:<Loading label="Preparando sua operação…"/>}</main>;
+  if(!session.user) return <AuthPage setup={session.setupRequired} setupTokenRequired={session.setupTokenRequired} storageMode={session.storageMode} onSession={updateSession}/>;
+  const user=session.user;
+  const [page,id,subpage]=route.split('/');
+  let content;
+  if((['cash','invoices','fiscal','payroll','reports','integrations'].includes(page)&&!canManage(user.role))||(page==='migration'&&user.role!=='admin')||(page==='deliveries'&&user.role==='viewer')) content=<section className="panel"><EmptyState icon="shield" title="Área de gestão" description="Seu perfil não possui acesso a esta área. Um administrador pode revisar sua permissão nas configurações." action={<Button variant="accent" onPress={()=>navigate('dashboard')}>Voltar para visão geral</Button>}/></section>;
+  else if(page==='dashboard')content=<DashboardPage user={user}/>;
+  else if(page==='orders'&&id)content=<OrderDetailPage key={`${id}/${subpage}`} id={id} user={user} initialTab={subpage==='checklist'?'checklist':'summary'}/>;
+  else if(page==='orders'||page==='checklist')content=<OrdersPage key={page} user={user} checklist={page==='checklist'}/>;
+  else if(page==='appointments')content=<AppointmentsPage user={user}/>;
+  else if(page==='deliveries')content=<DeliveriesPage user={user}/>;
+  else if(schemas[page])content=<EntityPage key={page} entity={page} user={user}/>;
+  else if(page==='cash')content=<CashPage/>;
+  else if(page==='invoices')content=<InvoicesPage/>;
+  else if(page==='fiscal')content=<FiscalPage/>;
+  else if(page==='package-sales')content=<PackageSalesPage/>;
+  else if(page==='payroll')content=<PayrollPage/>;
+  else if(page==='messages')content=<MessagesPage user={user}/>;
+  else if(page==='reports')content=<ReportsPage/>;
+  else if(page==='settings')content=<SettingsPage user={user}/>;
+  else if(page==='migration')content=<MigrationPage/>;
+  else if(page==='integrations')content=<IntegrationsPage/>;
+  else content=<EmptyState title="Página não encontrada" description="Use a navegação para abrir uma área da operação." action={<Button variant="accent" onPress={()=>navigate('dashboard')}>Voltar ao início</Button>}/>;
+  return <Shell user={user} storageMode={session.storageMode} route={route} onLogout={logout}><ErrorNotice message={logoutError}/><Suspense fallback={<Loading label="Abrindo esta área da operação…"/>}>{content}</Suspense></Shell>;
+}

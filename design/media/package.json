@@ -1,0 +1,9 @@
+{
+  "name": "ab-jk-uash-media-authoring",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Optional offline media authoring. Never imported by the application.",
+  "engines": {"node": ">=24 <25"},
+  "dependencies": {"hyperframes": "0.8.214", "gsap": "3.15.0"}
+}
