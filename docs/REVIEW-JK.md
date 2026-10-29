@@ -96,3 +96,13 @@ node --test --test-reporter=spec \
 - Não houve teste contra PostgreSQL. O DDL das tabelas JK é manual nesse modo, e a migração histórica desta versão usa SQLite. Não houve implantação de produção ou execução remota da CI nesta frente.
 - Nenhuma integração foi homologada com credenciais reais. Pix, WhatsApp e fiscal continuam sujeitos à configuração, às autorizações e à homologação específicas de cada provedor. Uma preparação local não comprova cobrança emitida, mensagem entregue ou documento fiscal autorizado.
 - Não houve importação da base real nem criação da conta real do operador. Esses passos exigem o ambiente privado e os dados fornecidos por seu responsável.
+
+## Complemento de 29/10/2026: isolamento do teste de hooks
+
+A [CI do fechamento documental](https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791854307) do commit `ddcee37f43555f9c2a8b98cf67c3460d0ac1ef99` identificou uma corrida no ambiente de QA: a asserção de recurso desativado contava todas as requisições do fixture, incluindo a montagem concorrente do Dashboard. O contador remoto passou de 30 para 34. Nenhuma fonte de produto havia mudado desde a execução remota aprovada.
+
+A [reprodução controlada](qa/hooks-counter-probe.txt) confirmou a interferência: o contador passou de 21 para 29, contendo duas séries de GET para `/api/dashboard`, `/api/customers?limit=1`, `/api/vehicles?limit=1` e `/api/services?limit=1`. O recurso testado estava desativado, com estado limpo; `/api/missing-qa` permaneceu com uma chamada. Esses valores descrevem o experimento e não são contagens de defeitos no produto.
+
+O fixture ganhou a opção `mountBundle`, cujo padrão continua `true`. Somente o teste que monta os hooks diretamente usa `mountBundle:false`, mantendo HTTP real e SQLite temporário. A asserção global exata de zero novas requisições foi preservada, e agora também aguarda o efeito correspondente a `null` terminar. Os demais testes continuam montando o bundle da aplicação.
+
+A [reverificação focada](qa/hooks-focused-after-isolation.txt) passou em **6/6**, e a [suíte DOM completa após o isolamento](qa/tests-dom-after-isolation.txt) passou em **23/23**, sem falhas ou skips. Os seis testes focados já pertencem aos 23; o diagnóstico isolado não aumenta o total de 189 testes consolidados. Os 56 arquivos de `dist` permaneceram idênticos e o snapshot de produto V2 conservou seu digest. A alteração envolve apenas testes e documentação. As [execuções do workflow](https://github.com/oalexandrebelo/AB-JK-UASH/actions/workflows/ci.yml) registram o resultado remoto de cada revisão publicada.

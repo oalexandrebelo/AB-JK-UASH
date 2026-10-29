@@ -8,7 +8,9 @@ try { createRequire(import.meta.url).resolve('react-dom/client'); reactAvailable
 const skip = !uiQaAvailable ? uiQaSkipReason : !reactAvailable ? 'QA de hooks requer npm ci das dependências de desenvolvimento do projeto.' : false;
 
 test('hooks reais: concorrência, retry idempotente, respostas obsoletas, limpeza de estado e fuso', {timeout: 30000, skip}, async t => {
-  const f = await fixture(t);
+  // Este teste monta os hooks diretamente. Montar também o bundle iniciaria
+  // /status, assets lazy e Dashboard em paralelo, contaminando requests.length.
+  const f = await fixture(t, {mountBundle: false});
   const React = await import('react');
   const {createRoot} = await import('react-dom/client');
   const api = await import('../src/lib/api.ts');
@@ -64,9 +66,11 @@ test('hooks reais: concorrência, retry idempotente, respostas obsoletas, limpez
   const service = await f.api('/services', {method: 'POST', body: {name: 'Serviço do recurso mais novo', priceCents: 12345}});
   assert.equal(service.status, 201);
   let resource;
+  let committedResourcePath;
   const renders = [];
   function ResourceHarness({path}) {
     resource = api.useResource(path);
+    React.useEffect(() => { committedResourcePath = path; }, [path]);
     renders.push({path, data: resource.data, error: resource.error, loading: resource.loading});
     return React.createElement('div', null, resource.data ? JSON.stringify(resource.data) : resource.error || 'loading');
   }
@@ -101,7 +105,7 @@ test('hooks reais: concorrência, retry idempotente, respostas obsoletas, limpez
     await until(() => resource?.error, 'erro 404 renderizado');
     const before = f.requests.length;
     root.render(React.createElement(ResourceHarness, {path: null}));
-    await until(() => resource?.error === null && resource?.data === null && resource?.loading === false, 'estado desativado limpo');
+    await until(() => committedResourcePath === null && resource?.error === null && resource?.data === null && resource?.loading === false, 'efeito do recurso desativado concluído e estado limpo');
     assert.equal(f.requests.length, before);
   });
   await t.test('datas seguem São Paulo e valores monetários preservam centavos', () => {

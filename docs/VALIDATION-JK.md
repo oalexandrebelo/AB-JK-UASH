@@ -10,7 +10,7 @@ Registro da rodada local de 28 de outubro de 2026 e do fechamento remoto em 29 d
 | SDK principal | ESM e declarações TypeScript compilados. O contrato herdado cobre 97 operações; extensões JK têm documentação própria. | [SDK](qa/sdk-build.txt), [API principal](api/README.md) |
 | Suíte principal | **164 testes/subtestes: 159 aprovados, zero falhas, cinco ignorados: quatro dependem do servidor PostgreSQL externo e um exige o runtime Node empacotado da distribuição standalone.** | [Saída integral](qa/tests-main.txt) |
 | Infraestrutura | **7 aprovados, zero falhas ou skips**, incluindo backup consistente, restauração de prova, retenção e congelamento/verificação da fonte. São adicionais à suíte principal. | [Saída integral](qa/tests-infra.txt) |
-| Interface com DOM emulado | **23 aprovados, zero falhas ou skips**, executando o bundle compilado com API HTTP e SQLite temporários. | [Saída integral](qa/tests-dom.txt), [revisão independente](REVIEW-JK.md) |
+| Interface com DOM emulado | **23 aprovados, zero falhas ou skips**, incluindo o bundle compilado e um componente isolado para hooks, com API HTTP e SQLite temporários. | [Saída integral](qa/tests-dom.txt), [revisão independente](REVIEW-JK.md) |
 | Auditoria npm | Consulta do registry retornou **zero avisos conhecidos** para o conjunto de 150 dependências resolvidas. Não é análise completa de segurança nem inclui o runtime isolado de autoria. | [Resultado JSON](qa/npm-audit.json) |
 | Gates de release | 13 verificações estáticas aprovadas: runtime, bind, volume, cookies, bootstrap, manutenção, CI e presença do build. | [Script](../scripts/jk-release-check.mjs) |
 | Navegador real | Landing e tela de acesso inspecionadas, navegação pública funcionando e link exato do Instagram observado. | [Landing](qa/landing-jk-20261028.jpg), [acesso](qa/login-jk-20261028.jpg) |
@@ -81,6 +81,16 @@ O `compose.yaml`, Dockerfile, CI, manutenção e [runbook](operations-jk.md) est
 | Escala e perfis alternativos | Fazer teste de carga com volume e concorrência esperados; aplicar/testar DDL JK antes de considerar PostgreSQL. |
 
 A [matriz de funcionalidades](FEATURE-MATRIX.md) mantém as demais lacunas de produto: estorno financeiro completo, plano de parcelas, taxas de cartão, venda de produto como item da OS, mapas/geocodificação, campanhas, comprovante de entrega WhatsApp, multiunidade e reserva pública, entre outras. Elas não foram ocultadas por interfaces ou registros simulados.
+
+## Isolamento do teste de hooks após a publicação
+
+A [CI do fechamento documental](https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791854307) do commit `ddcee37f43555f9c2a8b98cf67c3460d0ac1ef99` identificou uma corrida no ambiente de QA: a asserção de recurso desativado contava todas as requisições do fixture, incluindo a montagem concorrente do Dashboard. O contador remoto passou de 30 para 34. Nenhuma fonte de produto havia mudado desde a execução remota aprovada.
+
+A [reprodução controlada](qa/hooks-counter-probe.txt) confirmou a interferência: o contador passou de 21 para 29, contendo duas séries de GET para `/api/dashboard`, `/api/customers?limit=1`, `/api/vehicles?limit=1` e `/api/services?limit=1`. O recurso testado estava desativado, com estado limpo; `/api/missing-qa` permaneceu com uma chamada. Esses valores descrevem o experimento e não são contagens de defeitos no produto.
+
+O fixture ganhou a opção `mountBundle`, cujo padrão continua `true`. Somente o teste que monta os hooks diretamente usa `mountBundle:false`, mantendo HTTP real e SQLite temporário. A asserção global exata de zero novas requisições foi preservada, e agora também aguarda o efeito correspondente a `null` terminar. Os demais testes continuam montando o bundle da aplicação.
+
+A [reverificação focada](qa/hooks-focused-after-isolation.txt) passou em **6/6**, e a [suíte DOM completa após o isolamento](qa/tests-dom-after-isolation.txt) passou em **23/23**, sem falhas ou skips. Os seis testes focados já pertencem aos 23; o diagnóstico isolado não aumenta o total de 189 testes consolidados. Os 56 arquivos de `dist` permaneceram idênticos e o snapshot de produto V2 conservou seu digest. A alteração envolve apenas testes e documentação. As [execuções do workflow](https://github.com/oalexandrebelo/AB-JK-UASH/actions/workflows/ci.yml) registram o resultado remoto de cada revisão publicada.
 
 ## Reproduzir os gates
 

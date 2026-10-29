@@ -34,7 +34,7 @@ export async function until(predicate, description, timeout = 7000) {
  * DOM emulado, sem navegador ou medição visual. O JS importado é o bundle de
  * produção. Fetch só permite a origem HTTP do próprio servidor temporário.
  */
-export async function fixture(t, {application = {}, responseOverride} = {}) {
+export async function fixture(t, {application = {}, responseOverride, mountBundle = true} = {}) {
   assert.ok(uiQaAvailable, uiQaSkipReason);
   const directory = await mkdtemp(join(tmpdir(), 'ab-uash-ui-'));
   const appOptions = {
@@ -170,9 +170,11 @@ export async function fixture(t, {application = {}, responseOverride} = {}) {
     await app.close();
     await rm(directory, {recursive: true, force: true});
   });
-  const entry = html.match(/<script[^>]+src="([^"]+)"/)?.[1];
-  assert.ok(entry?.startsWith('/assets/'), 'Bundle de produção deve estar referenciado no HTML.');
-  await import(`${pathToFileURL(resolve(appOptions.distDir, `.${entry}`)).href}?qa=${Date.now()}`);
+  if (mountBundle) {
+    const entry = html.match(/<script[^>]+src="([^"]+)"/)?.[1];
+    assert.ok(entry?.startsWith('/assets/'), 'Bundle de produção deve estar referenciado no HTML.');
+    await import(`${pathToFileURL(resolve(appOptions.distDir, `.${entry}`)).href}?qa=${Date.now()}`);
+  }
   return {
     get app() { return app; }, window, document: window.document, requests, downloads, runtimeErrors, directory,
     get base() { return base; },

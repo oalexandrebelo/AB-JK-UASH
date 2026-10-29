@@ -1,0 +1,35 @@
+✔ bootstrap no bundle: instalação pendente, token somente em header e metadados de banco preservados (2015.295799ms)
+✔ CSV trata fórmulas, controles iniciais, aspas e unidades monetárias sem alterar o valor (1.936892ms)
+▶ fiscal no bundle: prepara sem emitir, valida tomador, cancela e reconcilia resultado incerto
+  ✔ paginação fiscal usa total porque o contrato não tem hasMore (424.468334ms)
+  ✔ operador não recebe navegação fiscal nem carrega o endpoint pela rota direta (440.697678ms)
+✔ fiscal no bundle: prepara sem emitir, valida tomador, cancela e reconcilia resultado incerto (6830.483713ms)
+▶ hooks reais: concorrência, retry idempotente, respostas obsoletas, limpeza de estado e fuso
+  ✔ duas chamadas no mesmo tick geram uma única escrita (17.612573ms)
+  ✔ perda da resposta depois do commit reutiliza chave e não duplica registro (32.266181ms)
+  ✔ mudança de rota não expõe dados anteriores nem aceita resposta atrasada (161.334577ms)
+  ✔ recurso desativado remove erro e dados, sem requisição adicional (46.190306ms)
+  ✔ datas seguem São Paulo e valores monetários preservam centavos (6.292386ms)
+✔ hooks reais: concorrência, retry idempotente, respostas obsoletas, limpeza de estado e fuso (873.842146ms)
+✔ bundle de produção: setup, operação e persistência por DOM emulado + HTTP real (14185.557295ms)
+▶ JK no bundle: migração revisada, transporte e integrações bloqueadas com HTTP real
+  ✔ prévia não grava, mudança de arquivo invalida confirmação e commit preserva histórico sem recebimento operacional (808.974688ms)
+  ✔ Pix e WhatsApp preparam e cancelam localmente, mantendo envio bloqueado e saldo aberto (1255.443131ms)
+  ✔ transporte criado pela UI persiste responsável/endereço e transita até conclusão auditada (2008.045538ms)
+  ✔ perfil de consulta não carrega nem altera migração, transportes ou gestão de integrações (679.436044ms)
+✔ JK no bundle: migração revisada, transporte e integrações bloqueadas com HTTP real (9065.993017ms)
+▶ revisão UI: foco, escrita pendente, falhas de leitura e paginação preservam o trabalho
+  ✔ atalho de conteúdo mantém a rota; abas usam foco e semântica de painel (660.395754ms)
+  ✔ salvamento pendente bloqueia Escape e cancelamento, sem escrita duplicada (561.963267ms)
+  ✔ falha ao ler folha bloqueia o envio que apagaria ajustes existentes (531.081466ms)
+  ✔ erro de lista não afirma cadastro vazio e o retry recupera a criação (257.323101ms)
+  ✔ trocar filtro busca somente a primeira página e reduzir o total corrige a página (1024.054502ms)
+✔ revisão UI: foco, escrita pendente, falhas de leitura e paginação preservam o trabalho (5550.629097ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18208.24542

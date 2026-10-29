@@ -1,0 +1,10 @@
+✔ diagnóstico: montagem concorrente do Dashboard contamina contador global dos hooks (1177.27437ms)
+ℹ {"before":21,"after":29,"added":[{"method":"GET","path":"/api/dashboard"},{"method":"GET","path":"/api/customers?limit=1"},{"method":"GET","path":"/api/vehicles?limit=1"},{"method":"GET","path":"/api/services?limit=1"},{"method":"GET","path":"/api/dashboard"},{"method":"GET","path":"/api/customers?limit=1"},{"method":"GET","path":"/api/vehicles?limit=1"},{"method":"GET","path":"/api/services?limit=1"}],"resourceDisabled":true}
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1815.501153

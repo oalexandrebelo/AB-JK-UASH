@@ -116,5 +116,50 @@
     "syntheticDataOnly": true,
     "deploymentToOficina": false,
     "cleanup": "success"
+  },
+  "ciFollowUp": {
+    "failedRun": {
+      "id": 40791854307,
+      "commit": "ddcee37f43555f9c2a8b98cf67c3460d0ac1ef99",
+      "url": "https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791854307",
+      "cause": "Hook harness and full app were mounted together; Dashboard requests contaminated a global request-count assertion",
+      "expectedRequestCount": 30,
+      "actualRequestCount": 34
+    },
+    "controlledReproduction": {
+      "before": 21,
+      "after": 29,
+      "resourceDisabled": true,
+      "missingQaRequestCount": 1,
+      "additionalEndpoints": [
+        "/api/dashboard",
+        "/api/customers?limit=1",
+        "/api/vehicles?limit=1",
+        "/api/services?limit=1"
+      ],
+      "series": 2,
+      "log": "hooks-counter-probe.txt"
+    },
+    "correction": {
+      "files": [
+        "tests/ui-helpers.mjs",
+        "tests/ui-hooks.test.mjs"
+      ],
+      "mountBundleDefault": true,
+      "directHooksHarnessMountsBundle": false,
+      "exactGlobalZeroAdditionalRequestsAssertionPreserved": true,
+      "waitsForDisabledEffect": true,
+      "productCodeChanged": false
+    },
+    "localRecheck": {
+      "focusedPassed": 6,
+      "domPassed": 23,
+      "failed": 0,
+      "skipped": 0,
+      "focusedIsSubsetOfDom": true,
+      "domLog": "tests-dom-after-isolation.txt",
+      "unchangedBuildFiles": 56
+    },
+    "workflowHistory": "https://github.com/oalexandrebelo/AB-JK-UASH/actions/workflows/ci.yml"
   }
 }

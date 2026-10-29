@@ -1,0 +1,15 @@
+▶ hooks reais: concorrência, retry idempotente, respostas obsoletas, limpeza de estado e fuso
+  ✔ duas chamadas no mesmo tick geram uma única escrita (24.077244ms)
+  ✔ perda da resposta depois do commit reutiliza chave e não duplica registro (46.737888ms)
+  ✔ mudança de rota não expõe dados anteriores nem aceita resposta atrasada (169.327958ms)
+  ✔ recurso desativado remove erro e dados, sem requisição adicional (42.24089ms)
+  ✔ datas seguem São Paulo e valores monetários preservam centavos (1.192115ms)
+✔ hooks reais: concorrência, retry idempotente, respostas obsoletas, limpeza de estado e fuso (785.399324ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1473.344018
