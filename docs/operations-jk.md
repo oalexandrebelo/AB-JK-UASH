@@ -94,10 +94,10 @@ ou variável de ambiente. A etapa seguinte usa `if: always()` para executar
 rede e diretório de dados mesmo quando build ou smoke test falham. O estado
 privado dessa limpeza fica em `JK_CI_SMOKE_STATE`, dentro de `runner.temp`.
 
-Este gate foi preparado e conferido sintaticamente na entrega. A execução
-Docker permanece **pendente até o workflow real passar no GitHub Actions**;
-sua presença no YAML não constitui evidência de imagem construída ou de
-containers saudáveis. Ele valida containers com dados sintéticos e não
+Este gate passou na [execução real do GitHub Actions](https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791408960)
+do commit `f965e03d92a881cfc9d3bb9df67caeeee9d48045`, encerrada em 29/10/2026
+às 00:04:12 UTC. Build, health, backup/restauração, persistência após restart
+e limpeza terminaram com sucesso. Ele valida containers com dados sintéticos e não
 substitui a verificação do host de produção ou da exposição HTTPS tailnet.
 
 No servidor de destino, a publicação responsável pelo projeto deve validar
@@ -283,7 +283,7 @@ estado. Inspeção estática não prova comportamento executado, bootstrap,
 aceite visual ou implantação. Não repetir o probe anterior contra o checkout
 com `node_modules`: a seleção de uma fonte ainda inventaria a árvore inteira.
 
-## Evidências e gates pendentes nesta frente
+## Evidências locais e fechamento remoto
 
 Em 2026-10-28, esta frente executou Node 24.22.1 e confirmou:
 
@@ -295,13 +295,16 @@ Em 2026-10-28, esta frente executou Node 24.22.1 e confirmou:
 - YAML do Compose parseado localmente; anchors, usuário, ausência de rede
   da manutenção e `create_host_path: false` conferidos.
 
-A leitura do arquivo `dist/index.html` não substitui o build final das
-fontes congeladas. A suíte completa, o build final e o SDK devem ser
-registrados pela coordenação após a integração. O Docker CLI não estava
-disponível nesta frente: não foi executado build Docker, validação pelo
-Compose real, start de container ou teste no host Oficina. Também não foi
-executada a análise REA final, pois o congelamento ainda dependia da
-coordenação. Health de produção, origem HTTPS, persistência após restart,
-backup no volume do servidor e criação do administrador exigem evidência
-do destino. Registre os resultados no release, sem transformar gates
-pendentes em aprovações.
+A suíte completa, o build e o SDK foram executados sobre a fonte congelada e
+estão registrados em [VALIDATION-JK.md](VALIDATION-JK.md). A análise REA final
+está em [rea/README.md](rea/README.md), com cobertura parcial e seus limites
+explícitos. Os 19 testes citados acima são um conjunto focado; não são somados
+novamente aos totais consolidados.
+
+O Docker CLI não estava disponível no ambiente local desta frente. A CI
+remota posteriormente aprovou o Compose real, o build e o smoke test descritos
+acima. Essa prova usa apenas dados sintéticos. Health da instalação JK,
+origem HTTPS, persistência no volume do servidor, restauração nesse destino,
+criação do administrador real e homologação de provedores continuam pendentes.
+O conector Oficina permaneceu respondendo erro interno `-32603` na última
+verificação; nenhuma ativação no host foi declarada.

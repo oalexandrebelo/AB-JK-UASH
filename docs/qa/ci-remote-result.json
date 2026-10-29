@@ -1,0 +1,27 @@
+{
+  "jobId": 123177261788,
+  "runId": 40791408960,
+  "commit": "f965e03d92a881cfc9d3bb9df67caeeee9d48045",
+  "conclusion": "success",
+  "verificationLines": [
+    "2026-10-29T00:03:06.6834946Z ℹ tests 164",
+    "2026-10-29T00:03:06.6835452Z ℹ pass 159",
+    "2026-10-29T00:03:06.6835637Z ℹ fail 0",
+    "2026-10-29T00:03:06.6836032Z ℹ skipped 5",
+    "2026-10-29T00:03:29.2913922Z ℹ tests 23",
+    "2026-10-29T00:03:29.2914448Z ℹ pass 23",
+    "2026-10-29T00:03:29.2914698Z ℹ fail 0",
+    "2026-10-29T00:03:29.2915620Z ℹ skipped 0",
+    "2026-10-29T00:03:29.6060360Z ℹ tests 7",
+    "2026-10-29T00:03:29.6062246Z ℹ pass 7",
+    "2026-10-29T00:03:29.6062543Z ℹ fail 0",
+    "2026-10-29T00:03:29.6063130Z ℹ skipped 0",
+    "2026-10-29T00:04:08.9151099Z {\"ok\":true,\"imageBuilt\":true,\"applicationHealthy\":true,\"offlineMaintenanceHealthy\":true,\"restoreVerified\":true,\"sqlitePersistedAfterRestart\":true,\"syntheticDataOnly\":true}"
+  ],
+  "url": "https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791408960",
+  "startedAt": "2026-10-29T00:02:34Z",
+  "completedAt": "2026-10-29T00:04:12Z",
+  "syntheticDataOnly": true,
+  "deploymentToOficina": false,
+  "cleanup": "success"
+}

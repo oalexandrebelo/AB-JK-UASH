@@ -4,6 +4,8 @@ Cliente independente do AB-UASH para a operação do Lava Rápido JK, em Rio Ver
 
 **Versão inicial: 0.1.0.** O código implementa operação local, migração conferida, retirada/entrega e conectores opcionais. A migração dos dados reais e a homologação dos provedores ainda precisam ser concluídas. O estado comprovado de testes e implantação está em [VALIDATION-JK.md](docs/VALIDATION-JK.md); nenhuma página de saúde ou build, isoladamente, declara prontidão de produção.
 
+A [CI remota](https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791408960) aprovou os testes, a construção Docker, os serviços de aplicação/manutenção, a restauração de backup e a persistência após reinício com dados sintéticos. A instalação real no AB-PCSRV continua bloqueada pelo conector da Oficina.
+
 ## Executar localmente
 
 Requer Node.js 24. O lockfile fixa as dependências do frontend e do perfil PostgreSQL opcional.

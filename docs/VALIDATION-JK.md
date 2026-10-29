@@ -1,6 +1,6 @@
 # Validação de entrega · AB-JK-UASH 0.1.0
 
-Registro da rodada de 28 de outubro de 2026. **O código passou pelos gates locais descritos abaixo. A implantação no AB-PCSRV, o bootstrap privado, a migração real e a homologação externa continuam pendentes.** Este documento separa cada prova; não converte build, teste ou análise estática em declaração de prontidão integral de produção.
+Registro da rodada local de 28 de outubro de 2026 e do fechamento remoto em 29 de outubro de 2026. **O código passou pelos gates locais descritos abaixo. A implantação no AB-PCSRV, o bootstrap privado, a migração real e a homologação externa continuam pendentes.** Este documento separa cada prova; não converte build, teste ou análise estática em declaração de prontidão integral de produção.
 
 ## Resultado executado
 
@@ -15,6 +15,7 @@ Registro da rodada de 28 de outubro de 2026. **O código passou pelos gates loca
 | Gates de release | 13 verificações estáticas aprovadas: runtime, bind, volume, cookies, bootstrap, manutenção, CI e presença do build. | [Script](../scripts/jk-release-check.mjs) |
 | Navegador real | Landing e tela de acesso inspecionadas, navegação pública funcionando e link exato do Instagram observado. | [Landing](qa/landing-jk-20261028.jpg), [acesso](qa/login-jk-20261028.jpg) |
 | Autoria de mídia | Diagrama, WAV, cena e filme renderizados; validações e limites próprios registrados. | [Design e mídia](DESIGN-MEDIA.md) |
+| CI remota e contêineres | **Aprovada** no commit `f965e03d92a881cfc9d3bb9df67caeeee9d48045`: build da imagem, health dos dois serviços, bootstrap sintético por stdin, backup com prova de restauração, persistência após reinício e limpeza dos recursos. | [GitHub Actions](https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791408960), [registro estruturado](qa/ci-remote-result.json) |
 | REA 6.7.0 | Análise estática do snapshot e análises adicionais dos grupos críticos; cobertura, limites e identificadores no relatório dedicado. | [REA](rea/README.md), [resumo estruturado](rea/summary-jk.json) |
 
 A soma dos gates de teste acima é **189 aprovações**, com cinco testes não executados: quatro PostgreSQL e um da distribuição standalone com runtime empacotado, ausente neste checkout de fontes. As suítes focadas de migração, delivery e integração já estão contidas na suíte principal; não são somadas novamente. Relatórios de outras revisões do AB-UASH, quando presentes no código herdado, são históricos.
@@ -61,7 +62,7 @@ A instância temporária foi **encerrada** após a inspeção. Ela não é um en
 
 A Oficina criou o projeto `ab-jk-uash`, com dados separados e faixa de portas **9220–9229**. O destino preparado é `https://ab-pcsrv.tail6bac78.ts.net:9220`. A criação do projeto não equivale à publicação do app.
 
-Durante o fechamento, o conector passou a responder **MCP `-32603: Internal error`** em renovação da sessão, consulta de capacidade e tentativa de preparar o primeiro lote de fontes. O lote de fontes não foi confirmado nem enviado. Não foi executado build Docker, `compose up`, configuração HTTPS ou health do destino. Não se afirma que o servidor esteja indisponível; o bloqueio observado está no canal de implantação.
+Durante o fechamento, o conector passou a responder **MCP `-32603: Internal error`** em renovação da sessão, consulta de capacidade e tentativa de preparar o primeiro lote de fontes. O lote de fontes não foi confirmado nem enviado. Nesse destino, não foi executado build Docker, `compose up`, configuração HTTPS ou health. O build e o smoke test de contêineres aprovados na CI usaram um runner isolado, sem acesso à Oficina. Não se afirma que o servidor esteja indisponível; o bloqueio observado está no canal de implantação.
 
 O `compose.yaml`, Dockerfile, CI, manutenção e [runbook](operations-jk.md) estão prontos no código. O primeiro administrador também precisa de um canal privado de stdin/segredos. Os comandos de bootstrap recusam instalação que já contenha usuários e não imprimem credenciais. Nenhum acesso administrativo do cliente foi criado no destino remoto.
 
@@ -94,4 +95,4 @@ AB_UASH_UI_QA_REQUIRED=1 TZ=America/Sao_Paulo node --test --test-reporter=spec t
 npm run release:check
 ```
 
-A CI contém os mesmos gates e validação Compose adicional. Uma execução remota de CI somente pode ser declarada aprovada quando houver resultado do GitHub; o relatório local não substitui esse resultado. Os dados estruturados desta rodada estão em [validation-jk.json](qa/validation-jk.json).
+A [execução remota de CI](https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791408960) terminou com sucesso em **29/10/2026 às 00:04:12 UTC**, reproduzindo os 189 testes aprovados e os cinco skips descritos acima. Também validou Compose, construiu e iniciou a imagem real, conferiu app/manutenção saudáveis, criou somente um administrador sintético por stdin, comprovou backup/restauração e persistência após restart, e removeu os recursos temporários. O código testado foi o commit `f965e03d92a881cfc9d3bb9df67caeeee9d48045`; este fechamento altera apenas documentação. O gate de contêineres é adicional e não aumenta artificialmente a contagem dos testes unitários/de integração. Os dados estruturados estão em [validation-jk.json](qa/validation-jk.json) e [ci-remote-result.json](qa/ci-remote-result.json).
