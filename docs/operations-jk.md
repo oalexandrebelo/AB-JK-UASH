@@ -1,14 +1,24 @@
 # Operação e release — AB-JK-UASH
 
-O projeto Oficina é `ab-jk-uash`. O checkout fica em
-`/srv/ab-oficina/projetos/ab-jk-uash/codigo`, os dados privados em `../dados`
-e os artefatos operacionais em `../artefatos`. A porta reservada inicial é
-`9220`, dentro da faixa `9220–9229`. A origem pública configurada é
-`https://ab-pcsrv.tail6bac78.ts.net:9220`.
+Este runbook descreve o perfil JK da Oficina. Os exemplos de caminho usam o
+identificador original `ab-jk-uash` e o checkout
+`/srv/ab-oficina/projetos/ab-jk-uash/codigo`, com dados privados em `../dados`
+e artefatos operacionais em `../artefatos`. Confirme o identificador e o caminho
+retornados pela Oficina para a instalação efetiva; o nome do repositório não
+determina o diretório do projeto. A porta inicial configurada é `9220`, dentro
+da faixa originalmente reservada `9220–9229`, e a origem do perfil é
+`https://ab-pcsrv.tail6bac78.ts.net:9220`. Confirme a reserva antes de ativar o
+projeto.
+
+Os comandos abaixo são procedimentos, não resultados de implantação. O
+registro da release deve identificar o commit, o projeto/caminho efetivos,
+a configuração aplicada e as evidências obtidas em cada ambiente.
 
 ## Configuração de execução
 
-Use explicitamente `compose.yaml` para a Oficina. O arquivo histórico
+Use explicitamente o perfil `compose.yaml` para a Oficina, seja o Compose base
+com checkout completo ou o manifesto derivado dele por `jk-oficina-compose.mjs`
+conforme o procedimento abaixo. O arquivo histórico
 `docker-compose.yml` continua disponível para a instalação AB-UASH anterior,
 com proxy nginx, origem antiga, `./data` e UID 1000. Ele não deve ser combinado
 com o Compose novo. Seu `user: "1000:1000"` explícito continua sobrescrevendo
@@ -100,6 +110,99 @@ do commit `f965e03d92a881cfc9d3bb9df67caeeee9d48045`, encerrada em 29/10/2026
 e limpeza terminaram com sucesso. Ele valida containers com dados sintéticos e não
 substitui a verificação do host de produção ou da exposição HTTPS tailnet.
 
+### Manifesto Oficina com fonte Git fixada
+
+Quando o canal de implantação não comportar o checkout completo, use
+[`scripts/jk-oficina-compose.mjs`](../scripts/jk-oficina-compose.mjs) para
+derivar o manifesto do `compose.yaml` revisado. O gerador troca o contexto de
+build local por `https://github.com/oalexandrebelo/AB-JK-UASH.git#SHA_COMPLETO`
+e nomeia a imagem com os primeiros doze caracteres desse commit. O contexto
+usa o SHA completo, não uma branch ou tag móvel. Isso fixa a fonte pública do
+build; não substitui o registro da imagem efetivamente construída.
+
+Primeiro integre, teste, revise e publique a fonte. Substitua o marcador do
+comando pelo SHA de quarenta caracteres hexadecimais do commit publicado e
+escolha um caminho de saída novo:
+
+```sh
+node scripts/jk-oficina-compose.mjs \
+  --commit SHA_COMPLETO_PUBLICADO \
+  --out /tmp/compose-oficina-jk.yaml
+```
+
+O gerador valida o formato do SHA, mas não consulta o GitHub nem comprova que
+esse commit foi publicado, testado ou aprovado. A coordenação da release deve
+conferir essa correspondência. O comando não publica, não implanta e não
+inicia serviços. Recusa sobrescrever o Compose base e qualquer arquivo de
+saída existente; se os marcadores esperados do Compose mudarem, exige revisão
+do gerador.
+
+Revise o arquivo gerado e instale seu conteúdo como `compose.yaml` no diretório
+`codigo` do projeto autorizado. Não execute o manifesto diretamente em `/tmp`:
+o bind `../dados` é relativo ao local do manifesto e precisa continuar apontando
+para os dados privados desse projeto. Preserve o banco existente. O host de
+build precisa conseguir ler o repositório público e obter os recursos previstos
+pelo Dockerfile. Não há senha, token de GitHub ou exportação de clientes no
+contexto configurado pelo gerador.
+
+O manifesto mantém o bind publicado somente em loopback, UID/GID 1001,
+filesystem somente leitura e manutenção com `network_mode: none`. Acrescenta
+o serviço `verification`, usando a mesma imagem fixada, sem volumes e sem
+portas publicadas. Esse serviço tem filesystem somente leitura, capabilities
+removidas, `no-new-privileges`, limites de recursos e `restart: "no"`. Inicia
+após `app` e `maintenance` saudáveis, executa o probe e encerra. O manifesto
+não cria um administrador nem modifica dados de negócio.
+
+### Verificação anônima no destino
+
+[`scripts/jk-runtime-probe.mjs`](../scripts/jk-runtime-probe.mjs) consulta a
+aplicação por HTTP dentro da rede dos contêineres. O sidecar usa o hostname
+`app`, porta interna 4173 e a origem pública configurada apenas nos headers
+`Host` e `Origin`; isso não negocia nem verifica TLS externo.
+
+O probe exige os seguintes resultados:
+
+| Consulta | Evidência exigida |
+| --- | --- |
+| `GET /api/ready` | HTTP 200, API pronta e acesso ao banco confirmado |
+| `GET /api/status` | Estado anônimo válido, usuário `null`, modo de armazenamento e flags de configuração |
+| `HEAD /` | HTTP 200, conteúdo HTML, `X-Frame-Options: DENY` e presença de CSP |
+| `GET /api/customers?limit=1`, sem sessão | HTTP 401 e `AUTH_REQUIRED` |
+| `GET /api/ready`, com Host inválido | HTTP 403 e `HOST_REJECTED` |
+
+Cada requisição tem timeout de três segundos e resposta limitada a 64 KiB.
+O resultado contém somente indicadores agregados e o escopo da prova. Erros
+usam mensagens controladas; corpo JSON malformado, credenciais em URL,
+argumentos inválidos e exceções de transporte não são copiados para os logs.
+O probe não lê o arquivo de token, não recebe senha, não cria conta e não
+consulta provedores.
+
+Depois do `compose up`, confira a execução efetivamente concluída:
+
+```sh
+docker compose -f compose.yaml ps -a verification
+docker compose -f compose.yaml logs --no-color verification
+```
+
+Exija encerramento com código zero e o resultado `ok: true` correspondente à
+execução atual. A conclusão de `compose up -d`, a simples presença do contêiner
+ou um log antigo não comprovam sucesso do probe. Quando o manifesto base não
+contiver `verification`, o mesmo script pode ser executado dentro de `app`
+por um canal operacional autorizado:
+
+```sh
+docker compose -f compose.yaml exec -T app node scripts/jk-runtime-probe.mjs
+```
+
+`frontend: "html"` atesta a rota e os headers de `HEAD /`; não testa execução
+do JavaScript, assets, interação autenticada, impressão ou aparência. O probe
+também não demonstra login real, criação de administrador, migração, acesso
+HTTPS externo ou homologação de provedores. `setupRequired: true` mantém o
+bootstrap pendente mesmo quando todos os checks anônimos passam. A
+[revisão do núcleo de 30/10/2026](CORE-REVIEW-2026-10-30.md) documenta
+separadamente as correções e testes locais de importação/pós-pago; nenhuma
+dessas evidências substitui a prova operacional no destino.
+
 No servidor de destino, a publicação responsável pelo projeto deve validar
 o diretório de dados e executar os passos equivalentes a:
 
@@ -133,6 +236,12 @@ preserva e valida esse arquivo. O conteúdo não é registrado nos logs.
 O token não está no Compose, em `.env`, no repositório ou na imagem.
 
 A disponibilidade da interface não comprova a criação de um administrador.
+O build por SHA e a aprovação do sidecar também não criam a conta real. O
+bootstrap privado continua sendo uma etapa obrigatória para uma instalação
+vazia, com o titular e a credencial previamente autorizados. Se já houver
+usuários, preserve o acesso existente e use o fluxo apropriado de administração;
+o bootstrap se recusa a sobrescrever contas.
+
 O comando local abaixo aceita um JSON privado com as chaves `name`, `email`
 e `password` via stdin e falha se a instalação já tiver qualquer usuário:
 
@@ -301,10 +410,13 @@ está em [rea/README.md](rea/README.md), com cobertura parcial e seus limites
 explícitos. Os 19 testes citados acima são um conjunto focado; não são somados
 novamente aos totais consolidados.
 
-O Docker CLI não estava disponível no ambiente local desta frente. A CI
+O Docker CLI não estava disponível no ambiente local dessa rodada. A CI
 remota posteriormente aprovou o Compose real, o build e o smoke test descritos
-acima. Essa prova usa apenas dados sintéticos. Health da instalação JK,
-origem HTTPS, persistência no volume do servidor, restauração nesse destino,
-criação do administrador real e homologação de provedores continuam pendentes.
-O conector Oficina permaneceu respondendo erro interno `-32603` na última
-verificação; nenhuma ativação no host foi declarada.
+acima. Essa prova usa apenas dados sintéticos. No fechamento de 28–29/10/2026,
+health da instalação JK, origem HTTPS, persistência no volume do servidor,
+restauração nesse destino, criação do administrador real e homologação de
+provedores ficaram pendentes. O conector Oficina respondeu erro interno
+`-32603` naquela verificação; nenhuma ativação no host foi declarada nesse
+registro. Esse é um resultado histórico, não uma descrição presumida do estado
+atual. Os resultados de 0.1.1, inclusive testes, implantação e bloqueios que
+permanecerem, pertencem ao registro de entrega dessa release.

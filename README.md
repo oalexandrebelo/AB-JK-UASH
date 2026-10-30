@@ -2,9 +2,9 @@
 
 Cliente independente do AB-UASH para a operação do Lava Rápido JK, em Rio Verde (GO). Landing page pública em `/` e gestão autenticada em `/app`, com React, TypeScript e Adobe Spectrum 2.
 
-**Versão inicial: 0.1.0.** O código implementa operação local, migração conferida, retirada/entrega e conectores opcionais. A migração dos dados reais e a homologação dos provedores ainda precisam ser concluídas. O estado comprovado de testes e implantação está em [VALIDATION-JK.md](docs/VALIDATION-JK.md); nenhuma página de saúde ou build, isoladamente, declara prontidão de produção.
+**Versão em fechamento: 0.1.1 · revisão de 30/10/2026.** O código implementa operação local, migração conferida, retirada/entrega e conectores opcionais. O baseline `5304ee6` foi efetivamente instalado no AB-PCSRV, com backup e restauração de prova comprovados. A release final 0.1.1 está em validação; a instalação desse baseline não significa que a revisão final já foi instalada. O estado atual de testes, implantação e limites está em [RELEASE-0.1.1.md](docs/RELEASE-0.1.1.md).
 
-A [CI remota](https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791408960) aprovou os testes, a construção Docker, os serviços de aplicação/manutenção, a restauração de backup e a persistência após reinício com dados sintéticos. A instalação real no AB-PCSRV continua bloqueada pelo conector da Oficina.
+Permanecem gates reais: criação privada do administrador, importação e reconciliação dos dados autorizados, configuração/homologação dos provedores adotados e validação do acesso HTTPS externo. Saúde de processo, build ou backup aprovado não encerram esses gates. A [CI remota de 0.1.0](https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791408960) e [VALIDATION-JK.md](docs/VALIDATION-JK.md) preservam a evidência histórica de 28–29/10; seus resultados não são reclassificados como teste da release atual.
 
 ## Executar localmente
 
@@ -47,7 +47,7 @@ A [matriz completa](docs/FEATURE-MATRIX.md) relaciona capacidades, evidência no
 
 ## Implantação JK no AB-PCSRV
 
-O perfil de destino é `compose.yaml`: app em `127.0.0.1:9220`, banco e arquivos privados em `../dados`, execução UID 1001 e imagem somente leitura. O serviço de manutenção executa backup consistente, restaura uma cópia de prova e retém 28 backups válidos. A publicação real e seus limites são registrados no relatório de validação.
+O perfil de destino é `compose.yaml`: app em `127.0.0.1:9220`, banco e arquivos privados em `../dados`, execução UID 1001 e imagem somente leitura. O serviço de manutenção executa backup consistente, restaura uma cópia de prova e retém 28 backups válidos. Esse perfil já foi utilizado para instalar o baseline `5304ee6` no AB-PCSRV, com backup/restauração verificados. O estado da atualização final e do acesso externo fica no [relatório da release 0.1.1](docs/RELEASE-0.1.1.md).
 
 [Procedimentos de operação e recuperação](docs/operations-jk.md) incluem implantação, bootstrap privado, configuração, backup, atualização e rollback. `docker-compose.yml`, `deploy/`, `api/`, `supabase/` e `vercel.json` são perfis herdados: sua presença não significa implantação ou homologação nesta entrega. Use `-f compose.yaml` no destino JK.
 
@@ -57,17 +57,22 @@ Nenhum banco, exportação de cliente, senha, token ou certificado pertence ao r
 
 Consulte [migration-jk.md](docs/migration-jk.md) para os formatos e limites. A exportação nativa de clientes observada é texto delimitado por ponto e vírgula com extensão `.xls`. O importador também aceita CSV, JSON canônico e a variante HTML de planilha; arquivos binários XLS/XLSX exigem conversão prévia. A interface recusa formatos não suportados.
 
-Não houve obtenção do banco completo nem importação de dados reais nesta rodada. O acesso autenticado permitiu observar a unidade e parte dos cadastros; o download da exportação ficou bloqueado na sessão de origem. A migração final depende dos arquivos autorizados e da conferência de contagens, valores e vínculos. Usuários e hashes de senha não são presumidos a partir de um CSV de clientes.
+A importação dos dados reais permanece pendente. Na sessão histórica de 28/10, o acesso autenticado permitiu observar a unidade e parte dos cadastros; o download da exportação ficou bloqueado na origem. A migração final depende dos arquivos autorizados e da conferência de contagens, valores e vínculos. Usuários e hashes de senha não são presumidos a partir de um CSV de clientes. A revisão 0.1.1 corrige integridade do importador e a liberação da tela em instalações sem suporte; detalhes estão na [revisão do núcleo](docs/CORE-REVIEW-2026-10-30.md) e no [relatório atual](docs/RELEASE-0.1.1.md).
 
 ## Documentação
 
 | Documento | Conteúdo |
 | --- | --- |
+| [RELEASE-0.1.1.md](docs/RELEASE-0.1.1.md) | Estado atual da release, validação, baseline instalado e gates restantes |
+| [PRD-JK.md](docs/PRD-JK.md) | Requisitos de produto, jornadas, escopo e critérios de aceite |
+| [PRT-JK.md](docs/PRT-JK.md) | Requisitos técnicos, contratos, segurança e critérios de validação |
 | [MANUAL-JK.md](docs/MANUAL-JK.md) | Operação de cada módulo e roteiro do primeiro teste |
 | [FEATURE-MATRIX.md](docs/FEATURE-MATRIX.md) | Paridade, implementação, evidência e requisitos externos |
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Arquitetura, limites, concorrência, segurança e decisões |
-| [VALIDATION-JK.md](docs/VALIDATION-JK.md) | Resultados efetivos de testes, REA, browser e implantação |
-| [REVIEW-JK.md](docs/REVIEW-JK.md) | Revisão independente e correções verificadas |
+| [CORE-REVIEW-2026-10-30.md](docs/CORE-REVIEW-2026-10-30.md) | Correções e validação focada do núcleo na revisão atual |
+| [VALIDATION-JK.md](docs/VALIDATION-JK.md) | Evidência histórica de testes, REA, browser e CI de 28–29/10 |
+| [REVIEW-JK.md](docs/REVIEW-JK.md) | Revisão independente histórica de 28/10 |
+| [REFERENCES-2026-10-30.md](docs/REFERENCES-2026-10-30.md) | Fontes primárias, funções/licenças das referências e limites da pesquisa |
 | [operations-jk.md](docs/operations-jk.md) | Deploy, bootstrap, backups, restauração e rollback |
 | [migration-jk.md](docs/migration-jk.md) | Contrato e conferência da importação |
 | [JK-DELIVERIES.md](docs/JK-DELIVERIES.md) | Retirada/devolução, estados, permissões e conflitos |

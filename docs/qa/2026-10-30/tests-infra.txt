@@ -1,0 +1,18 @@
+✔ online maintenance proves restore, preserves live sessions and writes private evidence (73.244743ms)
+✔ retention removes only verified older triplets and preserves unrelated or incomplete files (84.995366ms)
+✔ corrupted copies fail offline health and never count toward valid retention (87.604904ms)
+✔ failed restore makes maintenance unhealthy and preserves previous good backups (42.69882ms)
+✔ snapshot freezes the explicit source scope and excludes runtime data and dependencies (55.59344ms)
+✔ verification rejects source drift and extra staged files (41.777025ms)
+✔ snapshot rejects symlinks and oversized files without preserving partial output (17.702689ms)
+✔ runtime probe verifies HTTP, private routes and Host policy without creating users (175.886516ms)
+✔ deployment generator pins public source and preserves runtime isolation without private mounts for verification (1.542655ms)
+✔ probe API and CLI never disclose malformed response bodies or supplied credentials (283.230179ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 631.440908

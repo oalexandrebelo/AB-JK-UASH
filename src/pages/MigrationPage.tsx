@@ -55,7 +55,8 @@ export function MigrationPage() {
   const inputRevision = useRef(0);
   const previewMutation = useMutation();
   const commitMutation = useMutation();
-  const busy = reading || previewMutation.pending || commitMutation.pending;
+  const available = status.data?.supported === true && !status.loading && !status.error;
+  const busy = !available || reading || previewMutation.pending || commitMutation.pending;
   function resetPreview() {inputRevision.current += 1; setPreview(null); setPreviewInput(null); setConfirmed(false); setCommitted(null); setLocalError(null); previewMutation.setError(null); commitMutation.setError(null);}
   async function selectFiles(files: FileList | null) {
     if (!files?.length || busy) return;
@@ -80,6 +81,7 @@ export function MigrationPage() {
     finally {setReading(false);}
   }
   async function preparePreview() {
+    if (busy) return;
     resetPreview();
     try {
       const input = buildInput(uploads);
@@ -89,11 +91,13 @@ export function MigrationPage() {
     } catch (error) {setLocalError(error instanceof Error ? error.message : 'Não foi possível preparar a prévia.');}
   }
   async function commit() {
-    if (!confirmed || !preview?.canCommit || !previewInput) return;
+    if (busy || !confirmed || !preview?.canCommit || !previewInput) return;
     const result = await commitMutation.mutate<MigrationCommit>('/jk/migration/commit', {...previewInput, previewHash:preview.previewHash});
     if (result) {setCommitted(result); setConfirmed(false); status.refresh();}
   }
-  return <><PageHeader eyebrow="CONTROLE DOS DADOS" title="Migração do Jumpcar" description="Traga os registros da operação com prévia, conferência e histórico de importação."><Button variant="secondary" onPress={status.refresh}>Atualizar histórico</Button></PageHeader><ErrorNotice message={status.error} retry={status.refresh}/>
+  const header = <PageHeader eyebrow="CONTROLE DOS DADOS" title="Migração do Jumpcar" description="Traga os registros da operação com prévia, conferência e histórico de importação."><Button variant="secondary" isDisabled={reading || previewMutation.pending || commitMutation.pending || status.loading} onPress={status.refresh}>Atualizar histórico</Button></PageHeader>;
+  if (!status.data?.supported || status.error) return <>{header}<ErrorNotice message={status.error} retry={status.refresh}/>{status.loading ? <Loading label="Verificando a disponibilidade da migração…"/> : !status.error && status.data && <Notice>A importação e o histórico do Jumpcar estão disponíveis na instalação local JK. Esta instalação não oferece esse recurso.</Notice>}</>;
+  return <>{header}<ErrorNotice message={status.error} retry={status.refresh}/>
     <div className="migration-overview"><div className="migration-overview-icon"><Icon name="migration" size={27}/></div><div><h2>Primeiro confira. Depois importe.</h2><p>A prévia mostra o que será incluído e aponta pendências. Os atendimentos e recebimentos antigos ficam no histórico para consulta, sem gerar novas cobranças ou comissões.</p></div><StatusPill tone="blue">Origem: Jumpcar</StatusPill></div>
     <Tabs aria-label="Migração de dados" selectedKey={tab} onSelectionChange={key => setTab(String(key))}><TabList><Tab id="import">Importar arquivos</Tab><Tab id="history">Consultar histórico</Tab></TabList>
       <TabPanel id="import"><div className="migration-tab-content"><ol className="migration-steps" aria-label="Etapas da importação"><li className={uploads.length ? 'complete' : 'current'}><span>1</span>Escolha os arquivos</li><li className={preview ? 'complete' : uploads.length ? 'current' : ''}><span>2</span>Revise a prévia</li><li className={committed ? 'complete' : preview?.canCommit ? 'current' : ''}><span>3</span>Confirme a importação</li></ol>
@@ -107,7 +111,7 @@ export function MigrationPage() {
           {Boolean(preview.warnings?.length) && <div className="migration-warnings"><h3>Observações da importação</h3><ul>{preview.warnings?.map((warning, index) => <li key={index}>{typeof warning === 'string' ? warning : warning.message}</li>)}</ul></div>}
           {preview.issues.length > 0 && <div className="migration-issues"><h3>Pendências encontradas ({preview.issues.length})</h3><DataTable label="Pendências da importação" items={preview.issues.slice(0, 100).map((issue, index) => ({...issue, id:String(index)}))} columns={[{key:'entity',label:'Registro',render:row=>migrationEntityNames[String(row.entity) as MigrationEntity] || String(row.entity)},{key:'row',label:'Linha'},{key:'message',label:'O que conferir'}]}/>{preview.issues.length > 100 && <p className="muted-text">Exibindo as primeiras 100 pendências. Corrija os arquivos e gere uma nova prévia.</p>}</div>}
           <ErrorNotice message={commitMutation.error}/>
-          {committed ? <div className="migration-success" role="status"><Icon name="check" size={24}/><div><h3>{committed.status === 'REPLAYED' ? 'Esta importação já estava concluída.' : 'Importação concluída.'}</h3><p>{dateTime(committed.committedAt)} · Lote {committed.batchId}</p><Button variant="secondary" size="S" onPress={() => setTab('history')}>Consultar histórico importado</Button></div></div> : preview.canCommit ? <div className="migration-confirm"><Checkbox isSelected={confirmed} onChange={setConfirmed} isDisabled={commitMutation.pending}>Revisei a prévia e confirmo a importação destes registros para a operação JK.</Checkbox><p>Será importado exatamente o conjunto analisado. Alterar os arquivos exige uma nova prévia.</p><Button variant="accent" isDisabled={!confirmed} isPending={commitMutation.pending} onPress={commit}>Confirmar importação</Button></div> : <Notice>Corrija as pendências indicadas, selecione os arquivos atualizados e gere uma nova prévia.</Notice>}
+          {committed ? <div className="migration-success" role="status"><Icon name="check" size={24}/><div><h3>{committed.status === 'REPLAYED' ? 'Esta importação já estava concluída.' : 'Importação concluída.'}</h3><p>{dateTime(committed.committedAt)} · Lote {committed.batchId}</p><Button variant="secondary" size="S" onPress={() => setTab('history')}>Consultar histórico importado</Button></div></div> : preview.canCommit ? <div className="migration-confirm"><Checkbox isSelected={confirmed} onChange={setConfirmed} isDisabled={busy}>Revisei a prévia e confirmo a importação destes registros para a operação JK.</Checkbox><p>Será importado exatamente o conjunto analisado. Alterar os arquivos exige uma nova prévia.</p><Button variant="accent" isDisabled={!confirmed || busy} isPending={commitMutation.pending} onPress={commit}>Confirmar importação</Button></div> : <Notice>Corrija as pendências indicadas, selecione os arquivos atualizados e gere uma nova prévia.</Notice>}
         </div></Section>}
         {!uploads.length && <div className="migration-help"><Icon name="help"/><p>Na exportação nativa de clientes, campos de veículos e valores podem ser preservados como evidência histórica. A prévia explica como cada informação será tratada.</p></div>}
       </div></TabPanel>

@@ -63,9 +63,23 @@ export function parseJumpcarHtml(content) {
   if (!/<table\b/iu.test(content)) fail('UNSUPPORTED_XLS','XLS binário e XLSX não são suportados. Exporte CSV ou uma tabela HTML.');
   const tables = [...content.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table\s*>/giu)];
   if (tables.length !== 1 || (content.match(/<table\b/giu) || []).length !== 1) fail('UNSUPPORTED_HTML_TABLE','O arquivo deve conter exatamente uma tabela HTML simples.');
-  const body = tables[0][1];
+  const body = tables[0][1].replace(/<!--[\s\S]*?-->/gu,'');
   if (/<(?:script|style|iframe|object|table)\b/iu.test(body) || /\b(?:colspan|rowspan)\s*=\s*["']?(?!1(?:["'\s>]|$))/iu.test(body)) fail('UNSUPPORTED_HTML_TABLE','A tabela contém estrutura ou conteúdo ativo não suportado.');
-  const records = [...body.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr\s*>/giu)].map(match => [...match[1].matchAll(/<t[dh]\b[^>]*>([\s\S]*?)<\/t[dh]\s*>/giu)].map(cell => decodeEntities(cell[1].replace(/<br\s*\/?\s*>/giu,'\n').replace(/<[^>]*>/gu,'')).trim()));
+  const malformed = () => fail('UNSUPPORTED_HTML_TABLE','A tabela contém linhas, células ou conteúdo sem estrutura completa. Nenhum registro pode ser descartado.');
+  const rowPattern = /<tr\b[^>]*>([\s\S]*?)<\/tr\s*>/giu;
+  const cellPattern = /<(td|th)\b[^>]*>([\s\S]*?)<\/\1\s*>/giu;
+  const records = [...body.matchAll(rowPattern)].map(match => {
+    if (/<\/?(?:thead|tbody|tfoot|tr)\b/iu.test(match[1])) malformed();
+    const cells = [...match[1].matchAll(cellPattern)];
+    if (match[1].replace(cellPattern,'').trim()) malformed();
+    return cells.map(cell => {
+      if (/<\/?(?:td|th)\b/iu.test(cell[2])) malformed();
+      return decodeEntities(cell[2].replace(/<br\s*\/?\s*>/giu,'\n').replace(/<[^>]*>/gu,'')).trim();
+    });
+  });
+  // Only section wrappers and whitespace may remain outside complete rows.
+  // A missing closing tag used to make the corresponding record disappear.
+  if (body.replace(rowPattern,'').replace(/<\/?(?:thead|tbody|tfoot)\b[^>]*>/giu,'').trim()) malformed();
   if (records.length > MAX_IMPORT_ROWS + 1) fail('TOO_MANY_IMPORT_ROWS','O limite é de 20.000 linhas por importação.');
   return validateTable(records);
 }

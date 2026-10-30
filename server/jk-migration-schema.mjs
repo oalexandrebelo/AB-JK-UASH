@@ -1,6 +1,9 @@
+import { transaction } from './db.mjs';
+
 // Additive, private SQLite tables. Domain schema/version and authentication stay unchanged.
 export function initializeJkMigration(raw) {
-  raw.exec(`
+  transaction(raw,() => {
+    raw.exec(`
     CREATE TABLE IF NOT EXISTS jk_migration_batches (
       id TEXT PRIMARY KEY,source TEXT NOT NULL,scope TEXT NOT NULL,input_hash TEXT NOT NULL,
       preview_hash TEXT NOT NULL,report_json TEXT NOT NULL,actor_id TEXT REFERENCES users(id),committed_at TEXT NOT NULL,
@@ -27,7 +30,7 @@ export function initializeJkMigration(raw) {
       quantity INTEGER NOT NULL CHECK(quantity>0),unit_price_cents INTEGER NOT NULL CHECK(unit_price_cents>=0),
       line_total_cents INTEGER NOT NULL CHECK(line_total_cents=quantity*unit_price_cents),
       discount_cents INTEGER NOT NULL CHECK(discount_cents>=0),net_cents INTEGER NOT NULL CHECK(net_cents=line_total_cents-discount_cents AND net_cents>=0),
-      commission_cents INTEGER NOT NULL CHECK(commission_cents>=0),
+      commission_cents INTEGER NOT NULL CHECK(commission_cents>=0),created_at TEXT,
       batch_id TEXT NOT NULL REFERENCES jk_migration_batches(id)
     ) STRICT;
     CREATE TABLE IF NOT EXISTS jk_history_payments (
@@ -44,5 +47,11 @@ export function initializeJkMigration(raw) {
     CREATE INDEX IF NOT EXISTS jk_history_orders_customer ON jk_history_orders(customer_id,created_at);
     CREATE INDEX IF NOT EXISTS jk_history_items_order ON jk_history_order_items(order_id);
     CREATE INDEX IF NOT EXISTS jk_history_payments_order ON jk_history_payments(order_id);
-  `);
+    `);
+    // The original import accepted createdAt but did not persist it for items.
+    // Existing rows stay null: their original timestamp cannot be recovered from
+    // a hash, and the batch timestamp must not be presented as the source date.
+    const columns = raw.prepare('PRAGMA table_info(jk_history_order_items)').all();
+    if (!columns.some(column => column.name === 'created_at')) raw.exec('ALTER TABLE jk_history_order_items ADD COLUMN created_at TEXT');
+  });
 }

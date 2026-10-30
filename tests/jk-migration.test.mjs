@@ -144,6 +144,98 @@ test('native plate extraction preserves one-character names, rejects conflicting
   assert.equal((await db.prepare('SELECT name FROM customers').get()).name,'.');
 });
 
+test('historical item creation dates survive the commit and history API',async t => {
+  const {db} = fixture(t), input = payload();
+  input.dataset.orderItems[0].createdAt = '2025-01-02T08:30:00-03:00';
+  const preview = await previewJkMigration(db,input);
+  await commitJkMigration(db,input,{previewHash:preview.previewHash});
+  const history = await jkMigrationHistory(db,new URL('http://local/history?entity=orderItems'));
+  assert.equal(history.items[0].createdAt,'2025-01-02T11:30:00.000Z');
+});
+
+test('upgrading a prior history schema retains records and leaves previously lost dates unknown',async t => {
+  const {db,raw} = fixture(t), input = payload();
+  const preview = await previewJkMigration(db,input);
+  const committed = await commitJkMigration(db,input,{previewHash:preview.previewHash});
+  assert.equal((await db.prepare('SELECT created_at FROM jk_history_order_items').get()).created_at,committed.committedAt);
+  const schemaVersion = raw.prepare('PRAGMA user_version').get().user_version;
+  raw.exec('ALTER TABLE jk_history_order_items DROP COLUMN created_at');
+  initializeJkMigration(raw);
+  initializeJkMigration(raw);
+  assert.equal(raw.prepare('PRAGMA user_version').get().user_version,schemaVersion);
+  const history = await jkMigrationHistory(db,new URL('http://local/history?entity=orderItems'));
+  assert.equal(history.page.total,1);
+  assert.equal(history.items[0].createdAt,null);
+  assert.equal(history.items[0].netCents,9000);
+  assert.deepEqual(await db.prepare('PRAGMA foreign_key_check').all(),[]);
+  assert.equal((await commitJkMigration(db,input,{previewHash:preview.previewHash})).status,'REPLAYED');
+});
+
+test('an audited local administrator must still be active at commit and on idempotent replay',async t => {
+  const {db} = fixture(t), input = payload(), preview = await previewJkMigration(db,input);
+  const options = {previewHash:preview.previewHash,actorId:'migration-test-admin',idempotencyKey:'current-admin-import'};
+  await db.prepare("UPDATE users SET role='operator' WHERE id=?").run(options.actorId);
+  await assert.rejects(commitJkMigration(db,input,options),{code:'ADMIN_REQUIRED'});
+  for (const table of ['customers','jk_migration_batches','audit_events','idempotency_keys']) assert.equal(await count(db,table),0,table);
+  await db.prepare("UPDATE users SET role='admin' WHERE id=?").run(options.actorId);
+  const first = await commitJkMigration(db,input,options);
+  await db.prepare('UPDATE users SET active=0 WHERE id=?').run(options.actorId);
+  await assert.rejects(commitJkMigration(db,input,options),{code:'ADMIN_REQUIRED'});
+  await assert.rejects(commitJkMigration(db,input,{previewHash:preview.previewHash,actorId:options.actorId}),{code:'ADMIN_REQUIRED'});
+  assert.equal(await count(db,'jk_migration_batches'),1);
+  assert.equal(await count(db,'audit_events'),1);
+  await db.prepare('UPDATE users SET active=1 WHERE id=?').run(options.actorId);
+  const replay = await commitJkMigration(db,input,options);
+  assert.equal(replay.status,'REPLAYED');
+  assert.equal(replay.batchId,first.batchId);
+});
+
+test('incremental history reconciles existing items and receipts for every affected order',async t => {
+  const {db} = fixture(t), input = payload();
+  input.dataset.payments[0].amountCents = 1000;
+  const first = await previewJkMigration(db,input);
+  await commitJkMigration(db,input,{previewHash:first.previewHash});
+  const payment = {...input.dataset.payments[0],sourceId:'p-2',amountCents:8000};
+  const next = {source:'jumpcar',dataset:{schemaVersion:1,orders:input.dataset.orders,payments:[payment]}};
+  const preview = await previewJkMigration(db,next);
+  assert.equal(preview.canCommit,true,JSON.stringify(preview.issues));
+  assert.equal(preview.counts.orders.unchanged,1);
+  assert.equal(preview.counts.orderItems.received,0);
+  assert.equal(preview.counts.payments.insert,1);
+  assert.deepEqual(preview.reconciliation,{ordersTotalCents:9000,itemNetTotalCents:9000,paymentsTotalCents:9000,historicalOutstandingCents:0,operationalWrites:{orders:0,payments:0,cashMovements:0,invoices:0,fiscalDocuments:0,messages:0,stockMovements:0,commissions:0}});
+  await commitJkMigration(db,next,{previewHash:preview.previewHash});
+  const status = await jkMigrationStatus(db);
+  assert.equal(status.totals.historicalOutstandingCents,0);
+  assert.equal(status.latestBatches[0].reconciliation.historicalOutstandingCents,0);
+  const unchanged = await previewJkMigration(db,{source:'jumpcar',dataset:{schemaVersion:1,payments:[payment]}});
+  assert.equal(unchanged.canCommit,true);
+  assert.equal(unchanged.reconciliation.ordersTotalCents,9000);
+  assert.equal(unchanged.reconciliation.paymentsTotalCents,9000);
+  assert.equal(unchanged.reconciliation.historicalOutstandingCents,0);
+  for (const table of ['orders','payments','cash_movements','invoices']) assert.equal(await count(db,table),0,table);
+});
+
+test('HTML import rejects partial rows and cells instead of silently omitting source data',async t => {
+  const {db} = fixture(t);
+  const header = `<tr>${CUSTOMER_HEADERS.map(value => `<th>${value}</th>`).join('')}</tr>`;
+  const cells = ['Cliente sintético','--','11999999999','--','--','0,00','--','--','--'].map(value => `<td>${value}</td>`).join('');
+  const validRow = `<tr>${cells}</tr>`;
+  const valid = await previewJkMigration(db,{source:'jumpcar',files:[{entity:'customers',format:'jumpcar-html',content:`<table><thead>${header}</thead><tbody><!-- exportação sintética -->${validRow}</tbody></table>`}]});
+  assert.equal(valid.canCommit,true);assert.equal(valid.counts.customers.received,1);
+  for (const broken of [
+    `<tr>${cells}`,
+    `<tr>${cells.replace('</td>','')}</tr>`,
+    `<tr>${cells.replace('</td>','</th>')}</tr>`,
+    `<tr>${validRow}</tr>`,
+    `<td>Registro fora da linha</td>`,
+    'Registro fora da linha',
+  ]) {
+    const content = `<table>${header}${validRow}${broken}</table>`;
+    await assert.rejects(previewJkMigration(db,{source:'jumpcar',files:[{entity:'customers',format:'jumpcar-html',content}]}),{code:'UNSUPPORTED_HTML_TABLE'});
+    assert.equal(await count(db,'jk_migration_batches'),0);
+  }
+});
+
 test('CSV quoting, canonical columns, disguised HTML, malformed tables and binary XLS fail safely',async t => {
   const {db} = fixture(t);
   assert.deepEqual(parseCsv('a;b\r\n"x;y";"linha\n2"\r\n'),[['a','b'],['x;y','linha\n2']]);

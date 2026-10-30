@@ -197,18 +197,27 @@ async function preparePlan(db,input) {
     if (entry.entity === 'orderItems' && entry.refs.orderId) group(itemsByOrder,entry.refs.orderId,entry.targetId,{subtotal:entry.value.lineTotalCents,discount:entry.value.discountCents,net:entry.value.netCents});
     if (entry.entity === 'payments' && entry.refs.orderId) group(paymentsByOrder,entry.refs.orderId,entry.targetId,entry.value.amountCents);
   }
-  for (const entry of entries.filter(row => row.entity === 'orders')) {
-    const items = itemsByOrder.get(entry.targetId) || new Map(), payments = paymentsByOrder.get(entry.targetId) || new Map();
+  // Reconciliation covers complete affected orders, including rows imported in
+  // earlier batches. Received/insert/unchanged counts remain specific to input.
+  const affectedOrders = new Map(entries.filter(entry => entry.entity === 'orders').map(entry => [entry.targetId,{entry,value:entry.value}]));
+  for (const entry of entries) {
+    if (!entry.refs.orderId || affectedOrders.has(entry.refs.orderId)) continue;
+    const existing = targets.orders.get(entry.refs.orderId);
+    if (existing) affectedOrders.set(existing.id,{entry:null,value:{subtotalCents:existing.subtotal_cents,discountCents:existing.discount_cents,totalCents:existing.total_cents,status:existing.status}});
+  }
+  for (const [orderId,{entry,value}] of affectedOrders) {
+    const items = itemsByOrder.get(orderId) || new Map(), payments = paymentsByOrder.get(orderId) || new Map();
     const sum = field => [...items.values()].reduce((total,item) => total + BigInt(item[field]),0n);
-    if (!items.size || sum('subtotal') !== BigInt(entry.value.subtotalCents) || sum('discount') !== BigInt(entry.value.discountCents) || sum('net') !== BigInt(entry.value.totalCents)) issue(entry,'ORDER_ITEMS_MISMATCH','Os itens devem reconciliar exatamente subtotal, desconto e total da OS.');
+    const net = sum('net');
+    if (!items.size || sum('subtotal') !== BigInt(value.subtotalCents) || sum('discount') !== BigInt(value.discountCents) || net !== BigInt(value.totalCents)) issue(entry,'ORDER_ITEMS_MISMATCH','Os itens devem reconciliar exatamente subtotal, desconto e total da OS.');
     const paid = [...payments.values()].reduce((total,value) => total + BigInt(value),0n);
-    if (paid > BigInt(entry.value.totalCents)) issue(entry,'PAYMENT_TOTAL_MISMATCH','A soma dos pagamentos excede o total da OS. Estornos exigem um layout próprio.');
-    if (entry.value.status === 'cancelled' && paid > 0n) issue(entry,'CANCELLED_ORDER_PAYMENT','OS cancelada com recebimento exige reconciliação de estorno antes da importação.');
-    ordersTotalCents += entry.value.totalCents;
+    if (paid > BigInt(value.totalCents)) issue(entry,'PAYMENT_TOTAL_MISMATCH','A soma dos pagamentos excede o total da OS. Estornos exigem um layout próprio.');
+    if (value.status === 'cancelled' && paid > 0n) issue(entry,'CANCELLED_ORDER_PAYMENT','OS cancelada com recebimento exige reconciliação de estorno antes da importação.');
+    ordersTotalCents += value.totalCents;
+    paymentsTotalCents += Number(paid);
+    itemNetTotalCents += Number(net);
   }
   for (const entry of entries) {
-    if (entry.entity === 'payments') paymentsTotalCents += entry.value.amountCents;
-    if (entry.entity === 'orderItems') itemNetTotalCents += entry.value.netCents;
     if (!rejected.has(`${entry.entity}:${entry.row}`)) counts[entry.entity][entry.action]++;
   }
   for (const key of rejected) counts[key.split(':')[0]].rejected++;
@@ -231,7 +240,7 @@ async function insertEntry(db,entry,batchId,stamp) {
   if (entity === 'vehicles') await db.prepare('INSERT INTO vehicles(id,customer_id,plate,model,color,category,active,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)').run(id,r.customerId,v.plate,v.model,v.color,v.category,Number(v.active),created,stamp);
   if (entity === 'services') await db.prepare('INSERT INTO services(id,name,price_cents,duration_minutes,commission_bps,active,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)').run(id,v.name,v.priceCents,v.durationMinutes,v.commissionBps,Number(v.active),created,stamp);
   if (entity === 'orders') await db.prepare('INSERT INTO jk_history_orders(id,number,customer_id,vehicle_id,status,subtotal_cents,discount_cents,total_cents,notes,created_at,delivered_at,batch_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)').run(id,v.number,r.customerId,r.vehicleId,v.status,v.subtotalCents,v.discountCents,v.totalCents,v.notes,created,v.deliveredAt,batchId);
-  if (entity === 'orderItems') await db.prepare('INSERT INTO jk_history_order_items(id,order_id,service_id,name,quantity,unit_price_cents,line_total_cents,discount_cents,net_cents,commission_cents,batch_id) VALUES(?,?,?,?,?,?,?,?,?,?,?)').run(id,r.orderId,r.serviceId,v.name,v.quantity,v.unitPriceCents,v.lineTotalCents,v.discountCents,v.netCents,v.historicalCommissionCents,batchId);
+  if (entity === 'orderItems') await db.prepare('INSERT INTO jk_history_order_items(id,order_id,service_id,name,quantity,unit_price_cents,line_total_cents,discount_cents,net_cents,commission_cents,created_at,batch_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)').run(id,r.orderId,r.serviceId,v.name,v.quantity,v.unitPriceCents,v.lineTotalCents,v.discountCents,v.netCents,v.historicalCommissionCents,created,batchId);
   if (entity === 'payments') await db.prepare('INSERT INTO jk_history_payments(id,order_id,customer_id,amount_cents,method,reference,created_at,batch_id) VALUES(?,?,?,?,?,?,?,?)').run(id,r.orderId,r.customerId,v.amountCents,v.method,v.reference,created,batchId);
   const origin = entry.origin;
   await db.prepare('INSERT INTO jk_migration_records(source,scope,entity,origin_key,source_id,provenance,snapshot_hash,source_row,target_id,row_hash,batch_id) VALUES(?,?,?,?,?,?,?,?,?,?,?)').run('jumpcar','jk',entity,entry.originKey,v.sourceId,origin ? 'snapshot-row' : 'source-id',origin?.snapshotHash || null,origin?.row || null,id,entry.rowHash,batchId);
@@ -242,8 +251,13 @@ export async function commitJkMigration(db,input,{previewHash = input?.previewHa
   assert(db.mode === 'local',501,'JK_MIGRATION_LOCAL_ONLY','A migração JK está disponível somente no armazenamento SQLite local.');
   assert(typeof previewHash === 'string' && /^[a-f0-9]{64}$/u.test(previewHash),422,'PREVIEW_HASH_REQUIRED','Informe o hash da prévia revisada.');
   const decoded = decodeImport(input);
-  const operation = async () => {
+  const authorizeCommit = async () => {
     if (authorize) await authorize();
+    // Local callers can supply an audited administrator without an HTTP session.
+    // Check that principal in the same transaction as writes and replay lookup.
+    if (actorId !== null) assert(await db.prepare("SELECT id FROM users WHERE id=? AND active=1 AND role='admin'").get(actorId),403,'ADMIN_REQUIRED','O ator precisa ser um administrador ativo.');
+  };
+  const operation = async () => {
     const prior = await db.prepare("SELECT preview_hash,report_json FROM jk_migration_batches WHERE source='jumpcar' AND scope='jk' AND input_hash=?").get(decoded.inputHash);
     if (prior) {
       assert(prior.preview_hash === previewHash,409,'PREVIEW_HASH_MISMATCH','O hash não corresponde ao lote confirmado.');
@@ -263,10 +277,10 @@ export async function commitJkMigration(db,input,{previewHash = input?.previewHa
   };
   if (idempotencyKey !== undefined) {
     assert(actorId,401,'AUTH_REQUIRED','A importação exige um administrador autenticado.');
-    const response = await idempotentWrite(db,{actorId,key:idempotencyKey,method:'POST',path:'/api/jk/migration/commit',body:{input:canonical(input),previewHash},authorize},operation);
+    const response = await idempotentWrite(db,{actorId,key:idempotencyKey,method:'POST',path:'/api/jk/migration/commit',body:{input:canonical(input),previewHash},authorize:authorizeCommit},operation);
     return response.replayed ? {...response,status:'REPLAYED',replayed:true} : response;
   }
-  return transaction(db,operation);
+  return transaction(db,async () => { await authorizeCommit(); return operation(); });
 }
 
 function available(db) { assert(db.mode === 'local',501,'JK_MIGRATION_LOCAL_ONLY','A migração JK está disponível somente no armazenamento SQLite local.'); }

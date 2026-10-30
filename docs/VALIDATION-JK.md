@@ -1,6 +1,8 @@
-# Validação de entrega · AB-JK-UASH 0.1.0
+# Validação histórica · AB-JK-UASH 0.1.0 · 28–29/10/2026
 
-Registro da rodada local de 28 de outubro de 2026 e do fechamento remoto em 29 de outubro de 2026. **O código passou pelos gates locais descritos abaixo. A implantação no AB-PCSRV, o bootstrap privado, a migração real e a homologação externa continuam pendentes.** Este documento separa cada prova; não converte build, teste ou análise estática em declaração de prontidão integral de produção.
+**Documento histórico.** Os resultados, hashes e bloqueios abaixo pertencem à rodada local de 28 de outubro de 2026 e ao fechamento remoto de 29 de outubro de 2026. O estado atual está em [RELEASE-0.1.1.md](RELEASE-0.1.1.md); não interpretar as contagens deste documento como testes da release 0.1.1.
+
+Naquele fechamento, a implantação no AB-PCSRV, o bootstrap privado, a migração real e a homologação externa estavam pendentes. Em 30/10, o baseline `5304ee6` foi instalado no AB-PCSRV e teve backup/restauração de prova comprovados; o bloqueio de instalação descrito nesta evidência foi superado para esse baseline. A release final 0.1.1 segue em validação, com gates próprios de administrador, importação, provedores e HTTPS externo no relatório atual. Build, teste ou análise estática não constituem, isoladamente, prontidão integral de produção.
 
 ## Resultado executado
 

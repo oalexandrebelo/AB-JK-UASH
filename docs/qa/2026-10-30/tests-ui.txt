@@ -1,0 +1,36 @@
+✔ bootstrap no bundle: instalação pendente, token somente em header e metadados de banco preservados (4739.951636ms)
+✔ CSV trata fórmulas, controles iniciais, aspas e unidades monetárias sem alterar o valor (1.257624ms)
+▶ fiscal no bundle: prepara sem emitir, valida tomador, cancela e reconcilia resultado incerto
+  ✔ paginação fiscal usa total porque o contrato não tem hasMore (212.438557ms)
+  ✔ operador não recebe navegação fiscal nem carrega o endpoint pela rota direta (337.97857ms)
+✔ fiscal no bundle: prepara sem emitir, valida tomador, cancela e reconcilia resultado incerto (5559.261422ms)
+▶ hooks reais: concorrência, retry idempotente, respostas obsoletas, limpeza de estado e fuso
+  ✔ duas chamadas no mesmo tick geram uma única escrita (14.46831ms)
+  ✔ perda da resposta depois do commit reutiliza chave e não duplica registro (31.200365ms)
+  ✔ mudança de rota não expõe dados anteriores nem aceita resposta atrasada (165.236258ms)
+  ✔ recurso desativado remove erro e dados, sem requisição adicional (44.786624ms)
+  ✔ datas seguem São Paulo e valores monetários preservam centavos (1.24134ms)
+✔ hooks reais: concorrência, retry idempotente, respostas obsoletas, limpeza de estado e fuso (746.986431ms)
+✔ bundle de produção: setup, operação e persistência por DOM emulado + HTTP real (12953.890364ms)
+▶ JK no bundle: migração revisada, transporte e integrações bloqueadas com HTTP real
+  ✔ suporte indisponível ou não confirmado impede selecionar e enviar arquivos (384.022719ms)
+  ✔ prévia não grava, mudança de arquivo invalida confirmação e commit preserva histórico sem recebimento operacional (563.068829ms)
+  ✔ Pix e WhatsApp preparam e cancelam localmente, mantendo envio bloqueado e saldo aberto (2767.368932ms)
+  ✔ transporte criado pela UI persiste responsável/endereço e transita até conclusão auditada (1716.792496ms)
+  ✔ perfil de consulta não carrega nem altera migração, transportes ou gestão de integrações (537.064118ms)
+✔ JK no bundle: migração revisada, transporte e integrações bloqueadas com HTTP real (10037.920418ms)
+▶ revisão UI: foco, escrita pendente, falhas de leitura e paginação preservam o trabalho
+  ✔ atalho de conteúdo mantém a rota; abas usam foco e semântica de painel (465.418042ms)
+  ✔ salvamento pendente bloqueia Escape e cancelamento, sem escrita duplicada (575.882891ms)
+  ✔ falha ao ler folha bloqueia o envio que apagaria ajustes existentes (495.1074ms)
+  ✔ erro de lista não afirma cadastro vazio e o retry recupera a criação (516.121325ms)
+  ✔ trocar filtro busca somente a primeira página e reduzir o total corrige a página (1029.306409ms)
+✔ revisão UI: foco, escrita pendente, falhas de leitura e paginação preservam o trabalho (4416.945489ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16796.76884

@@ -5,7 +5,15 @@ import {join} from 'node:path';
 import {fixture, until, fill, click, choose, submit, button, field, uiQaAvailable, uiQaSkipReason} from './ui-helpers.mjs';
 
 test('JK no bundle: migração revisada, transporte e integrações bloqueadas com HTTP real', {timeout: 90000, skip: !uiQaAvailable && uiQaSkipReason}, async t => {
-  const f = await fixture(t, {application: {fiscalEnv: {}, jkIntegrationsEnv: {}}});
+  let migrationAvailability = 'available';
+  const f = await fixture(t, {application: {fiscalEnv: {}, jkIntegrationsEnv: {}}, responseOverride:async ({url}) => {
+    if (url.pathname !== '/api/jk/migration/status' || migrationAvailability === 'available') return null;
+    const unavailable = migrationAvailability === 'unavailable';
+    return new Response(JSON.stringify(unavailable
+      ? {ok:true,data:{supported:false,mode:'historical',source:'jumpcar',scope:'jk',reason:'SQLITE_LOCAL_REQUIRED',limits:{maxBytes:8388608,maxRows:20000}}}
+      : {ok:false,error:{code:'QA_READ_FAILURE',message:'Não foi possível confirmar a disponibilidade da migração.'}}),
+    {status:unavailable ? 200 : 503,headers:{'content-type':'application/json'}});
+  }});
   await until(() => f.text().includes('Prepare a operação JK'), 'primeiro acesso JK');
   await fill(f, 'Seu nome', 'Administrador QA JK');
   await fill(f, 'E-mail', 'qa-jk@example.test');
@@ -18,6 +26,36 @@ test('JK no bundle: migração revisada, transporte e integrações bloqueadas c
     return result.data.item;
   };
   const count = async table => (await f.app.store.prepare(`SELECT COUNT(*) AS count FROM ${table}`).get()).count;
+
+  await t.test('suporte indisponível ou não confirmado impede selecionar e enviar arquivos', async () => {
+    migrationAvailability = 'unavailable';
+    const before = f.requests.length;
+    await f.route('migration');
+    await until(() => f.text().includes('Esta instalação não oferece esse recurso.'), 'migração indisponível informada');
+    assert.equal(f.document.querySelector('input[type="file"]'), null);
+    assert.ok(!f.text().includes('Analisar e gerar prévia'));
+    assert.ok(!f.text().includes('Consultar histórico'));
+    assert.equal(f.requests.slice(before).filter(row => /^\/api\/jk\/migration\/(history|preview|commit)(?:\?|$)/u.test(row.path)).length, 0);
+
+    migrationAvailability = 'failed';
+    await click(f, 'Atualizar histórico');
+    await until(() => f.text().includes('Não foi possível confirmar a disponibilidade da migração.'), 'falha de disponibilidade informada');
+    assert.equal(f.document.querySelector('input[type="file"]'), null);
+    assert.ok(!f.text().includes('Esta instalação não oferece esse recurso.'), 'Falha de leitura não confirma incompatibilidade.');
+
+    migrationAvailability = 'available';
+    await click(f, 'Tentar novamente');
+    await until(() => f.document.querySelector('input[type="file"]'), 'seleção liberada após confirmação do suporte');
+    assert.equal(button(f, 'Escolher arquivos').disabled, false);
+    migrationAvailability = 'failed';
+    await click(f, 'Atualizar histórico');
+    await until(() => f.text().includes('Não foi possível confirmar a disponibilidade da migração.'), 'falha posterior bloqueia suporte em cache');
+    assert.equal(f.document.querySelector('input[type="file"]'), null);
+    migrationAvailability = 'available';
+    await click(f, 'Tentar novamente');
+    await until(() => f.document.querySelector('input[type="file"]'), 'suporte recuperado');
+    assert.equal(f.requests.slice(before).filter(row => /^\/api\/jk\/migration\/(preview|commit)$/u.test(row.path)).length, 0);
+  });
 
   await t.test('prévia não grava, mudança de arquivo invalida confirmação e commit preserva histórico sem recebimento operacional', async () => {
     const date = '2025-01-02T12:00:00.000Z';

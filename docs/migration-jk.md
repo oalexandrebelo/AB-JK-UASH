@@ -4,6 +4,8 @@ O importador é compatível com o armazenamento assíncrono SQLite do UASH 0.2.1
 
 A importação tem três etapas: prévia somente de leitura, revisão do relatório e confirmação com o SHA-256 da prévia. O commit revalida o conteúdo e o estado do banco dentro de uma transação. Uma falha reverte cadastros, histórico, correspondências de origem, auditoria e resposta idempotente juntos.
 
+As correções de preservação de datas, reconciliação incremental, parsing HTML e autorização do ator estão documentadas na [revisão do núcleo de 30/10/2026](CORE-REVIEW-2026-10-30.md). O contrato de entrada permanece `schemaVersion: 1`; a revisão não declara importação dos dados reais.
+
 ## Destinos e limites funcionais
 
 | Entrada | Destino | Efeito |
@@ -36,7 +38,9 @@ initializeJkMigration(raw);
 const response = await handleJkMigration(context);
 ```
 
-O handler usa `readJson`, a sessão existente, `requireRole`, `requireLiveRole` e `verifyCsrf`. A confirmação também revalida o administrador dentro da transação, inclusive em replays. Todas as rotas são exclusivas de administradores ativos. A inicialização é aditiva e não altera `PRAGMA user_version`.
+O handler usa `readJson`, a sessão existente, `requireRole`, `requireLiveRole` e `verifyCsrf`. A confirmação revalida a sessão e o administrador dentro da transação, inclusive antes de devolver replays. Todas as rotas são exclusivas de administradores ativos. Para chamadas locais com `actorId`, o núcleo também exige que esse ator continue sendo administrador ativo no momento da confirmação ou replay; uma verificação anterior pela CLI não substitui essa conferência.
+
+A inicialização é aditiva, transacional e idempotente; não altera `PRAGMA user_version`. Bancos anteriores recebem a coluna `jk_history_order_items.created_at`. As linhas já existentes ficam com `null`, porque a versão anterior aceitava essa data na entrada, mas não a persistia. Nenhuma data antiga é reconstruída ou preenchida a partir do horário do lote. Inicie a versão atual da aplicação para concluir essa atualização antes de usar a CLI em um banco anterior. A prévia da CLI continua somente de leitura e não atualiza o esquema.
 
 ## Contrato HTTP
 
@@ -89,11 +93,17 @@ O relatório contém:
 - `counts`: por coleção, `received`, `insert`, `unchanged`, `rejected`.
 - `issues`: lista de `{entity,row,code,message,field?}`. Até 1.000 problemas são detalhados; `totalIssueCount` informa o total. Os erros não ecoam valores pessoais.
 - `warnings`: lista de `{code,message,count?}` com transformações e limitações conhecidas.
-- `reconciliation`: `ordersTotalCents`, `itemNetTotalCents`, `paymentsTotalCents`, `historicalOutstandingCents` e `operationalWrites`, sempre zerado para efeitos operacionais.
+- `reconciliation`: `ordersTotalCents`, `itemNetTotalCents`, `paymentsTotalCents` e `historicalOutstandingCents` das OS afetadas completas; `operationalWrites` permanece zerado para todos os efeitos operacionais.
 - `identityMap`: para clientes/veículos nativos, `{entity,row,importId,sourceId:null,provenance:"snapshot-row",snapshotHash}`. `row` inclui a linha do cabeçalho: o primeiro cliente é a linha 2.
 - `replayAvailable:true` quando o mesmo lote já foi confirmado. Neste caso o hash original permanece válido, `insert` é zero e `unchanged` cobre o lote já aplicado.
 
 A prévia não grava batch, arquivo, log ou tabela temporária. O relatório confirma coerência do material fornecido; ele não certifica que a extração incluiu todos os registros existentes no Jumpcar.
+
+**Reconciliação incremental:** cada OS afetada entra uma vez nos totais, considerando seus itens e pagamentos já importados junto com as linhas do lote atual. As OS afetadas incluem as fornecidas diretamente e aquelas referenciadas por itens ou pagamentos do lote, inclusive quando estes registros já existiam. As contagens `received`, `insert`, `unchanged` e `rejected` continuam referentes somente à entrada do lote. Itens ou pagamentos novos ainda exigem a respectiva OS no lote para conferência.
+
+Por exemplo, uma OS de 9.000 centavos com 1.000 já recebidos, revisitada em um lote com pagamento adicional de 8.000, apresenta `ordersTotalCents: 9000`, `itemNetTotalCents: 9000`, `paymentsTotalCents: 9000` e `historicalOutstandingCents: 0`. Os 9.000 centavos de pagamentos são o total reconciliado da OS; somente 8.000 correspondem ao novo recebimento histórico desse lote.
+
+**Não some relatórios de lotes que revisitem a mesma OS.** Isso contaria valores anteriores novamente. Para os totais globais atuais, use `GET /api/jk/migration/status`, que calcula as somas diretamente das tabelas históricas. Os relatórios de lotes já confirmados são preservados como evidência da confirmação; seu replay não recalcula valores nem corrige relatórios produzidos antes da revisão de 30/10/2026.
 
 ### Confirmação
 
@@ -128,7 +138,9 @@ Se o conteúdo ou os cadastros/histórico relevantes mudarem desde a prévia, re
 
 Todos os registros canônicos exigem `sourceId` textual, estável, sem espaços, de até 256 caracteres. Números de origem devem ser enviados como strings para preservar zeros iniciais. Os IDs são vinculados ao sistema e escopo; nomes, e-mails e telefones não são chaves de deduplicação. O destino recebe um ID técnico determinístico, guardando o ID real em separado.
 
-Todos aceitam `createdAt`. É obrigatório para OS e pagamentos; nos demais casos a data ausente será a data da importação, sem alegar ser a criação histórica. Datas fornecidas precisam de horário e fuso ISO 8601. `2025-01-02T12:00:00.000Z` é um exemplo sintético.
+Todos aceitam `createdAt`. É obrigatório para OS e pagamentos. Nas demais coleções, uma importação nova usa a data da confirmação quando o valor for omitido, `null` ou vazio; essa data é um valor operacional inicial, sem alegar ser a criação histórica. Datas fornecidas precisam de horário e fuso ISO 8601 e são normalizadas para UTC. `2025-01-02T12:00:00.000Z` é um exemplo sintético.
+
+Para `orderItems`, `createdAt` é persistido em `jk_history_order_items.created_at` e devolvido como `createdAt` no histórico. Itens importados por versões anteriores, que perderam esse campo, permanecem com `createdAt: null` após a atualização aditiva. Repetir o lote não restaura a data: o replay preserva os registros e a resposta existentes. Recuperar uma data perdida exige a exportação original autorizada e uma reconciliação explícita, fora da reaplicação automática deste contrato.
 
 | Coleção | Campos obrigatórios além de `sourceId` | Opcionais e valores iniciais |
 | --- | --- | --- |
@@ -162,6 +174,8 @@ Nome;E-mail;Telefone;Situação da fatura;Data de vencimento;Valor da fatura;Ve�
 
 CSV UTF-8 e uma única tabela HTML simples são aceitos. HTML não é executado nem carrega recursos externos. O layout não fornece IDs Jumpcar, data de criação, status ativo individual ou cadastro estruturado dos veículos.
 
+O parser HTML exige linhas e células completas, com fechamento correspondente à abertura. Linhas/células incompletas, fechamento `td`/`th` incompatível, linhas aninhadas e conteúdo fora das células/linhas completas provocam `UNSUPPORTED_HTML_TABLE`; nenhum registro é silenciosamente omitido. Envoltórios `thead`, `tbody` e `tfoot`, comentários e espaços entre linhas são permitidos. Tabelas aninhadas, conteúdo ativo e mesclagem de células não suportada também são rejeitados. Uma tabela visualmente recuperável pelo navegador pode ser recusada pelo importador: corrija a exportação e gere nova prévia.
+
 Por autorização explícita desta implantação, o importador gera uma identidade por SHA-256 do conteúdo exato do arquivo e número da linha. A proveniência é `snapshot-row`, e `sourceId` permanece `null`. Nenhuma igualdade de nome, telefone ou e-mail autoriza deduplicação. O marcador nativo `--` em e-mail, telefone ou observação vira campo vazio; a linha completa original permanece como evidência privada. Nomes legados de um caractere são preservados sem renomear, com aviso de qualidade. Clientes recebem `kind:"individual"`, `postpaid:false`, `active:true` como valores operacionais iniciais declarados na prévia.
 
 Quando a coluna `Veículos` contém somente placas brasileiras válidas, separadas por espaços, vírgula, ponto e vírgula, barra, pipe ou quebra de linha, os veículos são criados e vinculados ao cliente da linha. A identidade técnica combina snapshot, linha e placa; a placa não é apresentada como um ID do Jumpcar. O modelo fica vazio para representar desconhecimento, e `category:"small"` é um valor operacional inicial declarado, sem alegar que a categoria veio da origem. Placas duplicadas entre clientes bloqueiam o lote, sem mesclagem.
@@ -181,7 +195,7 @@ node scripts/jk-import.mjs --db /privado/operacao.sqlite --input /privado/lote.j
 node scripts/jk-import.mjs --db /privado/operacao.sqlite --input /privado/clientes.xls --format csv --entity customers --preview
 ```
 
-`--actor-id` opcional associa a execução local a um administrador ativo. Sem ele, a auditoria identifica uma operação local sem ator HTTP. A CLI depende da autorização de acesso ao arquivo privado; não aceita senhas. Saídas não incluem dados pessoais, caminhos, SQL, stack traces ou mapa de identidades. O mapa está disponível no endpoint de prévia autenticado. Códigos de saída: 0 sucesso, 2 prévia com rejeições, 1 erro de leitura/validação/confirmação.
+`--actor-id` opcional associa a execução local a um administrador ativo. O núcleo confere novamente esse ator dentro da transação, antes de gravar ou retornar um replay por lote/chave; ator inexistente, desativado ou sem papel de administrador produz `ADMIN_REQUIRED`. Sem ele, a auditoria identifica uma operação local sem ator HTTP. A CLI depende da autorização de acesso ao arquivo privado; não aceita senhas. Saídas não incluem dados pessoais, caminhos, SQL, stack traces ou mapa de identidades. O mapa está disponível no endpoint de prévia autenticado. Códigos de saída: 0 sucesso, 2 prévia com rejeições, 1 erro de leitura/validação/confirmação.
 
 Mantenha arquivos exportados, bancos, relatórios contendo registros, mapeamentos e credenciais fora do repositório. Fixtures da suíte são exclusivamente sintéticas. A aplicação armazena os dados importados somente no banco privado, e a auditoria recebe somente IDs de lote, hashes e contagens.
 
@@ -192,3 +206,5 @@ node tests/jk-migration.test.mjs
 ```
 
 A suíte verifica prévia sem escrita, persistência das seis coleções, ausência de efeitos operacionais, chaves estrangeiras, replay por lote/chave, alteração de conteúdo/banco/hash, rollback após falha tardia na auditoria, órfãos, propriedade de veículo/pagamento, totais, datas, campos não suportados, CSV/HTML, identidade técnica nativa, bloqueio de novo snapshot, CLI somente de leitura e autorização/CSRF/paginação pela aplicação.
+
+As regressões da [revisão de 30/10/2026](CORE-REVIEW-2026-10-30.md) acrescentam data do item persistida, atualização do esquema anterior sem inventar datas, total completo de OS em lotes incrementais, rejeição de HTML truncado e autorização atual do ator local durante confirmação e replay. A evidência dessa revisão usa somente dados sintéticos; os resultados finais de cada release devem permanecer no respectivo registro de entrega.
