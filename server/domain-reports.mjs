@@ -3,6 +3,7 @@ import * as v from './validation.mjs';
 import { requireRole } from './security.mjs';
 import { READERS, MANAGERS, now, publicRecord, paginate, settings, businessDate, localMidnight, addDays, dateRange } from './domain-core.mjs';
 import { ORDER_STATUSES, orderView, appointmentView } from './domain-orders.mjs';
+import { bookingUnallocatedReceivedCents } from './jk-booking-fulfillment.mjs';
 
 async function amount(db, sql, params = []) {
   const statement = db.prepare(sql);
@@ -10,6 +11,14 @@ async function amount(db, sql, params = []) {
   const result = (await statement.get(...params)).amount || 0n;
   assert(result >= 0n && result <= BigInt(Number.MAX_SAFE_INTEGER), 422, 'AMOUNT_LIMIT', 'O relatório excede o limite numérico permitido.');
   return Number(result);
+}
+
+async function received(db,start,end) {
+  const payments = await amount(db,'SELECT COALESCE(SUM(amount_cents),0) AS amount FROM payments WHERE created_at>=? AND created_at<?',[start,end]);
+  const advances = db.mode === 'local' ? await bookingUnallocatedReceivedCents(db,{start,end}) : 0;
+  const total = payments + advances;
+  assert(Number.isSafeInteger(total),422,'AMOUNT_LIMIT','O relatório excede o limite numérico permitido.');
+  return total;
 }
 
 async function receivables(db) {
@@ -42,7 +51,7 @@ export async function dashboardRoutes(ctx) {
     stockAlerts,
   };
   if (MANAGERS.includes(user.role)) {
-    item.receivedTodayCents = (await amount(ctx.db, 'SELECT COALESCE(SUM(amount_cents),0) AS amount FROM payments WHERE created_at>=? AND created_at<?', [start,end]));
+    item.receivedTodayCents = (await received(ctx.db,start,end));
     item.receivableCents = (await receivables(ctx.db));
   }
   return { data: { item } };
@@ -54,7 +63,7 @@ export async function reportRoutes(ctx) {
   const type = v.choice(ctx.url.searchParams.get('type') || 'summary', 'type', ['summary','sales','services','employees','stock','cash']);
   const range = (await dateRange(ctx.db, ctx.url));
   const summary = {
-    receivedCents: (await amount(ctx.db, 'SELECT COALESCE(SUM(amount_cents),0) AS amount FROM payments WHERE created_at>=? AND created_at<?', [range.start,range.end])),
+    receivedCents: (await received(ctx.db,range.start,range.end)),
     deliveredCents: (await amount(ctx.db, "SELECT COALESCE(SUM(total_cents),0) AS amount FROM orders WHERE status='delivered' AND delivered_at>=? AND delivered_at<?", [range.start,range.end])),
     openReceivableCents: (await receivables(ctx.db)),
     orderCount: (await amount(ctx.db, 'SELECT COUNT(*) AS amount FROM orders WHERE created_at>=? AND created_at<?', [range.start,range.end])),
@@ -64,7 +73,12 @@ export async function reportRoutes(ctx) {
     sql = "SELECT 'received' AS id,'receivedCents' AS metric,'Recebido no período' AS label,CAST(? AS BIGINT) AS value,'cents' AS unit UNION ALL SELECT 'delivered','deliveredCents','Serviços entregues no período',CAST(? AS BIGINT),'cents' UNION ALL SELECT 'receivable','openReceivableCents','Saldo atual a receber',CAST(? AS BIGINT),'cents' UNION ALL SELECT 'orders','orderCount','Ordens criadas no período',CAST(? AS BIGINT),'count'";
     params = [summary.receivedCents,summary.deliveredCents,summary.openReceivableCents,summary.orderCount];
   } else if (type === 'sales') {
-    sql = 'SELECT p.id,p.created_at,p.source,c.name AS customer_name,p.method,p.amount_cents,p.reference FROM payments p JOIN customers c ON c.id=p.customer_id WHERE p.created_at>=? AND p.created_at<? ORDER BY p.created_at DESC,p.id';
+    sql = 'SELECT p.id,p.created_at,p.source,c.name AS customer_name,p.method,p.amount_cents,p.reference FROM payments p JOIN customers c ON c.id=p.customer_id WHERE p.created_at>=? AND p.created_at<?';
+    if (ctx.db.mode === 'local') {
+      sql += " UNION ALL SELECT a.end_to_end_id AS id,a.received_at AS created_at,'booking' AS source,'Reserva pública' AS customer_name,'pix' AS method,a.amount_cents,b.reference FROM jk_booking_advances a JOIN jk_booking_reservations b ON b.id=a.booking_id WHERE a.payment_id IS NULL AND a.received_at>=? AND a.received_at<?";
+      params = [range.start,range.end,range.start,range.end];
+    }
+    sql += ' ORDER BY created_at DESC,id';
   } else if (type === 'services') {
     sql = `SELECT i.service_id AS id,i.service_id,i.name,SUM(i.quantity) AS quantity,SUM(i.line_total_cents) AS gross_cents,SUM(i.net_cents) AS net_cents,SUM(i.commission_cents) AS commission_cents
       FROM order_items i JOIN orders o ON o.id=i.order_id WHERE o.status='delivered' AND o.delivered_at>=? AND o.delivered_at<? GROUP BY i.service_id,i.name ORDER BY net_cents DESC,i.name`;

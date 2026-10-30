@@ -9,8 +9,7 @@ const SESSION_LIFETIME = 8 * 60 * 60 * 1000;
 export const COOKIE_NAME = 'ab_uash_session';
 export const ROLES = ['admin', 'manager', 'operator', 'viewer'];
 
-export async function hashPassword(password) {
-  const salt = randomBytes(32).toString('base64url');
+export async function hashPassword(password, salt = randomBytes(32).toString('base64url')) {
   const key = await scrypt(password, salt, 64, COST);
   return `scrypt$${COST.N}$${COST.r}$${COST.p}$${salt}$${key.toString('base64url')}`;
 }
@@ -29,7 +28,8 @@ export function tokenHash(token) {
 }
 
 export function publicUser(row) {
-  return { id: row.id, name: row.name, email: row.email, role: row.role, active: Boolean(row.active), createdAt: row.created_at };
+  return { id: row.id, name: row.name, email: row.email, role: row.role, active: Boolean(row.active), createdAt: row.created_at,
+    ...(row.password_hash === 'pending' ? {passwordSetupRequired:true} : {}) };
 }
 
 export async function createSession(db, userId, now = Date.now()) {

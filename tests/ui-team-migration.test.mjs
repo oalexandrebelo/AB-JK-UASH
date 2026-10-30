@@ -1,0 +1,32 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {fixture,until,fill,click,submit,button,uiQaAvailable,uiQaSkipReason} from './ui-helpers.mjs';
+
+test('team UI previews identities, invalidates consent on edit, preserves pending users and activates only with a first password', {timeout:90000,skip:!uiQaAvailable&&uiQaSkipReason},async t=>{
+  const f=await fixture(t);
+  await until(()=>f.text().includes('Prepare a operação JK'),'setup');
+  await fill(f,'Seu nome','Admin Equipe QA');await fill(f,'E-mail','team-admin@example.test');await fill(f,'Senha','Senha-sintetica-12345');
+  await submit(f,'Criar acesso de administrador');await until(()=>f.text().includes('Visão geral'),'admin');
+  await f.route('migration');await until(()=>[...f.document.querySelectorAll('[role="tab"]')].some(node=>node.textContent==='Equipe'),'migração');
+  await click(f,[...f.document.querySelectorAll('[role="tab"]')].find(node=>node.textContent==='Equipe'));
+  await until(()=>f.text().includes('Equipe da unidade JK'),'equipe');
+  await fill(f,'Nome do cadastro 1','Pessoa exemplo');await fill(f,'E-mail do cadastro 1','person@example.test');await fill(f,'Cargo no Jumpcar 1','Supervisor');
+  await click(f,'Conferir equipe');await until(()=>f.text().includes('Confira 1 contas e 1 profissionais'),'prévia');
+  assert.equal(button(f,'Preservar equipe').disabled,true);
+  await fill(f,'Nome do cadastro 1','Pessoa revisada');assert.ok(!f.text().includes('Confira 1 contas e 1 profissionais'));
+  await click(f,'Conferir equipe');await until(()=>f.text().includes('Confira 1 contas e 1 profissionais'),'nova prévia');
+  const consent=[...f.document.querySelectorAll('input[type="checkbox"]')].find(node=>node.closest('label')?.textContent.includes('Conferi os dados'));
+  await click(f,consent);await until(()=>!button(f,'Preservar equipe').disabled,'confirmação');
+  await click(f,'Preservar equipe');await until(()=>f.text().includes('1 contas e 1 profissionais preservados.'),'preservado');
+  const users=(await f.api('/users')).data.items;const person=users.find(row=>row.email==='person@example.test');
+  assert.equal(person.active,false);assert.equal(person.passwordSetupRequired,true);
+  assert.equal((await f.app.store.prepare('SELECT active FROM employees').get()).active,0);
+  await f.route('settings');await until(()=>f.document.getElementById('settings-tab-users'),'configurações');
+  await click(f,f.document.getElementById('settings-tab-users'));
+  await until(()=>f.text().includes('Primeira senha pendente'),'pendência');
+  await click(f,'Definir primeira senha');await fill(f,'Primeira senha','Senha-inicial-local-12345');await submit(f,'Definir senha e ativar acesso');
+  await until(()=>!f.document.querySelector('[role="dialog"]'),'ativação');
+  const ready=(await f.api('/users')).data.items.find(row=>row.id===person.id);assert.equal(ready.active,true);assert.ok(!ready.passwordSetupRequired);
+  assert.equal((await f.app.store.prepare('SELECT COUNT(*) n FROM payments').get()).n,0);
+  assert.equal(f.runtimeErrors.length,0);
+});

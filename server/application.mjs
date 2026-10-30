@@ -2,7 +2,7 @@ import { createServer } from 'node:http';
 import { randomUUID, createHash, timingSafeEqual } from 'node:crypto';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { openDatabase, sqliteStore, openPostgresStore, transaction, audit } from './db.mjs';
+import { openDatabase, sqliteStore, openPostgresStore, transaction, audit, idempotentWrite } from './db.mjs';
 import { ApiError, assert, toPublicError } from './errors.mjs';
 import * as validate from './validation.mjs';
 import { hashPassword, verifyPassword, publicUser, createSession, sessionCookie, readSession, requireAuth, requireRole, requireLiveRole, verifyCsrf, createRateLimiter, tokenHash, ROLES } from './security.mjs';
@@ -13,8 +13,21 @@ import { initializeMedia, handleMedia } from './media.mjs';
 import { initializeFiscal, handleFiscal } from './fiscal.mjs';
 import { publicJkProfile } from './jk-public.mjs';
 import { initializeJkMigration, handleJkMigration } from './jk-migration.mjs';
-import { migrateJkIntegrations, initializeJkIntegrations, handleJkIntegrations } from './jk-integrations.mjs';
+import { initializeJkHistoryArchive, handleJkHistoryArchive } from './jk-history-archive.mjs';
+import { initializeJkReconciliation, handleJkReconciliation } from './jk-reconciliation.mjs';
+import { initializeJkSourceCatalog, handleJkSourceCatalog } from './jk-source-catalog.mjs';
+import { migrateJkIntegrations, initializeJkIntegrations, handleJkIntegrations, handleJkAsaasWebhook } from './jk-integrations.mjs';
+import { handleJkTef } from './jk-tef.mjs';
+import { handleJkTeamMigration } from './jk-team-migration.mjs';
+import { handleJkTransition, assertJkMutationAllowed, readJkTransition } from './jk-transition.mjs';
 import { initializeJkDeliveries, handleJkDeliveries } from './jk-deliveries.mjs';
+import { initializeBookingIdentity } from './jk-booking-identity.mjs';
+import { initializeJkBooking, bookingCatalog } from './jk-booking.mjs';
+import { initializeBookingPix } from '../integrations/jk/booking-pix.mjs';
+import { createJkBookingRuntime } from './jk-booking-runtime.mjs';
+import { initializeBookingFulfillment } from './jk-booking-fulfillment.mjs';
+import { startBookingWorker } from './jk-booking-worker.mjs';
+import { handleJkPublicBooking, handleJkBookingAdmin } from './jk-booking-http.mjs';
 
 const PROJECT_ROOT = fileURLToPath(new URL('../', import.meta.url));
 const MUTATIONS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
@@ -26,6 +39,8 @@ export async function createApplication({
   databaseUrl, databaseSchema = 'ab_uash', databaseCa, databasePoolSize = 1,
   setupToken, clientAddress, fiscalEnv = process.env, fiscalTransport,
   jkIntegrationsEnv = process.env,
+  jkIntegrationsOptions = {},
+  jkBookingEnv = process.env,
   secureCookies = false,
   logger = console,
   domainHandler,
@@ -37,13 +52,19 @@ export async function createApplication({
   const raw = databaseUrl ? null : openDatabase(dbPath);
   const db = databaseUrl ? await openPostgresStore({databaseUrl,databaseSchema,databaseCa,databasePoolSize}) : sqliteStore(raw);
   if (raw) {
-    try { await db.initialize(() => { migrateDomain(raw); initializeMedia(raw); migrateStorage(raw); initializeJkMigration(raw); migrateJkIntegrations(raw); initializeJkDeliveries(raw); }); }
+    try { await db.initialize(() => { migrateDomain(raw); initializeMedia(raw); migrateStorage(raw); initializeJkMigration(raw); initializeJkHistoryArchive(raw); initializeJkReconciliation(raw); initializeJkSourceCatalog(raw); migrateJkIntegrations(raw); initializeJkDeliveries(raw); initializeBookingIdentity(raw); initializeJkBooking(raw); initializeBookingPix(raw); initializeBookingFulfillment(raw); }); }
     catch (error) { await db.close(); throw error; }
   }
   let fiscal;
   try { fiscal = await initializeFiscal(db, {env: fiscalEnv, transport: fiscalTransport}); } catch (error) { await db.close(); throw error; }
   let jkIntegrations;
-  try { jkIntegrations = await initializeJkIntegrations(db, {env: jkIntegrationsEnv}); } catch (error) { await db.close(); throw error; }
+  try { jkIntegrations = await initializeJkIntegrations(db, {...jkIntegrationsOptions, env: jkIntegrationsEnv}); } catch (error) { await db.close(); throw error; }
+  const jkBooking = await createJkBookingRuntime(db, {env:jkBookingEnv,integrations:jkIntegrations,receiptRegistryReady:Boolean(raw),financialLedgerReady:Boolean(raw)});
+  let bookingWorker;
+  if (raw && jkBooking.secret && jkBooking.pix.enabled) {
+    jkBooking.attendanceAutomationReady = true;
+    bookingWorker = startBookingWorker(db,jkBooking,{onError:()=>logger.error?.({code:'BOOKING_WORKER_REVIEW_REQUIRED'})});
+  }
   // A valid dummy hash keeps missing-user checks on the same costly password path.
   const dummyHash = await hashPassword(randomUUID());
   const attempts = createRateLimiter(db);
@@ -68,8 +89,16 @@ export async function createApplication({
       await db.prepare('SELECT 1 AS ready').get();
       return { data: { status: 'ready', database: 'ok' } };
     }
-    if (method === 'GET' && pathname === '/api/public/profile') return { data: await publicJkProfile(db) };
+    if (method === 'GET' && pathname === '/api/public/profile') {
+      const profile = await publicJkProfile(db);
+      if (raw) profile.acceptingOnlineBookings = (await bookingCatalog(db,jkBooking)).enabled && (await readJkTransition(db)).mode === 'normal';
+      return {data:profile};
+    }
+    const publicBooking = await handleJkPublicBooking({request,method,pathname,url,db,jkBooking,bookingClientKey:peer(request)});
+    if (publicBooking) return publicBooking;
     if (method === 'GET' && ['/api/status', '/api/auth/session'].includes(pathname)) return { data: (await status(session)) };
+    const asaasWebhook = await handleJkAsaasWebhook({request,method,pathname,jkIntegrations,db});
+    if (asaasWebhook) return asaasWebhook;
 
     if (method === 'POST' && pathname === '/api/setup') {
       assert((await status(null)).setupRequired, 409, 'ALREADY_CONFIGURED', 'A configuração inicial já foi concluída.');
@@ -109,7 +138,7 @@ export async function createApplication({
       // Reserve in the shared database before awaiting scrypt.
       const reservation = await attempts.reserve([peerKey, accountKey]);
       const row = (await db.prepare('SELECT * FROM users WHERE email=?').get(email));
-      const valid = await verifyPassword(body.password, row?.password_hash || dummyHash);
+      const valid = await verifyPassword(body.password, row?.password_hash && row.password_hash !== 'pending' ? row.password_hash : dummyHash);
       if (!valid || !row?.active) {
         (await audit(db, { action: 'auth.login_failed', resourceType: 'session' }));
         throw new ApiError(401, 'INVALID_CREDENTIALS', 'E-mail ou senha inválidos.');
@@ -169,20 +198,45 @@ export async function createApplication({
     if (method === 'POST' && pathname === '/api/users') {
       const actor = requireRole(session, ['admin']);
       const body = validate.object(await readJson(request));
-      validate.onlyKeys(body, ['name', 'email', 'password', 'role']);
+      validate.onlyKeys(body, ['name', 'email', 'password', 'role', 'pendingPassword']);
       const name = validate.text(body.name, 'name', { min: 2, max: 80 });
       const email = validate.email(body.email);
       const role = validate.choice(body.role, 'role', ROLES);
-      const passwordHash = await hashPassword(validate.password(body.password));
+      const pendingPassword = body.pendingPassword === undefined ? false : validate.boolean(body.pendingPassword, 'pendingPassword');
+      assert(!pendingPassword || body.password === undefined,422,'VALIDATION_ERROR','Um cadastro pendente não deve incluir senha.');
+      const passwordHash = pendingPassword ? 'pending' : await hashPassword(validate.password(body.password));
       const id = randomUUID();
       const now = new Date().toISOString();
       (await transaction(db, async () => {
         (await requireLiveRole(db, session, ['admin']));
         assert(!(await db.prepare('SELECT id FROM users WHERE email=?').get(email)), 409, 'EMAIL_EXISTS', 'Já existe uma conta com este e-mail.');
-        (await db.prepare('INSERT INTO users(id,name,email,password_hash,role,created_at,updated_at) VALUES(?,?,?,?,?,?,?)').run(id, name, email, passwordHash, role, now, now));
-        (await audit(db, { actorId: actor.id, action: 'user.created', resourceType: 'user', resourceId: id, metadata: { role } }));
+        (await db.prepare('INSERT INTO users(id,name,email,password_hash,role,active,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)').run(id, name, email, passwordHash, role, pendingPassword ? 0 : 1, now, now));
+        (await audit(db, { actorId: actor.id, action: 'user.created', resourceType: 'user', resourceId: id, metadata: { role, pendingPassword } }));
       }));
       return { status: 201, data: { user: publicUser((await db.prepare('SELECT * FROM users WHERE id=?').get(id))) } };
+    }
+    const initialPasswordMatch = pathname.match(/^\/api\/users\/([a-zA-Z0-9_-]+)\/initial-password$/u);
+    if (method === 'POST' && initialPasswordMatch) {
+      const actor = requireRole(session, ['admin']);
+      const body = validate.object(await readJson(request));
+      validate.onlyKeys(body, ['password']);
+      const id = initialPasswordMatch[1];
+      const key = request.headers['idempotency-key'];
+      assert(typeof key==='string'&&/^[a-zA-Z0-9_-]{8,128}$/u.test(key),400,'IDEMPOTENCY_KEY_REQUIRED','Use uma chave de idempotência para definir a primeira senha.');
+      // Derive a stable, per-account/per-operation scrypt salt. Idempotency must
+      // never persist a fast unsalted hash of a password-bearing request body.
+      const salt = createHash('sha256').update(JSON.stringify(['initial-password-v1',actor.id,id,key])).digest('base64url');
+      const passwordHash = await hashPassword(validate.password(body.password),salt);
+      const result = await idempotentWrite(db,{actorId:actor.id,key,method,path:pathname,body:{passwordHash},authorize:()=>requireLiveRole(db,session,['admin'])},async()=>{
+        assert(await db.prepare('SELECT id FROM users WHERE id=?').get(id),404,'NOT_FOUND','Conta não encontrada.');
+        const changed = await db.prepare("UPDATE users SET password_hash=?,active=1,updated_at=? WHERE id=? AND password_hash='pending' AND active=0")
+          .run(passwordHash,new Date().toISOString(),id);
+        assert(Number(changed.changes)===1,409,'INITIAL_PASSWORD_ALREADY_SET','A primeira senha já foi definida ou o cadastro mudou.');
+        await audit(db,{actorId:actor.id,action:'user.initial_password_set',resourceType:'user',resourceId:id});
+        return {data:{user:publicUser(await db.prepare('SELECT * FROM users WHERE id=?').get(id))}};
+      });
+      if(result.replayed)result.headers={'Idempotency-Replayed':'true'};
+      return result;
     }
     const userMatch = pathname.match(/^\/api\/users\/([a-zA-Z0-9_-]+)$/u);
     if (method === 'PATCH' && userMatch) {
@@ -200,6 +254,7 @@ export async function createApplication({
         assert(before, 404, 'NOT_FOUND', 'Conta não encontrada.');
         const nextRole = role ?? before.role;
         const nextActive = active === undefined ? before.active : Number(active);
+        assert(!nextActive || before.password_hash !== 'pending',409,'INITIAL_PASSWORD_REQUIRED','Defina a primeira senha antes de ativar esta conta.');
         if (before.active && before.role === 'admin' && (!nextActive || nextRole !== 'admin')) {
           assert((await db.prepare("SELECT COUNT(*) AS count FROM users WHERE active=1 AND role='admin'").get()).count > 1, 409, 'LAST_ADMIN', 'Mantenha ao menos um administrador ativo.');
         }
@@ -216,8 +271,13 @@ export async function createApplication({
       const items = (await db.prepare('SELECT * FROM audit_events ORDER BY created_at DESC,id DESC LIMIT ?').all(limit)).map((row) => ({ id: row.id, actorId: row.actor_id, action: row.action, resourceType: row.resource_type, resourceId: row.resource_id, metadata: JSON.parse(row.metadata_json), createdAt: row.created_at }));
       return { data: { items } };
     }
-    const context = { request, method, pathname, url, session, db, fiscal, jkIntegrations };
-    for (const handler of [handleJkMigration, handleJkIntegrations, handleJkDeliveries, handleFiscal, handleMedia, handleDomain, ...(domainHandler ? [domainHandler] : [])]) {
+    const context = { request, method, pathname, url, session, db, fiscal, jkIntegrations, jkBooking };
+    const transition = await handleJkTransition(context);
+    if (transition) return transition;
+    const staffBooking = await handleJkBookingAdmin(context);
+    if (staffBooking) return staffBooking;
+    if (MUTATIONS.has(method)) { requireAuth(session); await assertJkMutationAllowed(db,method,pathname); }
+    for (const handler of [handleJkMigration, handleJkHistoryArchive, handleJkReconciliation, handleJkSourceCatalog, handleJkTeamMigration, handleJkTef, handleJkIntegrations, handleJkDeliveries, handleFiscal, handleMedia, handleDomain, ...(domainHandler ? [domainHandler] : [])]) {
       const response = await handler(context);
       if (response) return response;
     }
@@ -233,7 +293,8 @@ export async function createApplication({
       const url = new URL(request.url, 'http://local.invalid');
       if (url.pathname.startsWith('/api/')) {
         const operation = async () => handleApi(request, url.pathname, url, await readSession(db, request));
-        const result = request.method === 'GET' ? await db.read(operation) : await operation();
+        const bookingRead = url.pathname.startsWith('/api/public/booking/') || url.pathname.startsWith('/api/jk/booking/');
+        const result = request.method === 'GET' && !bookingRead ? await db.read(operation) : await operation();
         sendJson(response, result.status || 200, { ok: true, data: result.data }, result.headers);
       } else await serveStatic(request, response, url.pathname, distDir);
     } catch (error) {
@@ -279,6 +340,8 @@ export async function createApplication({
         // Direct serverless handler calls do not pass through server.listen().
         // Drain complete requests, including body reads and password hashing.
         await Promise.allSettled([...requests]);
+        await bookingWorker?.stop();
+        await jkIntegrations.close?.();
         await db.close();
       })();
       return closePromise;

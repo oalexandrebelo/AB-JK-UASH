@@ -8,6 +8,7 @@ import type {User, StorageMode} from '../lib/api';
 import {canManage} from '../lib/domain';
 import {Brand} from './Brand';
 import {EmptyState, fullWidth, Icon, Modal} from './ui';
+import '../operation.css';
 
 export const navGroups = [
   {label: 'ATENDIMENTO', items: [{id: 'dashboard', label: 'Visão geral', icon: 'dashboard'}, {id: 'orders', label: 'Ordens de serviço', icon: 'orders'}, {id: 'appointments', label: 'Agenda', icon: 'calendar'}, {id: 'deliveries', label: 'Retirada e entrega', icon: 'vehicles'}, {id: 'customers', label: 'Clientes', icon: 'customers'}, {id: 'vehicles', label: 'Veículos', icon: 'vehicles'}, {id: 'checklist', label: 'Checklist e fotos', icon: 'checklist'}]},

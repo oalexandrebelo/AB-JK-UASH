@@ -20,7 +20,7 @@ export function EmptyState({title, description, action, icon = 'spark'}: {title:
   return <div className="empty-state"><div className="empty-icon"><Icon name={icon}/></div><h2>{title}</h2><p>{description}</p>{action}</div>;
 }
 export function Modal({title, children, onClose, footer, wide = false, isPending = false}: {title: string; children: ReactNode; onClose: () => void; footer?: ReactNode; wide?: boolean; isPending?: boolean}) {
-  return <DialogContainer onDismiss={()=>{if(!isPending)onClose();}}><Dialog size={wide ? 'L' : 'M'} isDismissible={!isPending} isKeyboardDismissDisabled={isPending}><Heading>{title}</Heading><Content><div aria-busy={isPending || undefined}>{children}</div></Content>{footer && <ButtonGroup>{footer}</ButtonGroup>}</Dialog></DialogContainer>;
+  return <DialogContainer onDismiss={()=>{if(!isPending)onClose();}}><Dialog size={wide ? 'L' : 'M'} isDismissible={!isPending} isKeyboardDismissDisabled={isPending}><Heading>{title}</Heading><Content><div className="jk-dialog-content" aria-busy={isPending || undefined}>{children}</div></Content>{footer && <ButtonGroup>{footer}</ButtonGroup>}</Dialog></DialogContainer>;
 }
 export function TabBar({id,label,items,value,onChange}: {id:string;label:string;items:readonly (readonly [string,string])[];value:string;onChange:(value:string)=>void}) {
   return <div className="tabs-row" role="tablist" aria-label={label}>{items.map(([key,title],index)=><button type="button" key={key} role="tab" id={`${id}-tab-${key}`} aria-controls={`${id}-panel`} aria-selected={value===key} tabIndex={value===key?0:-1} className={value===key?'active':''} onClick={()=>onChange(key)} onKeyDown={event=>{
@@ -36,7 +36,7 @@ export function DataTable({items, columns, label, actions}: {items: RecordData[]
 }
 export function StatusPill({children, tone = 'neutral'}: {children: ReactNode; tone?: 'neutral' | 'blue' | 'green' | 'orange' | 'red'}) {
   const variants = {neutral:'neutral',blue:'informative',green:'positive',orange:'notice',red:'negative'} as const;
-  return <Badge variant={variants[tone]} fillStyle="subtle" size="S">{children}</Badge>;
+  return <Badge variant={variants[tone]} fillStyle="subtle" size="M">{children}</Badge>;
 }
 export function Pagination({page,loading,onOffset}:{page?:PageInfo;loading?:boolean;onOffset:(offset:number)=>void}) {if(!page)return null;return <div className="pagination-bar"><span>{page.total===0?'Nenhum registro':`${page.offset+1}–${Math.min(page.offset+page.limit,page.total)} de ${page.total} registros`}</span><div><Button size="S" variant="secondary" isDisabled={loading||page.offset===0} onPress={()=>onOffset(Math.max(0,page.offset-page.limit))}>Anterior</Button><Button size="S" variant="secondary" isDisabled={loading||!page.hasMore} onPress={()=>onOffset(page.offset+page.limit)}>Próxima</Button></div></div>;}
 export function Section({title, subtitle, children, action}: {title: string; subtitle?: string; children: ReactNode; action?: ReactNode}) {return <section className="panel"><header className="panel-heading"><div><h2>{title}</h2>{subtitle && <p>{subtitle}</p>}</div>{action}</header>{children}</section>;}

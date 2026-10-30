@@ -1,0 +1,48 @@
+.tef-preparation {display:grid; gap:24px; margin-top:40px; padding-top:32px; border-top:1px solid var(--line);}
+.tef-section-heading {display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px;}
+.tef-section-heading > div {flex:1 1 500px;}
+.tef-section-heading h2 {margin:8px 0 12px; font-size:1.75rem; letter-spacing:-.025em;}
+.tef-section-heading p {margin:0; line-height:1.6; color:var(--jk-secondary, #4e6670); max-width:75ch;}
+.tef-section-heading .tef-eyebrow {font-size:.875rem; font-weight:600; letter-spacing:.06em;}
+.tef-preparation [data-slot=alert] {border:1px solid var(--line); border-radius:12px; background:#f3f7fc; padding:20px;}
+.tef-preparation [data-slot=alert-description] {font-size:1rem; line-height:1.6;}
+.tef-grid {display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px;}
+.tef-grid [data-slot=card] {display:flex; flex-direction:column; min-width:0; border:1px solid var(--line); border-radius:16px; box-shadow:none;}
+.tef-grid [data-slot=card-header], .tef-grid [data-slot=card-content] {padding:24px;}
+.tef-grid [data-slot=card-header] {padding-bottom:0;}
+.tef-grid [data-slot=card-content] {display:flex; flex-direction:column; flex:1;}
+.tef-grid [data-slot=card-title] h3 {font-size:1.375rem; margin:0;}
+.tef-grid [data-slot=card-description] {font-size:1rem; line-height:1.6;}
+.tef-card-heading {display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px;}
+.tef-provider-icon {display:grid; place-items:center; width:44px; height:44px; background:#edf4f1; color:#397160; border-radius:12px; flex-shrink:0;}
+.tef-facts {display:grid; gap:14px; margin:0 0 24px;}
+.tef-facts > div {display:grid; grid-template-columns:minmax(130px,.8fr) 1.2fr; gap:16px;}
+.tef-facts dt, .tef-license {font-size:.875rem; color:var(--jk-secondary, #4e6670); line-height:1.6;}
+.tef-facts dd {font-size:.875rem; line-height:1.6; margin:0; overflow-wrap:anywhere;}
+.tef-grid h4 {margin:0 0 12px; font-size:1rem;}
+.tef-requirements {padding-left:20px; margin:0 0 16px; font-size:.875rem; line-height:1.7;}
+.tef-requirements li + li {margin-top:8px;}
+.tef-docs {display:flex; flex-wrap:wrap; gap:12px 20px; margin:8px 0 24px;}
+.tef-docs a {font-size:.875rem; color:#355ca8; text-underline-offset:3px;}
+.tef-grid [data-slot=card-content] > button {margin-top:auto; align-self:flex-start;}
+.tef-filter {display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:16px;}
+.tef-filter > span {font-size:.875rem; color:var(--jk-secondary, #4e6670);}
+.tef-filter > div {width:min(100%,360px);}
+.tef-saved {display:flex; align-items:center; gap:12px; color:#17683f; margin:0;}
+.tef-dialog-copy {line-height:1.65; font-size:1rem;}
+@media(max-width:1100px) {.tef-grid {grid-template-columns:minmax(0,1fr);}}
+@media(max-width:640px) {.tef-grid [data-slot=card-header], .tef-grid [data-slot=card-content] {padding:20px;}.tef-grid [data-slot=card-header] {padding-bottom:0;}.tef-facts > div {grid-template-columns:minmax(0,1fr);gap:4px;}.tef-card-heading {flex-wrap:wrap;}}
+.tef-local-check {display:flex; align-items:center; flex-wrap:wrap; gap:20px;}
+.tef-local-check > div {flex:1 1 400px;}
+.tef-local-check h3 {margin:0 0 8px; font-size:1.125rem;}
+.tef-local-check p, .tef-diagnostics p {margin:0; color:var(--jk-secondary, #4e6670); line-height:1.65;}
+.tef-diagnostics {padding:20px; border:1px solid var(--line); border-radius:12px;}
+.tef-diagnostics ul {padding-left:24px; line-height:1.7;}
+.tef-diagnostics p + p {margin-top:12px;}
+.tef-step-guide {margin:0 0 20px; border-block:1px solid var(--line); padding-block:12px;}
+.tef-step-guide summary {cursor:pointer; font-weight:600; line-height:1.6; padding-block:6px;}
+.tef-step-guide summary:focus-visible {outline:3px solid var(--brand); outline-offset:4px;}
+.tef-step-guide ol {padding-left:24px; line-height:1.65; font-size:.875rem;}
+.tef-step-guide li + li {margin-top:16px;}
+.tef-step-guide li p {margin:4px 0;}
+.tef-step-guide li p + p {color:var(--jk-secondary, #4e6670);}

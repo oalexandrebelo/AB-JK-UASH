@@ -1,7 +1,8 @@
+import { assertJkMutationAllowed } from './jk-transition.mjs';
 import { createHash, randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { transaction, audit } from './db.mjs';
-import { assert } from './errors.mjs';
+import { assert, ApiError } from './errors.mjs';
 import { requireRole, requireLiveRole } from './security.mjs';
 import { readJson } from './http.mjs';
 import * as v from './validation.mjs';
@@ -9,6 +10,7 @@ import { orderBalance, receive, touchOrder, version } from './domain-core.mjs';
 import { publicFiscalDraft } from './fiscal.mjs';
 import { createJkRuntime, jkReadiness } from '../integrations/jk/runtime.mjs';
 import { validateWhatsAppInput } from '../integrations/jk/vendor/connectors/messaging/whatsapp.mjs';
+import { ASAAS_WEBHOOK_SCHEMA } from '../integrations/jk/asaas-webhook.mjs';
 
 const WRITERS = ['admin','manager'];
 const READERS = ['admin','manager','operator','viewer'];
@@ -19,11 +21,36 @@ const hash = value => createHash('sha256').update(value).digest('hex');
 const errorCode = value => typeof value === 'string' && /^[A-Z][A-Z0-9_]{0,79}$/u.test(value) ? value : 'PROVIDER_RESULT_UNCONFIRMED';
 
 export function migrateJkIntegrations(raw) {
-  transaction(raw, () => raw.exec(readFileSync(new URL('../integrations/jk/schema.sql', import.meta.url), 'utf8')));
+  transaction(raw, () => raw.exec(readFileSync(new URL('../integrations/jk/schema.sql', import.meta.url), 'utf8') + '\n' + ASAAS_WEBHOOK_SCHEMA));
 }
 
 export async function initializeJkIntegrations(db, options = {}) {
   return createJkRuntime(db, options);
+}
+
+/** Public provider callback: authenticate separately from user sessions and persist hints only. */
+export async function handleJkAsaasWebhook(ctx) {
+  if (ctx.pathname !== '/api/jk/integrations/asaas/webhook') return null;
+  assert(ctx.method === 'POST',405,'WEBHOOK_METHOD_INVALID','Este endereço aceita somente notificações POST.');
+  const runtime = ctx.jkIntegrations;
+  assert(runtime?.storageReady && runtime.asaas?.webhook,503,'ASAAS_WEBHOOK_NOT_CONFIGURED','O recebimento de notificações Asaas está indisponível.');
+  const maximum = 256*1024;
+  const declared = Number(ctx.request.headers['content-length']);
+  assert(!Number.isFinite(declared) || declared <= maximum,413,'WEBHOOK_BODY_INVALID','A notificação excede o tamanho permitido.');
+  const chunks = []; let size = 0;
+  for await (const chunk of ctx.request) {
+    size += chunk.length;
+    assert(size <= maximum,413,'WEBHOOK_BODY_INVALID','A notificação excede o tamanho permitido.');
+    chunks.push(chunk);
+  }
+  try {
+    // Notification ingestion never dispatches or settles. Read-only transition
+    // mode still guards every user-triggered reconciliation through reserve().
+    return await transaction(ctx.db,()=>runtime.asaas.webhook.accept({method:ctx.method,headers:ctx.request.headers,body:Buffer.concat(chunks)}));
+  } catch (error) {
+    if (Number.isInteger(error?.status) && error.status >= 400 && error.status <= 599 && /^[A-Z][A-Z0-9_]{1,79}$/u.test(error.code)) throw new ApiError(error.status,error.code,'A notificação Asaas não pôde ser aceita.');
+    throw error;
+  }
 }
 
 function canonical(value) {
@@ -46,6 +73,7 @@ function matchesConfiguredDestination(row, runtime) {
 }
 
 export function publicJkIntegration(row, runtime) {
+  runtime.refresh?.();
   const status = effectiveStatus(row, runtime);
   const evidence = JSON.parse(row.evidence_json);
   const input = JSON.parse(row.input_json);
@@ -64,6 +92,7 @@ export function publicJkIntegration(row, runtime) {
     canReconcile: ready && row.kind === 'pix' && RECONCILABLE.has(status) && !BUSY.has(status),
     canCancel: status === 'prepared',
     ...(row.kind === 'whatsapp' ? { templateName: input.templateName, recipientMasked: `***${input.to.slice(-4)}` } : {}),
+    ...(row.provider === 'pix-asaas' ? { customerId: input.customerId, dueDate: input.dueDate } : {}),
     createdAt: row.created_at, updatedAt: row.updated_at,
   };
 }
@@ -86,6 +115,7 @@ async function event(ctx, row, action, code = null) {
 }
 async function reserve(ctx, requestIdentity) {
   await requireLiveRole(ctx.db,ctx.session,WRITERS);
+  await assertJkMutationAllowed(ctx.db,ctx.method,ctx.pathname);
   const changed = await ctx.db.prepare(`INSERT INTO jk_integration_operations(actor_id,idempotency_key,request_hash,record_id,response_json,created_at)
     VALUES(?,?,?,?,?,?) ON CONFLICT(actor_id,idempotency_key) DO NOTHING`)
     .run(requestIdentity.actorId,requestIdentity.key,requestIdentity.hash,null,null,stamp(ctx.jkIntegrations));
@@ -113,7 +143,8 @@ function phoneNumber(value) {
 }
 
 async function prepare(ctx, orderId, kind, body, requestIdentity) {
-  v.onlyKeys(body,kind === 'pix' ? ['version','expiresInSeconds'] : ['version','templateName','languageCode','bodyParameters','consentConfirmed']);
+  const asaas = kind === 'pix' && ctx.jkIntegrations.channels.pix.provider === 'pix-asaas';
+  v.onlyKeys(body,kind === 'pix' ? asaas ? ['version','customerId','dueDate'] : ['version','expiresInSeconds'] : ['version','templateName','languageCode','bodyParameters','consentConfirmed']);
   return transaction(ctx.db,async () => {
     const replay = await reserve(ctx,requestIdentity); if (replay) return replay;
     const order = await getOrder(ctx.db,orderId); version(order,body.version);
@@ -125,8 +156,15 @@ async function prepare(ctx, orderId, kind, body, requestIdentity) {
       amount = (await orderBalance(ctx.db,order.id)).balanceCents;
       assert(amount > 0,409,'ORDER_ALREADY_PAID','A ordem já está quitada.');
       assert(!await ctx.db.prepare("SELECT id FROM jk_integration_records WHERE order_id=? AND kind='pix' AND status NOT IN ('cancelled','rejected','settled')").get(order.id),409,'PIX_CHARGE_EXISTS','A ordem já tem uma cobrança ativa ou que exige reconciliação.');
-      input = { txid: id.replaceAll('-',''), orderId: order.id, amountCents: amount,
-        expiresInSeconds: v.integer(body.expiresInSeconds ?? 3600,'expiresInSeconds',{min:60,max:86400}), description: `OS ${order.number}` };
+      input = { txid: id.replaceAll('-',''), orderId: order.id, amountCents: amount, description: `OS ${order.number}` };
+      if (asaas) {
+        const customerId = v.text(body.customerId,'customerId',{min:5,max:104});
+        const dueDate = v.text(body.dueDate,'dueDate',{min:10,max:10});
+        assert(/^cus_[A-Za-z0-9]{1,100}$/u.test(customerId),422,'ASAAS_CUSTOMER_REQUIRED','Informe o identificador do cliente já cadastrado no Asaas.');
+        assert(/^\d{4}-\d{2}-\d{2}$/u.test(dueDate) && Number.isFinite(Date.parse(`${dueDate}T00:00:00Z`))
+          && new Date(`${dueDate}T00:00:00Z`).toISOString().slice(0,10) === dueDate,422,'ASAAS_DUE_DATE_INVALID','Informe uma data de vencimento válida.');
+        Object.assign(input,{customerId,dueDate});
+      } else input.expiresInSeconds = v.integer(body.expiresInSeconds ?? 3600,'expiresInSeconds',{min:60,max:86400});
     } else {
       assert(body.consentConfirmed === true,422,'MESSAGE_CONSENT_REQUIRED','Confirme que o cliente autorizou esta comunicação.');
       const customer = await ctx.db.prepare('SELECT phone FROM customers WHERE id=?').get(order.customer_id);
@@ -177,6 +215,7 @@ function reconciliationPeriod(row, body, runtime) {
 
 async function claim(ctx,id,kind,body,requestIdentity,action) {
   return transaction(ctx.db,async () => {
+    ctx.jkIntegrations.refresh?.();
     const replay = await reserve(ctx,requestIdentity); if (replay) return { replay };
     const runtime = ctx.jkIntegrations;
     const channel = runtime.channels[kind];
@@ -193,7 +232,8 @@ async function claim(ctx,id,kind,body,requestIdentity,action) {
       assert(kind === 'pix' && RECONCILABLE.has(row.status),409,'PIX_RECONCILE_INVALID','A cobrança ainda não teve envio iniciado.');
       assert(!BUSY.has(row.status) || Number(row.lease_expires_at || 0) <= runtime.now(),409,'INTEGRATION_BUSY','Uma operação ainda está em andamento.');
       assert(row.provider === channel.provider && row.environment === channel.environment && row.account_scope === runtime.scopes.get(kind),409,'INTEGRATION_PROVIDER_CHANGED','Restaure o provedor, a conta e o ambiente originais para consultar esta referência.');
-      input = { txid: row.provider_reference, orderId: row.order_id, amountCents: row.amount_cents, ...reconciliationPeriod(row,body,runtime) };
+      input = { txid: row.provider_reference, orderId: row.order_id, amountCents: row.amount_cents,
+        ...(row.provider === 'pix-asaas' ? {customerId:input.customerId,dueDate:input.dueDate} : {}), ...reconciliationPeriod(row,body,runtime) };
     }
     const token = randomUUID();
     await ctx.db.prepare(`UPDATE jk_integration_records SET status=?,version=version+1,lease_token=?,lease_expires_at=?,
@@ -215,6 +255,11 @@ function pixEvidence(result,row,operation,environment) {
   }
   const evidence = { txid: data.txid, amountCents: data.amountCents, chargeStatus: data.chargeStatus, paymentConfirmed: false,
     ...(typeof data.pixCopiaECola === 'string' && data.pixCopiaECola.length <= 10_000 ? { pixCopiaECola: data.pixCopiaECola } : {}) };
+  if (row.provider === 'pix-asaas') {
+    if (!/^pay_[A-Za-z0-9]{1,100}$/u.test(data.asaasPaymentId) || typeof data.asaasPaymentStatus !== 'string' || !/^[A-Z_]{1,100}$/u.test(data.asaasPaymentStatus)) return {status:'uncertain',code:'ASAAS_EVIDENCE_INCOMPLETE',evidence};
+    Object.assign(evidence,{asaasPaymentId:data.asaasPaymentId,asaasPaymentStatus:data.asaasPaymentStatus,
+      ...(typeof data.pixExpirationDate === 'string' && data.pixExpirationDate.length <= 50 ? {pixExpirationDate:data.pixExpirationDate} : {})});
+  }
   if (operation === 'submit') return { status: 'active', code: null, evidence };
   const receipts = data.receipts;
   if (data.evidenceSource !== 'authenticated-polling' || !Array.isArray(receipts) || receipts.length > 10_000
@@ -246,7 +291,11 @@ function pixEvidence(result,row,operation,environment) {
 
 async function recordReceiptsAndSettle(ctx,row,outcome) {
   if (!outcome.receipts) return;
+  const hasBookings = ctx.db.mode === 'local' && await ctx.db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='jk_booking_receipts'").get();
   for (const receipt of outcome.receipts) {
+    if (hasBookings && await ctx.db.prepare('SELECT booking_id FROM jk_booking_receipts WHERE end_to_end_id=?').get(receipt.endToEndId)) {
+      outcome.status = 'review'; outcome.code = 'PIX_RECEIPT_ALREADY_LINKED'; outcome.shouldSettle = false; return;
+    }
     const existing = await ctx.db.prepare('SELECT * FROM jk_pix_receipts WHERE end_to_end_id=?').get(receipt.endToEndId);
     if (existing && (existing.record_id !== row.id || existing.amount_cents !== receipt.amountCents || Date.parse(existing.received_at) !== Date.parse(receipt.receivedAt))) {
       outcome.status = 'review'; outcome.code = 'PIX_RECEIPT_ALREADY_LINKED'; outcome.shouldSettle = false; return;
@@ -279,9 +328,12 @@ async function recordReceiptsAndSettle(ctx,row,outcome) {
 
 function messageEvidence(result,row) {
   const previous = JSON.parse(row.evidence_json);
-  if (result?.state === 'SUCCEEDED' && /^wamid\.[A-Za-z0-9_+/=-]{1,512}$/u.test(result.providerReference)
-    && result.data?.acceptance === 'provider-accepted' && result.data?.delivery === 'unconfirmed') {
-    return {status:'accepted',code:null,reference:result.providerReference,evidence:{...previous,acceptance:'provider-accepted',delivery:'unconfirmed'}};
+  const baileys = row.provider === 'whatsapp-baileys';
+  const validReference = baileys ? /^baileys:3EB0[A-F0-9]{32}$/u.test(result?.providerReference) : /^wamid\.[A-Za-z0-9_+/=-]{1,512}$/u.test(result?.providerReference);
+  const acceptance = baileys ? 'socket-accepted' : 'provider-accepted';
+  if (result?.state === 'SUCCEEDED' && validReference && (!baileys || result.data?.provider === 'whatsapp-baileys')
+    && result.data?.acceptance === acceptance && result.data?.delivery === 'unconfirmed') {
+    return {status:'accepted',code:null,reference:result.providerReference,evidence:{...previous,acceptance,delivery:'unconfirmed',...(baileys ? {localTemplate:result.data.localTemplate === true} : {})}};
   }
   return {status:result?.state === 'REJECTED' ? 'rejected' : 'uncertain',code:errorCode(result?.data?.code),evidence:{...previous,delivery:'unconfirmed'}};
 }
@@ -327,6 +379,7 @@ export async function handleJkIntegrations(ctx) {
   if (!/^\/api\/jk\/(?:integrations(?:\/|$)|orders\/[\w-]+\/(?:integrations|pix|messages|fiscal-source)$|(?:pix|messages)\/)/u.test(ctx.pathname)) return null;
   requireRole(ctx.session,READERS); await requireLiveRole(ctx.db,ctx.session,READERS);
   assert(ctx.jkIntegrations,503,'INTEGRATIONS_UNAVAILABLE','As integrações ainda não foram inicializadas.');
+  ctx.jkIntegrations.refresh?.();
   if (ctx.method === 'GET' && ctx.pathname === '/api/jk/integrations/readiness') return {data:jkReadiness(ctx.jkIntegrations,ctx.fiscal)};
   assert(ctx.jkIntegrations.storageReady,503,'INTEGRATION_STORAGE_UNAVAILABLE','Aplique a migração das integrações antes de usar este recurso.');
   const order = ctx.pathname.match(/^\/api\/jk\/orders\/([\w-]+)\/(integrations|pix|messages|fiscal-source)$/u);

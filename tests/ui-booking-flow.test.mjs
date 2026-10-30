@@ -1,0 +1,40 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {bookingFixture,json,catalog,reservation,until,fill,click,submit,button,field,select} from './ui-booking-helpers.mjs';
+test('booking UI preserves arrival consent, verified payment and private tokens', {timeout:90000},async t=>{
+  let version=1,reconciles=0;
+  const f=await bookingFixture(t,{responseOverride:async({url,options})=>{
+    if(!url.pathname.startsWith('/api/public/booking/'))return;
+    if(url.pathname.endsWith('/catalog'))return json(catalog);
+    if(url.pathname.endsWith('/availability'))return json({date:'2031-02-10',timezone:'America/Sao_Paulo',closedReasons:[],slots:[{startsAt:reservation.startsAt,endsAt:reservation.endsAt,remaining:1}]});
+    if(url.pathname.endsWith('/identity/request'))return json({challengeId:'challenge-test',expiresAt:'2031-02-10T12:20:00.000Z'});
+    if(url.pathname.endsWith('/identity/verify'))return json({identityToken:'i'.repeat(43),expiresAt:'2031-02-10T12:30:00.000Z',blocked:false});
+    if(url.pathname.endsWith('/holds'))return json({reservationToken:'r'.repeat(43),reservation});
+    if(url.pathname.endsWith('/reservation/pix'))return json({reservation:{...reservation,status:'awaiting_payment',version:++version,pixCopiaECola:'000201-PIX-SINTETICO',whatsappUrl:'https://wa.me/5511999990000?text=ABC12345'}});
+    if(url.pathname.endsWith('/reservation/reconcile')){reconciles++;return json({reservation:{...reservation,status:reconciles>1?'confirmed':'awaiting_payment',financialStatus:reconciles>1?'received':'pending',version:++version,pixCopiaECola:'000201-PIX-SINTETICO',whatsappUrl:'https://wa.me/5511999990000?text=ABC12345'}});}
+    if(url.pathname.endsWith('/reservation/cancel'))return json({reservation:{...reservation,status:'cancelled',financialStatus:'refund_pending',version:++version}});
+    if(url.pathname.endsWith('/reservation'))return json({reservation});
+    throw new Error('Unexpected test route '+url.pathname+' '+options.method);
+  }});
+  await until(()=>field(f,'Serviço e categoria do veículo (obrigatório)'),'catálogo disponível');
+  assert.equal(f.requests.filter(row=>row.method==='POST').length,0);
+  await select(f,'Serviço e categoria do veículo (obrigatório)','service-test:small');await fill(f,'Dia da visita (obrigatório)','2031-02-10');await submit(f,'Consultar horários');
+  await until(()=>f.document.querySelector('input[name="booking-slot"]'),'vaga disponível');await click(f,f.document.querySelector('input[name="booking-slot"]'));
+  await fill(f,'WhatsApp com código do país e DDD (obrigatório)','+5511999990000');await submit(f,'Receber código pelo WhatsApp');
+  await until(()=>f.document.querySelector('#booking-code'),'código solicitado');await fill(f,'Código de seis dígitos (obrigatório)','123456');await submit(f,'Confirmar WhatsApp');
+  await until(()=>f.text().includes('3. Confira antes de continuar'),'identidade verificada');assert.ok(f.text().includes('09:50'),'O prazo exato de chegada é visível antes do Pix.');
+  assert.equal(button(f,'Reservar horário e continuar para o Pix').disabled,true);
+  await click(f,[...f.document.querySelectorAll('label')].find(node=>node.textContent==='Li as condições do agendamento e estou de acordo.').querySelector('input'));
+  assert.equal(button(f,'Reservar horário e continuar para o Pix').disabled,true,'Termos não marcam a regra de chegada por inferência.');
+  await click(f,[...f.document.querySelectorAll('label')].find(node=>node.textContent.startsWith('Entendi que o veículo deve chegar até')).querySelector('input'));await click(f,'Reservar horário e continuar para o Pix');
+  await until(()=>f.text().includes('Gerar Pix desta reserva'),'hold criado');
+  const hold=f.requests.find(row=>row.path==='/api/public/booking/holds');assert.deepEqual(JSON.parse(hold.body),{serviceId:'service-test',category:'small',startsAt:reservation.startsAt,policyVersion:2,termsVersion:'test-terms',attendanceAccepted:true});assert.equal(hold.headers.get('Authorization'),'Bearer '+'i'.repeat(43));
+  await fill(f,'Nome do pagador (obrigatório)','Pessoa Fictícia');await fill(f,'CPF ou CNPJ do pagador, somente números (obrigatório)','12345678909');await submit(f,'Gerar Pix desta reserva');
+  await until(()=>f.text().includes('000201-PIX-SINTETICO'),'Pix local preparado');assert.ok(!f.text().includes('Confirmar dados pelo WhatsApp'));
+  await click(f,'Conferir pagamento');assert.ok(!f.text().includes('Seu horário está confirmado.'));
+  await click(f,'Conferir pagamento');await until(()=>f.text().includes('Seu horário está confirmado.'),'recebimento conferido');
+  const link=[...f.document.querySelectorAll('a')].find(node=>node.textContent==='Confirmar dados pelo WhatsApp');assert.ok(link);assert.equal(f.requests.filter(row=>row.path.endsWith('/reservation/pix')).length,1);
+  assert.equal(f.window.localStorage.length,0);assert.equal(f.window.sessionStorage.length,0);assert.ok(!f.text().includes('r'.repeat(43)));assert.ok(!f.window.location.href.includes('r'.repeat(43)));
+  await click(f,f.document.querySelector('summary'));await click(f,'Confirmar cancelamento da reserva');await until(()=>f.text().includes('Devolução em acompanhamento'),'cancelamento separa financeiro');assert.ok(!f.text().includes('Devolução confirmada'));
+  assert.equal(f.runtimeErrors.length,0);
+});

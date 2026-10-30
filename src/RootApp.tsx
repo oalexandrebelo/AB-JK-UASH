@@ -4,6 +4,7 @@ import {Shell} from './components/Shell';
 import {Brand} from './components/Brand';
 import {EmptyState,ErrorNotice,Loading} from './components/ui';
 import {AuthPage} from './pages/AuthPage';
+import {TransitionProvider, TransitionBanner} from './features/transition/Transition';
 const DashboardPage=lazy(()=>import('./pages/DashboardPage').then(module=>({default:module.DashboardPage})));
 const EntityPage=lazy(()=>import('./pages/EntityPage').then(module=>({default:module.EntityPage})));
 const OrdersPage=lazy(()=>import('./pages/OrdersPage').then(module=>({default:module.OrdersPage})));
@@ -54,7 +55,7 @@ export function App() {
   else if(page==='reports')content=<ReportsPage/>;
   else if(page==='settings')content=<SettingsPage user={user}/>;
   else if(page==='migration')content=<MigrationPage/>;
-  else if(page==='integrations')content=<IntegrationsPage/>;
+  else if(page==='integrations')content=<IntegrationsPage user={user}/>;
   else content=<EmptyState title="Página não encontrada" description="Use a navegação para abrir uma área da operação." action={<Button variant="accent" onPress={()=>navigate('dashboard')}>Voltar ao início</Button>}/>;
-  return <Shell user={user} storageMode={session.storageMode} route={route} onLogout={logout}><ErrorNotice message={logoutError}/><Suspense fallback={<Loading label="Abrindo esta área da operação…"/>}>{content}</Suspense></Shell>;
+  return <TransitionProvider><Shell user={user} storageMode={session.storageMode} route={route} onLogout={logout}><TransitionBanner/><ErrorNotice message={logoutError}/><Suspense fallback={<Loading label="Abrindo esta área da operação…"/>}>{content}</Suspense></Shell></TransitionProvider>;
 }

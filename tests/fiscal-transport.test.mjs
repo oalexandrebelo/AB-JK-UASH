@@ -86,7 +86,7 @@ test('real loopback fixture enforces redirect, response size, malformed JSON and
   ];
   for (const [name, handler, expected] of variants) {
     await t.test(name, async (sub) => {
-      const provider = await providerFixture(sub, handler, { timeoutMs: 100 });
+      const provider = await providerFixture(sub, handler, { timeoutMs: expected === 'FISCAL_TIMEOUT' ? 100 : 1000 });
       await assert.rejects(provider.transport(operation), { code: expected });
       assert.equal(provider.calls.length, 1);
     });

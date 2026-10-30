@@ -9,7 +9,8 @@ export type PageInfo = {limit:number;offset:number;total:number;hasMore:boolean}
 export type ListData = {items:RecordData[];page:PageInfo};
 export const BUSINESS_TIMEZONE = 'America/Sao_Paulo';
 let csrfToken = '';
-export function setSession(session: Session) {csrfToken = session.csrfToken || '';}
+let sessionRevision = 0;
+export function setSession(session: Session) {csrfToken = session.csrfToken || '';sessionRevision++;}
 
 export class ApiError extends Error {
   status: number;
@@ -22,6 +23,7 @@ export class ApiError extends Error {
 
 export type RequestOptions = {method?: string; body?: unknown; key?: string; signal?: AbortSignal; setupToken?: string};
 export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  const requestSessionRevision = sessionRevision;
   let response: Response;
   const method = options.method || 'GET';
   try {
@@ -44,7 +46,7 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   let result: {ok?: boolean; data?: T; error?: {message?: string; code?: string; details?: Record<string, string>}};
   try {result = await response.json();} catch {throw new ApiError('O servidor retornou uma resposta inesperada. Tente atualizar a página.', response.status);}
   if (!response.ok || !result.ok) {
-    if (response.status === 401 && !path.startsWith('/auth/login')) window.dispatchEvent(new Event('ab-uash-session-expired'));
+    if (response.status === 401 && !path.startsWith('/auth/login') && requestSessionRevision === sessionRevision) window.dispatchEvent(new Event('ab-uash-session-expired'));
     throw new ApiError(result.error?.message || 'Não foi possível concluir a operação.', response.status, result.error?.code, result.error?.details);
   }
   return result.data as T;

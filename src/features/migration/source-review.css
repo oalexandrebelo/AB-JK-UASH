@@ -1,0 +1,29 @@
+.source-review {display:grid;gap:24px;padding-top:24px;min-width:0;}
+.source-review [role="tabpanel"] {min-width:0;}
+.source-review-content {display:grid;gap:20px;padding:24px;min-width:0;}
+.source-review-content>button {justify-self:start;}
+.source-review-summary {display:flex;gap:20px 32px;flex-wrap:wrap;margin:0;}
+.source-review-summary>div {display:grid;gap:6px;max-width:220px;}
+.source-review-summary dt {font-size:.875rem;color:var(--muted);}
+.source-review-summary dd {margin:0;font-size:1.125rem;font-weight:600;font-variant-numeric:tabular-nums;}
+.source-review-actions {display:flex;flex-direction:column;align-items:flex-start;gap:16px;}
+.source-review-filters {display:flex;gap:16px;flex-wrap:wrap;align-items:end;margin-bottom:24px;}
+.source-review-table {max-width:100%;overflow:auto;border:1px solid var(--line);border-radius:10px;}
+.source-review-table:focus-visible,.source-review summary:focus-visible {outline:3px solid #5575c7;outline-offset:3px;}
+.source-review-table table {border-collapse:collapse;text-align:left;font-size:.875rem;width:max-content;min-width:100%;}
+.source-review-table caption {text-align:left;padding:16px;font-weight:600;font-size:1rem;}
+.source-review-table th,.source-review-table td {padding:14px 16px;border-top:1px solid var(--line);max-width:420px;white-space:pre-wrap;overflow-wrap:anywhere;}
+.source-review-table thead th {background:var(--surface-muted,#f4f6fa);font-weight:600;}
+.source-review-file {display:flex;gap:16px;align-items:center;flex-wrap:wrap;overflow-wrap:anywhere;}
+.source-review details {border:1px solid var(--line);border-radius:12px;padding:20px;}
+.source-review summary {cursor:pointer;font-weight:600;min-height:32px;}
+.source-review details[open] summary {margin-bottom:20px;}
+.source-review-raw {white-space:pre-wrap;overflow-wrap:anywhere;font-size:.875rem;}
+@media(max-width:640px){.source-review-content{padding:20px;}.source-review-filters>div,.source-review-file>button{width:100%;}.source-review-summary>div{max-width:100%;}.source-review-summary{gap:20px;}}
+
+.source-review-paste {display:grid;gap:12px;width:100%;}
+.source-review-paste label {font-weight:600;}
+.source-review-paste p {margin:0;line-height:1.6;color:var(--muted);}
+.source-review-paste textarea {box-sizing:border-box;width:100%;min-height:180px;resize:vertical;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--surface,#fff);color:var(--text,#17212e);font:inherit;line-height:1.5;}
+.source-review-paste textarea:focus-visible {outline:3px solid #5575c7;outline-offset:3px;}
+.source-review-paste>button {justify-self:start;}

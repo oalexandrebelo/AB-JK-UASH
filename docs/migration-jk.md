@@ -164,6 +164,42 @@ As placas são normalizadas para maiúsculas sem espaços/hífens. Uma placa ass
 
 CSV canônico usa esses nomes de campo no cabeçalho. Aceita `;` ou `,` e aspas CSV. Valores monetários não levam `R$`, separador decimal ou milhar; use centavos inteiros. Booleanos são `true`/`false` ou `1`/`0`. Não são executadas fórmulas.
 
+## Escolha explícita: importar somente clientes (0.3.1)
+
+Na interface, a opção **Importar somente clientes; revisar veículos depois** começa desmarcada. Marcá-la antes da prévia envia `nativeCustomerMode:"customers-only"`; desmarcada, a interface omite o campo e mantém o fluxo anterior. Alterar a escolha, arquivo ou entidade invalida a prévia e o consentimento. Acervo original e Equipe continuam sendo fluxos separados.
+
+```json
+{
+  "source": "jumpcar",
+  "nativeCustomerMode": "customers-only",
+  "files": [{"entity":"customers","format":"csv","content":"CONTEÚDO ORIGINAL COMPLETO COM NOVE COLUNAS"}]
+}
+```
+
+O texto no exemplo representa o conteúdo original, não um arquivo válido para importar. O campo opcional também aceita `customers-and-vehicles` para solicitar explicitamente a extração de placas. Quando informado, exige exatamente um arquivo `customers` CSV/HTML com o layout nativo de nove colunas. Recusa `dataset` canônico, arquivo extra, outra entidade, cabeçalho canônico ou valor desconhecido. Ausência do campo conserva o tratamento anterior e seus avisos; não há seleção automática de somente clientes.
+
+O commit recebe o mesmo corpo/opção da prévia mais `previewHash`. A opção participa de `inputHash` e `previewHash`; mudar ou retirar o campo depois da revisão exige nova prévia. Uma chave de idempotência reutilizada com conteúdo/modo diferente é recusada. Commit e replay revalidam o administrador atual.
+
+Em `customers-only`, os clientes mantêm as validações e a identidade técnica existentes, `counts.vehicles` permanece zerado e nenhum veículo/proprietário é criado ou escolhido. Todas as nove colunas ficam preservadas em `jk_migration_source_rows`; faturas e valores continuam como evidência, sem gerar cobranças, caixa, estoque ou folha.
+
+Nos dois modos explícitos, o relatório inclui `nativeCustomerImport`:
+
+| Campo | Significado |
+| --- | --- |
+| `mode` | Escolha explícita recebida. |
+| `sourceRows` / `sourceColumns` | Quantidade de linhas de dados originais e nove colunas. |
+| `snapshotHash` | SHA-256 do conteúdo textual original, incluindo BOM e finais de linha. |
+| `deferredVehicleEntries` | Entradas de placas válidas adiadas; não equivale a veículos únicos ou proprietários confirmados. |
+| `deferredVehicleRows` | Linhas que contêm essas placas adiadas. |
+| `ambiguousVehicleRows` | Linhas cujo campo de veículos exige revisão, sem extração automática. |
+| `reason` | `EXPLICIT_CUSTOMERS_ONLY` ou `NATIVE_PLATE_EXTRACTION`. |
+
+No modo completo explícito, os dois contadores de adiamento são zero. O objeto acompanha o relatório salvo, os lotes recentes e a auditoria; não aparece automaticamente em requisições legadas sem opção. O aviso `NATIVE_VEHICLES_DEFERRED` explicita o adiamento na escolha somente clientes.
+
+A leitura da interface preserva o BOM com `TextDecoder('utf-8',{fatal:true,ignoreBOM:true})`; JSON canônico trata o BOM apenas durante sua leitura JSON, sem alterar o arquivo nativo. Não limpar, reformatar ou dividir o CSV original para reutilizar um hash. O mapa de identidade mantém `sourceId:null`, `provenance:"snapshot-row"`, `snapshotHash`, linha original e ID técnico. No OpenAPI, `sourceId` é somente leitura; no SDK, é `readonly null`. Não há ID Jumpcar fabricado.
+
+Essa opção adia a criação de veículos, sem solucionar os grupos de placas repetidas. Para cadastrar veículos depois, é necessário confirmar proprietário e usar referências reconciliadas aos clientes importados. Um novo export nativo continua sujeito à proteção contra outro snapshot; não é sincronização nem reaplicação automática.
+
 ## Exportação nativa de clientes
 
 São reconhecidos exatamente estes nove cabeçalhos, nesta ordem:

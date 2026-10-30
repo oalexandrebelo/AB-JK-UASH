@@ -1,0 +1,208 @@
+/* Daily JK operation: readable type, spacious controls and compact information. */
+.app-shell {
+  --jk-paper: #fcfdfd;
+  --jk-canvas: #f1f5f5;
+  --jk-ink: #193b46;
+  --jk-secondary: #4e6670;
+  --jk-border: #d7e1e3;
+  --jk-focus: #2358be;
+  background: var(--jk-canvas);
+  color: var(--jk-ink);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.app-shell :is(button, input, select, textarea) {font-size: 1rem;}
+.app-shell :is(button, input:not([type=checkbox]):not([type=radio]):not([type=file]), select) {min-height: 44px;}
+.app-shell button {min-width: 44px;}
+.app-shell :is(a, button, input, textarea, select, summary):focus-visible {
+  outline: 3px solid var(--jk-focus);
+  outline-offset: 3px;
+}
+.app-shell .sidebar {width: 288px; background: var(--jk-paper); border-color: var(--jk-border);}
+.app-shell .app-main {margin-left: 288px;}
+.app-shell .sidebar > .brand {height: 104px; padding: 0 24px;}
+.app-shell .sidebar .jk-brand-mark {width: 44px; height: 44px;}
+.app-shell .sidebar .jk-brand-type > strong {font-size: 1.125rem; letter-spacing: -.035em;}
+.app-shell .sidebar .jk-brand-type > span {font-size: .875rem; letter-spacing: 0; text-transform: lowercase;}
+.app-shell .workspace-label {margin: 0 16px 20px; padding: 16px; border-radius: 8px;}
+.app-shell .workspace-label strong {font-size: 1rem;}
+.app-shell :is(.workspace-label div > span, .workspace-tag, .sidebar-public-link, .sidebar-footer) {font-size: .875rem;}
+.app-shell .workspace-tag {padding: 4px 8px;}
+.app-shell .sidebar-nav {overflow-y: auto; padding: 0 12px 16px; scrollbar-width: thin;}
+.app-shell .sidebar nav {overflow: visible; padding: 0;}
+.app-shell .sidebar-nav a {min-height: 44px;}
+.app-shell .sidebar-nav :is(h2, h3, [role=heading]) {font-size: .875rem; letter-spacing: .06em;}
+.app-shell .spectrum-nav-label {font-size: 1rem; gap: 12px; line-height: 1.45;}
+.app-shell .spectrum-nav-label > svg {width: 20px; height: 20px;}
+.app-shell .sidebar-public-link {min-height: 48px; margin: 4px 20px 0;}
+.app-shell .sidebar-footer {padding: 16px 24px;}
+.app-shell .topbar {min-height: 88px; padding: 16px 32px; background: var(--jk-paper); backdrop-filter: none;}
+.app-shell .topbar-location {font-size: 1rem; min-width: 0; flex-wrap: wrap; gap: 8px;}
+.app-shell .topbar-product {color: var(--jk-secondary);}
+.app-shell .topbar-current {color: var(--jk-ink);}
+.app-shell .topbar-right {flex-shrink: 0; gap: 12px;}
+.app-shell .user-avatar {width: 40px; height: 40px; font-size: .875rem; background: #e2eeeb; color: #285e50;}
+.app-shell .user-info {max-width: 180px;}
+.app-shell .user-info strong {font-size: .875rem; overflow-wrap: anywhere;}
+.app-shell :is(.user-info span, .workspace-search kbd) {font-size: .875rem; color: var(--jk-secondary);}
+.app-shell .workspace-search kbd {margin-left: 8px;}
+.app-shell .page-content {padding: 36px 32px 48px; max-width: 1760px;}
+.app-shell .page-heading {align-items: flex-start; gap: 24px; margin-bottom: 32px; flex-wrap: wrap;}
+.app-shell .page-heading > div:first-child {min-width: 0; flex: 1 1 360px;}
+.app-shell .eyebrow {font-size: .875rem; color: #476c72; letter-spacing: .06em; margin-bottom: 12px;}
+.app-shell .page-heading h1 {font-size: 2rem; line-height: 1.2; letter-spacing: -.04em; font-weight: 700; color: var(--jk-ink);}
+.app-shell .page-description {font-size: 1rem; line-height: 1.65; color: var(--jk-secondary); max-width: 65ch;}
+.app-shell .page-actions {max-width: none; justify-content: flex-start; gap: 12px; padding-top: 4px; flex-shrink: 1;}
+.app-shell .panel {background: var(--jk-paper); border-color: var(--jk-border); border-radius: 12px; box-shadow: none; margin-bottom: 24px;}
+.app-shell .panel-heading {padding: 24px; align-items: flex-start; flex-wrap: wrap; gap: 16px; border-color: var(--jk-border);}
+.app-shell .panel-heading > div {min-width: 0;}
+.app-shell .panel-heading h2 {font-size: 1.25rem; line-height: 1.35; color: var(--jk-ink);}
+.app-shell .panel-heading p {font-size: .875rem; line-height: 1.6; color: var(--jk-secondary); max-width: 65ch;}
+.app-shell :is(.panel-copy, .notice, .empty-state p, .muted-text, .welcome-copy > p) {font-size: 1rem; line-height: 1.65;}
+.app-shell :is(.empty-state p, .muted-text, .panel-copy) {color: var(--jk-secondary);}
+.app-shell .empty-state {min-height: 240px; padding: 40px 24px;}
+.app-shell .empty-state h2 {font-size: 1.125rem; color: var(--jk-ink); line-height: 1.4;}
+.app-shell .empty-state p {max-width: 42ch;}
+.app-shell .empty-icon {background: #e8efef; color: #416b73; width: 48px; height: 48px;}
+.app-shell .notice {flex-wrap: wrap;}
+.app-shell .notice-info {color: #284f70;}
+.app-shell .notice-error {color: #8c302d;}
+.app-shell .data-table {font-size: 1rem;}
+.app-shell .data-table :is(th, td) {padding: 16px 20px; color: #36515e; border-color: #e2e9ea;}
+.app-shell .data-table thead th {font-size: .875rem; color: var(--jk-secondary); background: #f2f6f6; font-weight: 650;}
+.app-shell .data-table tbody th {color: var(--jk-ink);}
+.app-shell .data-table tbody tr:hover {background: #edf4f3;}
+.app-shell :is(.plate-badge, .result-count, .back-link, .tabs-row button, .pipeline-button) {font-size: .875rem;}
+.app-shell :is(.table-link, .back-link) {color: #2457b0; min-height: 44px; display: inline-flex; align-items: center;}
+.app-shell .list-toolbar {flex-wrap: wrap; gap: 16px; padding: 20px 24px;}
+.app-shell .result-count {color: var(--jk-secondary); white-space: normal;}
+.app-shell :is(.service-line small, .form-subheading span, .native-date-field > small, .order-summary-strip, .cash-banner, .totals-box, .app-footer) {font-size: .875rem; color: var(--jk-secondary);}
+.app-shell .app-footer {padding: 0 32px 24px; flex-wrap: wrap; gap: 12px;}
+.app-shell .welcome-panel {padding: 32px; background: #e7f0ed; border-color: #cddfd6; border-radius: 12px; gap: 32px;}
+.app-shell .welcome-tag {font-size: .875rem; color: #35604f; letter-spacing: .05em;}
+.app-shell .welcome-copy h2 {font-size: 1.5rem; max-width: 24ch; line-height: 1.3;}
+.app-shell .welcome-copy > p {max-width: 50ch; color: #426458;}
+.app-shell .onboarding-step {padding: 16px; gap: 16px; background: #f8fcfa;}
+.app-shell .onboarding-step > div {min-width: 0;}
+.app-shell .onboarding-step strong {font-size: 1rem;}
+.app-shell .onboarding-step div > span {font-size: .875rem; color: #49675b;}
+.app-shell .step-counter {width: 32px; height: 32px; flex-shrink: 0; font-size: .875rem;}
+.app-shell .onboarding-import-link {font-size: 1rem; padding: 8px 0;}
+.app-shell .metric-grid {gap: 16px;}
+.app-shell .metric-card {padding: 24px; background: var(--jk-paper); border-color: var(--jk-border);}
+.app-shell .metric-card span {font-size: .875rem; color: var(--jk-secondary);}
+.app-shell .metric-card > strong {font-size: 2rem; letter-spacing: -.04em; line-height: 1.25; overflow-wrap: anywhere;}
+.app-shell .metric-card > small {display: block; font-size: .875rem; color: var(--jk-secondary); line-height: 1.5;}
+.app-shell .dashboard-metrics {gap: 0; border-block: 1px solid var(--jk-border); margin-bottom: 32px;}
+.app-shell .dashboard-metrics .metric-card {border: 0; border-radius: 0; background: transparent; padding: 24px; overflow: visible;}
+.app-shell .dashboard-metrics .metric-card + .metric-card {border-left: 1px solid var(--jk-border);}
+.app-shell .metric-icon {flex-shrink: 0; width: 32px; height: 32px; background: transparent;}
+.app-shell .green-accent > strong {color: #25664f;}
+.app-shell .stage-grid {gap: 0; padding: 24px;}
+.app-shell .stage-card {min-width: 0; padding: 8px 20px;}
+.app-shell .stage-card + .stage-card {border-left: 1px solid var(--jk-border);}
+.app-shell .stage-card > div:first-child {font-size: .875rem; white-space: normal; align-items: flex-start; line-height: 1.5; min-height: 42px; color: var(--jk-secondary);}
+.app-shell .stage-card > strong {font-size: 2rem; color: var(--jk-ink);}
+.app-shell .pipeline-dot {width: 8px; height: 8px; flex-shrink: 0; margin-top: 6px;}
+.app-shell .stage-bar {height: 6px; background: #e6eded;}
+.app-shell .stage-card.waiting .stage-bar > span {background: #986315;}
+.app-shell .stage-card.in_progress .stage-bar > span {background: #3865c0;}
+.app-shell .stage-card.quality_check .stage-bar > span {background: #7c5ca7;}
+.app-shell .stage-card.ready .stage-bar > span {background: #29836e;}
+.app-shell .stage-card.delivered .stage-bar > span {background: #5e7770;}
+.app-shell .dashboard-columns {grid-template-columns: minmax(0, 1.5fr) minmax(320px, 1fr); gap: 24px;}
+.app-shell .appointment-card {padding: 20px 8px; gap: 16px;}
+.app-shell .appointment-card > span:nth-child(2) {min-width: 0; overflow-wrap: anywhere;}
+.app-shell .appointment-card strong {font-size: 1rem; color: var(--jk-ink);}
+.app-shell .appointment-card small {font-size: .875rem; color: var(--jk-secondary); line-height: 1.6;}
+.app-shell .appointment-card:hover {background: #f0f6f4;}
+.app-shell .appointment-icon {width: 40px; height: 40px;}
+
+.app-shell :is(.integration-intro p, .migration-overview p, .integration-card > p, .integration-explain-grid p, .migration-help p) {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--jk-secondary);
+}
+.app-shell :is(.integration-intro h2, .migration-overview h2, .migration-success h3) {font-size: 1.25rem; line-height: 1.4;}
+.app-shell :is(.integration-facts, .integration-blockers h3, .integration-blockers ul, .integration-ready p,
+  .integration-explain-grid h3, .integration-refresh-note, .migration-steps > li, .migration-steps > li > span,
+  .migration-upload-zone p, .migration-file-info span, .migration-upload-actions > span,
+  .migration-reconciliation dt, .migration-warnings h3, .migration-warnings ul, .migration-issues > h3,
+  .migration-issues .data-table td:last-child, .migration-confirm > p, .migration-success p,
+  .migration-history-counts > span) {font-size: .875rem; line-height: 1.6;}
+.app-shell :is(.migration-file-info strong, .migration-upload-zone h3) {font-size: 1rem; line-height: 1.5;}
+.app-shell :is(.migration-upload-zone p, .migration-file-info span, .migration-upload-actions > span,
+  .migration-reconciliation dt, .migration-confirm > p, .migration-steps > li) {color: var(--jk-secondary);}
+.app-shell .migration-file-info {min-width: 0;}
+.app-shell .migration-upload-zone > div {min-width: 0; flex-basis: 240px;}
+.app-shell .migration-reconciliation dd {font-size: 1.5rem; overflow-wrap: anywhere;}
+.app-shell .migration-count-table {max-width: 100%; overflow-x: auto;}
+.app-shell .integration-facts dd {overflow-wrap: anywhere; min-width: 0;}
+.app-shell .integration-facts dt {color: var(--jk-secondary);}
+.app-shell .integration-explain-grid h3 {font-weight: 650; color: var(--jk-ink);}
+.app-shell .integration-card > h2 {font-size: 1.5rem;}
+
+/* These two navigation surfaces render in the existing dialog portal. */
+.mobile-nav-groups h3 {font-size: .875rem; color: #4e6670;}
+.mobile-nav-groups a, .command-results > a {font-size: 1rem; min-height: 48px; padding: 12px 16px;}
+.mobile-nav-groups a:focus-visible, .command-results > a:focus-visible {outline: 3px solid #2358be; outline-offset: -3px;}
+
+@media (max-width: 1380px) {
+  .app-shell .dashboard-columns {grid-template-columns: minmax(0, 1fr);}
+  .app-shell .metric-grid {grid-template-columns: repeat(2, minmax(0, 1fr));}
+  .app-shell .dashboard-metrics .metric-card:nth-child(3) {border-left: 0;}
+  .app-shell .dashboard-metrics .metric-card:nth-child(n+3) {border-top: 1px solid var(--jk-border);}
+  .app-shell .topbar-product, .app-shell .breadcrumb-slash {display: none;}
+  .app-shell .user-info {display: none;}
+  .app-shell .stage-card {padding-inline: 12px;}
+}
+@media (max-width: 1024px) {
+  .app-shell .sidebar {display: none;}
+  .app-shell .app-main {margin-left: 0;}
+  .app-shell .mobile-menu {display: block;}
+  .app-shell .topbar {min-height: 76px; padding: 12px 24px;}
+  .app-shell .page-content {padding: 32px 24px;}
+  .app-shell .page-heading > div:first-child {flex-basis: auto;}
+}
+@media (max-width: 640px) {
+  .app-shell .topbar {padding: 12px 16px; gap: 8px;}
+  .app-shell .topbar-location {flex-wrap: nowrap; font-size: .875rem;}
+  .app-shell .topbar-current {overflow-wrap: anywhere;}
+  .app-shell .topbar-right {gap: 8px;}
+  .app-shell .user-avatar {display: none;}
+  .app-shell .page-content {padding: 24px 16px 32px;}
+  .app-shell .page-heading h1 {font-size: 1.75rem;}
+  .app-shell .page-actions {width: 100%;}
+  .app-shell .page-actions > button {flex: 1 1 180px;}
+  .app-shell .panel-heading {padding: 20px;}
+  .app-shell .panel-heading h2 {font-size: 1.25rem;}
+  .app-shell .welcome-panel {padding: 24px; grid-template-columns: minmax(0, 1fr);}
+  .app-shell .metric-card {padding: 20px 16px;}
+  .app-shell .dashboard-metrics .metric-card {padding: 20px 12px;}
+  .app-shell .metric-card > strong {font-size: 1.5rem;}
+  .app-shell .stage-grid {grid-template-columns: minmax(0, 1fr); padding: 8px 20px;}
+  .app-shell .stage-card {display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; padding: 16px 0;}
+  .app-shell .stage-card + .stage-card {border-left: 0; border-top: 1px solid var(--jk-border);}
+  .app-shell .stage-card > div:first-child {min-height: 0; align-items: center;}
+  .app-shell .stage-card > strong {font-size: 1.5rem; margin: 0;}
+  .app-shell .stage-bar {grid-column: 1 / -1;}
+  .app-shell .pipeline-dot {margin-top: 0;}
+  .app-shell .dashboard-columns {grid-template-columns: minmax(0, 1fr);}
+  .app-shell .app-footer {padding: 0 16px 24px;}
+  .app-shell .notice {align-items: flex-start;}
+  .app-shell .list-toolbar {padding: 20px;}
+}
+@media print {
+  .app-shell .app-main {margin-left: 0;}
+  .app-shell .page-content {padding: 0;}
+}
+
+/* Spectrum dialog portals live outside the shell. Keep their fields readable. */
+.jk-dialog-content :is(input, textarea, button, select) {font-size: 1rem;}
+.jk-dialog-content input:not([type=checkbox]):not([type=radio]):not([type=file]),
+.jk-dialog-content :is(button, select) {min-height: 44px;}
+.jk-dialog-content label {font-size: .875rem; line-height: 1.5;}
+.app-shell div:has(> input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden])),
+.jk-dialog-content div:has(> input:not([type=checkbox]):not([type=radio]):not([type=file]):not([type=hidden])) {min-height: 44px;}
+.app-shell .workspace-search button {display: flex; align-items: center; gap: 8px;}
+.app-shell .panel-heading .help-flow-actions {max-width: none;}

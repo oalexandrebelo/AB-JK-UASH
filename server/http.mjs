@@ -47,7 +47,7 @@ export function validateRequestOrigin(request, server, configuredOrigin) {
   const origin = request.headers.origin;
   const publicNavigation = ['GET', 'HEAD'].includes(request.method) && origin === undefined
     && request.headers['sec-fetch-mode'] === 'navigate' && request.headers['sec-fetch-dest'] === 'document'
-    && ['/', '/app', '/app/'].includes((request.url || '').split('?')[0]);
+    && ['/', '/app', '/app/', '/agendar', '/agendar/', '/privacidade', '/privacidade/', '/condicoes-de-agendamento', '/condicoes-de-agendamento/'].includes((request.url || '').split('?')[0]);
   if ((origin !== undefined && (typeof origin !== 'string' || !matching.includes(origin))) || (request.headers['sec-fetch-site'] === 'cross-site' && !publicNavigation)) throw new ApiError(403, 'ORIGIN_REJECTED', 'Origem da solicitação não autorizada.');
 }
 

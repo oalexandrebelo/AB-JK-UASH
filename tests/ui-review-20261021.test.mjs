@@ -48,6 +48,9 @@ test('revisão UI: foco, escrita pendente, falhas de leitura e paginação prese
     const first = f.document.getElementById('settings-tab-business');
     first.focus();
     press(first,'ArrowRight');
+    await until(() => f.document.activeElement.id === 'settings-tab-transition','aba da transição');
+    assert.equal(f.document.activeElement.getAttribute('aria-selected'),'true');
+    press(f.document.activeElement,'ArrowRight');
     await until(() => f.text().includes('Sua conta'),'aba da conta');
     assert.equal(f.document.activeElement.id,'settings-tab-account');
     assert.equal(f.document.querySelectorAll('[role="tab"][tabindex="0"]').length,1);

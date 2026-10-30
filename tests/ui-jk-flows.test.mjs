@@ -6,8 +6,13 @@ import {fixture, until, fill, click, choose, submit, button, field, uiQaAvailabl
 
 test('JK no bundle: migração revisada, transporte e integrações bloqueadas com HTTP real', {timeout: 90000, skip: !uiQaAvailable && uiQaSkipReason}, async t => {
   let migrationAvailability = 'available';
+  let migrationRecoveryDelay = 0;
   const f = await fixture(t, {application: {fiscalEnv: {}, jkIntegrationsEnv: {}}, responseOverride:async ({url}) => {
-    if (url.pathname !== '/api/jk/migration/status' || migrationAvailability === 'available') return null;
+    if (url.pathname !== '/api/jk/migration/status') return null;
+    if (migrationAvailability === 'available') {
+      if (migrationRecoveryDelay) await new Promise(resolve => setTimeout(resolve, migrationRecoveryDelay));
+      return null;
+    }
     const unavailable = migrationAvailability === 'unavailable';
     return new Response(JSON.stringify(unavailable
       ? {ok:true,data:{supported:false,mode:'historical',source:'jumpcar',scope:'jk',reason:'SQLITE_LOCAL_REQUIRED',limits:{maxBytes:8388608,maxRows:20000}}}
@@ -52,9 +57,42 @@ test('JK no bundle: migração revisada, transporte e integrações bloqueadas c
     await until(() => f.text().includes('Não foi possível confirmar a disponibilidade da migração.'), 'falha posterior bloqueia suporte em cache');
     assert.equal(f.document.querySelector('input[type="file"]'), null);
     migrationAvailability = 'available';
+    migrationRecoveryDelay = 250;
     await click(f, 'Tentar novamente');
-    await until(() => f.document.querySelector('input[type="file"]'), 'suporte recuperado');
+    // O cadastro em cache pode remontar o input enquanto a consulta ainda está pendente.
+    await until(() => f.document.querySelector('input[type="file"]') && !button(f, 'Escolher arquivos').disabled, 'suporte recuperado e seleção habilitada');
+    migrationRecoveryDelay = 0;
     assert.equal(f.requests.slice(before).filter(row => /^\/api\/jk\/migration\/(preview|commit)$/u.test(row.path)).length, 0);
+  });
+
+  await t.test('envelope JSON não descarta configurações desconhecidas e preserva o contrato documentado', async () => {
+    const dataset = {schemaVersion:1,customers:[{sourceId:'qa-envelope',name:'Cliente sintético'}]};
+    const upload = async value => {
+      const input = f.document.querySelector('input[type="file"]');
+      Object.defineProperty(input, 'files', {configurable:true,value:[new File([JSON.stringify(value)], 'qa-envelope.json', {type:'application/json'})]});
+      input.dispatchEvent(new f.window.Event('change', {bubbles:true}));
+      await until(() => f.text().includes('qa-envelope.json'), 'envelope selecionado');
+      await click(f, 'Analisar e gerar prévia');
+    };
+    const before = f.requests.filter(row => row.path === '/api/jk/migration/preview').length;
+    await upload({source:'jumpcar',dataset,settings:{businessName:'Empresa sintética'}});
+    await until(() => f.text().includes('O envelope JSON contém campos sem mapeamento.'), 'campo desconhecido recusado sem descarte');
+    assert.equal(f.requests.filter(row => row.path === '/api/jk/migration/preview').length, before);
+    assert.equal(await count('customers'), 0);
+    await click(f, 'Remover qa-envelope.json');
+    const envelope = {source:'jumpcar',scope:'jk',mode:'historical',dataset};
+    await upload(envelope);
+    await until(() => f.text().includes('Pronta para importar'), 'envelope documentado aceito');
+    assert.deepEqual(JSON.parse(f.requests.filter(row => row.path === '/api/jk/migration/preview').at(-1).body), envelope);
+    await click(f, 'Remover qa-envelope.json');
+  });
+
+  await t.test('limite de arquivo orienta preservar o snapshot nativo completo', async () => {
+    const input = f.document.querySelector('input[type="file"]');
+    Object.defineProperty(input, 'files', {configurable:true,value:[new File([' '.repeat(8 * 1024 * 1024 + 1)], 'clientes.csv', {type:'text/csv'})]});
+    input.dispatchEvent(new f.window.Event('change', {bubbles:true}));
+    await until(() => f.text().includes('Não divida a exportação nativa de clientes sem IDs'), 'orientação de limite para snapshot');
+    assert.ok(f.text().includes('lotes canônicos reconciliados'));
   });
 
   await t.test('prévia não grava, mudança de arquivo invalida confirmação e commit preserva histórico sem recebimento operacional', async () => {

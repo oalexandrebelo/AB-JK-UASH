@@ -1,3 +1,4 @@
+import { assertJkMutationAllowed } from './jk-transition.mjs';
 import {randomUUID} from 'node:crypto';
 import {audit, idempotentWrite} from './db.mjs';
 import {assert} from './errors.mjs';
@@ -78,7 +79,7 @@ export async function handleMedia({request, method, pathname, session, db}) {
     const bytes = Buffer.from(body.dataBase64, 'base64');
     assert(bytes.toString('base64') === body.dataBase64, 422, 'INVALID_IMAGE', 'Codificação de imagem inválida.');
     checkImage(bytes, mime);
-    const result = (await idempotentWrite(db, {actorId:actor.id,key:request.headers['idempotency-key'],method,path:pathname,body,authorize:async ()=>(await requireLiveRole(db,session,ROLES))}, async () => {
+    const result = (await idempotentWrite(db, {actorId:actor.id,key:request.headers['idempotency-key'],method,path:pathname,body,authorize:async ()=>{ await requireLiveRole(db,session,ROLES); await assertJkMutationAllowed(db,method,pathname); }}, async () => {
       (await order(db, collection[1], true));
       assert((await db.prepare('SELECT COUNT(*) AS count FROM order_photos WHERE order_id=?').get(collection[1])).count < MAX_IMAGES, 409, 'PHOTO_LIMIT', 'O limite é de oito fotos por ordem de serviço.');
       const id = randomUUID(), now = new Date().toISOString();
@@ -94,7 +95,7 @@ export async function handleMedia({request, method, pathname, session, db}) {
     validate.onlyKeys(body,['version','caption']);
     const version = validate.integer(body.version,'version',{min:1});
     const caption = validate.text(body.caption,'caption',{max:500});
-    const result = (await idempotentWrite(db,{actorId:actor.id,key:request.headers['idempotency-key'],method,path:pathname,body,authorize:async ()=>(await requireLiveRole(db,session,ROLES))},async () => {
+    const result = (await idempotentWrite(db,{actorId:actor.id,key:request.headers['idempotency-key'],method,path:pathname,body,authorize:async ()=>{ await requireLiveRole(db,session,ROLES); await assertJkMutationAllowed(db,method,pathname); }},async () => {
       const row = (await db.prepare('SELECT order_id,version FROM order_photos WHERE id=?').get(single[1]));
       assert(row,404,'NOT_FOUND','Foto não encontrada.'); (await order(db,row.order_id,true));
       assert(row.version === version,409,'VERSION_CONFLICT','A foto foi atualizada por outra pessoa. Atualize a página.');

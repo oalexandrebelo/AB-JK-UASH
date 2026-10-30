@@ -1,0 +1,16 @@
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@source "./components/ui";
+@source "./features/transition";
+@source "./features/migration";
+@source "./features/integrations";
+
+@theme inline {
+  --color-card: oklch(0.995 0.002 260);
+  --color-card-foreground: oklch(0.3 0.035 260);
+  --color-muted-foreground: oklch(0.48 0.025 260);
+  --color-destructive: oklch(0.48 0.17 25);
+}
+
+[data-slot="card"], [data-slot="alert"] {border-color: var(--line);}

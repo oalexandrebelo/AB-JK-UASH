@@ -28,6 +28,8 @@ export async function fixture(t, extra = {}) {
 
 /** Dependency-free JSON Schema checks for every constraint used by this contract. */
 export function checkSchema(schema, value, at = '$') {
+  if(schema===false)assert.fail(`${at}: forbidden property`);
+  if(schema===true)return;
   if (schema.$ref) return checkSchema(schemas[schema.$ref.split('/').at(-1)], value, at);
   if ('const' in schema) assert.deepEqual(value, schema.const, `${at}: const`);
   if (schema.enum) assert.ok(schema.enum.includes(value), `${at}: enum ${JSON.stringify(schema.enum)} received ${JSON.stringify(value)}`);

@@ -100,7 +100,8 @@ test('fiscal no bundle: prepara sem emitir, valida tomador, cancela e reconcilia
   await click(f,'Voltar aos rascunhos');
   await click(f,'Atualizar');
   await until(() => f.text().includes('Envio habilitado'),'configuração de teste habilitada');
-  await click(f,'Conferir rascunho');
+  const nextDraftRow = await until(() => [...f.document.querySelectorAll('table[aria-label="Rascunhos fiscais"] tbody tr')].find(row => row.querySelector('strong')?.textContent.startsWith('DPS 1002 ·')),'segundo rascunho atualizado na listagem');
+  await click(f,'Conferir rascunho',nextDraftRow);
   await until(() => f.text().includes('DPS 1002'),'segundo rascunho aberto');
   await click(f,'Enviar ao provedor');
   assert.equal(button(f,'Confirmar envio ao provedor').disabled,true);

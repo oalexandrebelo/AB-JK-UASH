@@ -1,19 +1,26 @@
 import { createHash } from 'node:crypto';
+import { isAbsolute } from 'node:path';
 import { SecureHttpTransport } from './vendor/connectors/transport.mjs';
 import { PixBankingAdapter, pixAllowedHosts } from './vendor/connectors/banking/index.mjs';
 import { WhatsAppCloudAdapter } from './vendor/connectors/messaging/whatsapp.mjs';
 import { readPrivateFile, readPrivateText } from './vendor/integrations/secrets.mjs';
 import { AsyncPixChargeJournal } from './journal.mjs';
+import { createAsaasConnector, parseAsaasConfiguration } from './asaas-config.mjs';
+import { createBaileysAdapter } from './baileys.mjs';
 
 const fields = {
   'pix-efi': ['clientIdFile','clientSecretFile','pixKeyFile','mtls'],
   'pix-inter': ['clientIdFile','clientSecretFile','pixKeyFile','mtls','accountNumberFile'],
+  'pix-asaas': ['apiKeyFile','webhookTokenFile','accountId','dateTimeOffset'],
   'whatsapp-cloud': ['phoneNumberId','graphVersion','accessTokenFile'],
+  'whatsapp-baileys': ['accountPhone','authDir','templatesFile'],
 };
 const required = {
   'pix-efi': ['clientIdFile','clientSecretFile','pixKeyFile'],
   'pix-inter': ['clientIdFile','clientSecretFile','pixKeyFile'],
+  'pix-asaas': ['apiKeyFile','webhookTokenFile','accountId'],
   'whatsapp-cloud': ['phoneNumberId','graphVersion','accessTokenFile'],
+  'whatsapp-baileys': ['accountPhone','authDir','templatesFile'],
 };
 function configObject(value, allowed) {
   if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).some(key => !allowed.includes(key))) throw new Error('INTEGRATION_CONFIG_INVALID');
@@ -31,22 +38,27 @@ export function parseJkConfiguration(value) {
     const channel = entry.kind.startsWith('pix-') ? 'pix' : 'whatsapp';
     if (kinds.has(channel)) throw new Error('INTEGRATION_CONFIG_INVALID');
     kinds.add(channel);
-    if (channel === 'pix') {
+    if (entry.kind === 'pix-asaas') {
+      try { parseAsaasConfiguration(entry); } catch { throw new Error('INTEGRATION_CONFIG_INVALID'); }
+    } else if (channel === 'pix') {
       const mtls = configObject(entry.mtls, ['pfxFile','certFile','keyFile','passphraseFile']);
       if (Object.values(mtls).some(value => !configText(value)) || (mtls.pfxFile ? mtls.certFile || mtls.keyFile : !mtls.certFile || !mtls.keyFile)) throw new Error('INTEGRATION_CONFIG_INVALID');
       if (entry.accountNumberFile !== undefined && !configText(entry.accountNumberFile)) throw new Error('INTEGRATION_CONFIG_INVALID');
     } else if (entry.environment !== 'production') throw new Error('INTEGRATION_CONFIG_INVALID');
+    if (entry.kind === 'whatsapp-baileys' && (!/^[1-9]\d{7,14}$/u.test(entry.accountPhone) || !isAbsolute(entry.authDir))) throw new Error('INTEGRATION_CONFIG_INVALID');
   }
   return root;
 }
 
 const blank = (id, label) => ({ id, label, configured: false, provider: null, environment: 'not-configured', state: 'blocked', blockers: ['INTEGRATION_NOT_CONFIGURED'], canPrepareLocally: true, connectionVerified: false, homologated: false });
 
-/** Construction reads deployment-owned files only and never dispatches a request. */
-export async function createJkRuntime(db, { env = process.env, now = () => Date.now() } = {}) {
+/** Startup contacts WhatsApp only when its connection and production gates are explicit. */
+export async function createJkRuntime(db, { env = process.env, now = () => Date.now(), asaasConnectorFactory = createAsaasConnector, baileysAdapterFactory = createBaileysAdapter } = {}) {
   const channels = { pix: blank('pix','Pix'), whatsapp: blank('whatsapp','WhatsApp') };
   const adapters = new Map();
   const scopes = new Map();
+  const closers = new Set();
+  let asaas, baileys, baileysConfigured=false, closed=false, closePromise;
   let storageReady = false;
   try {
     await db.read(async () => {
@@ -77,7 +89,12 @@ export async function createJkRuntime(db, { env = process.env, now = () => Date.
     try {
       const root = env.AB_JK_SECRETS_ROOT || '';
       let adapter, scope;
-      if (kind === 'pix') {
+      if (entry.kind === 'pix-asaas') {
+        asaas = await asaasConnectorFactory(db,entry,{secretsRoot:root,allowProduction:env.AB_JK_ALLOW_PRODUCTION === 'true'});
+        adapter = asaas.adapter; scope = asaas.scope;
+        try { await db.prepare('SELECT scope,event_id,ignored FROM jk_asaas_webhook_events LIMIT 0').all(); }
+        catch { capability.blockers.push('ASAAS_WEBHOOK_STORAGE_UNAVAILABLE'); }
+      } else if (kind === 'pix') {
         const provider = entry.kind.slice(4);
         const clientId = await readPrivateText(root, entry.clientIdFile);
         const clientSecret = await readPrivateText(root, entry.clientSecretFile);
@@ -89,24 +106,61 @@ export async function createJkRuntime(db, { env = process.env, now = () => Date.
         adapter = new PixBankingAdapter({ provider, environment: entry.environment, clientId, clientSecret, pixKey, accountNumber, mtls },
           new SecureHttpTransport({ allowedHosts: pixAllowedHosts(provider, entry.environment) }), new AsyncPixChargeJournal(db));
         scope = createHash('sha256').update(JSON.stringify([entry.kind,entry.environment,clientId,pixKey,accountNumber || ''])).digest('hex');
+      } else if (entry.kind === 'whatsapp-baileys') {
+        const templatesBytes = await readPrivateFile(root,entry.templatesFile,256*1024);
+        const templates = JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(templatesBytes));
+        if (!Array.isArray(templates) || templates.length > 100) throw new Error('BAILEYS_TEMPLATES_INVALID');
+        baileysConfigured = true; capability.configured = true;
+        if (storageReady && !capability.blockers.length && env.AB_JK_BAILEYS_CONNECT_ENABLED === 'true') {
+          baileys = await baileysAdapterFactory({accountPhone:entry.accountPhone,authDir:entry.authDir,templates},{env});
+          closers.add(baileys); adapter = baileys; scope = baileys.accountScope;
+          adapters.set(kind,adapter); scopes.set(kind,scope);
+          await baileys.connect();
+        }
       } else {
         adapter = new WhatsAppCloudAdapter({ phoneNumberId: entry.phoneNumberId, graphVersion: entry.graphVersion, accessToken: await readPrivateText(root, entry.accessTokenFile) },
           new SecureHttpTransport({ allowedHosts: ['graph.facebook.com'] }));
         scope = createHash('sha256').update(JSON.stringify([entry.kind,entry.phoneNumberId,entry.graphVersion])).digest('hex');
       }
       capability.configured = true;
-      if (!capability.blockers.length) {
+      if (!capability.blockers.length && adapter) {
         capability.state = 'ready'; adapters.set(kind, adapter); scopes.set(kind, scope);
       }
-    } catch { capability.blockers.push('CREDENTIALS_OR_CONNECTOR_INVALID'); }
+    } catch (error) {
+      if (entry.kind === 'pix-asaas' && error?.code === 'PRODUCTION_NOT_ENABLED' && capability.blockers.includes('PRODUCTION_NOT_ENABLED')) capability.configured = true;
+      else capability.blockers.push('CREDENTIALS_OR_CONNECTOR_INVALID');
+      if (entry.kind === 'whatsapp-baileys' && baileys) { await baileys.close().catch(()=>{}); adapters.delete(kind); scopes.delete(kind); baileys = undefined; }
+    }
   }
   if (!storageReady) for (const value of Object.values(channels)) {
     value.state = 'blocked'; value.canPrepareLocally = false; value.blockers.push('INTEGRATION_STORAGE_UNAVAILABLE');
   }
-  return { channels, adapters, scopes, storageReady, now, deadlineMs: 60_000, leaseMs: 90_000 };
+  const runtime = { channels, adapters, scopes, storageReady, now, asaas, deadlineMs: 60_000, leaseMs: 90_000,
+    refresh() {
+      if (closed) { for (const capability of Object.values(channels)) { capability.state = 'blocked'; capability.blockers = ['INTEGRATIONS_CLOSED']; } return; }
+      if (!baileysConfigured) return;
+      const capability = channels.whatsapp;
+      const blockers = capability.blockers.filter(code => !['EXTERNAL_EFFECTS_DISABLED','PRODUCTION_NOT_ENABLED','BAILEYS_CONNECTION_DISABLED','BAILEYS_SEND_DISABLED','BAILEYS_NOT_CONNECTED'].includes(code));
+      if (env.AB_JK_INTEGRATIONS_ENABLED !== 'true') blockers.push('EXTERNAL_EFFECTS_DISABLED');
+      if (env.AB_JK_ALLOW_PRODUCTION !== 'true') blockers.push('PRODUCTION_NOT_ENABLED');
+      if (env.AB_JK_BAILEYS_CONNECT_ENABLED !== 'true') blockers.push('BAILEYS_CONNECTION_DISABLED');
+      if (env.AB_JK_BAILEYS_SEND_ENABLED !== 'true') blockers.push('BAILEYS_SEND_DISABLED');
+      const status = baileys?.status() || {connection:'disconnected',connectionVerified:false,sendEnabled:false,qrAvailable:false,deliveryVerified:false};
+      if (!status.sendEnabled && !blockers.includes('BAILEYS_SEND_DISABLED')) blockers.push('BAILEYS_SEND_DISABLED');
+      if (!status.connectionVerified) blockers.push('BAILEYS_NOT_CONNECTED');
+      Object.assign(capability,status,{blockers,state:blockers.length || !adapters.has('whatsapp') ? 'blocked' : 'ready'});
+    },
+    close() {
+      if (!closePromise) { closed = true; adapters.clear(); scopes.clear(); runtime.refresh(); closePromise = Promise.allSettled([...closers].map(adapter=>adapter.close())).then(()=>{}); }
+      return closePromise;
+    },
+  };
+  runtime.refresh();
+  return runtime;
 }
 
 export function jkReadiness(runtime, fiscal) {
+  runtime.refresh?.();
   const pix = { ...runtime.channels.pix, capabilities: { prepare: runtime.storageReady, submit: runtime.channels.pix.state === 'ready', reconcile: runtime.channels.pix.state === 'ready', settleProductionOnly: true } };
   const whatsapp = { ...runtime.channels.whatsapp, capabilities: { prepare: runtime.storageReady, submit: runtime.channels.whatsapp.state === 'ready', verifyDelivery: false } };
   const configuration = fiscal?.configuration;

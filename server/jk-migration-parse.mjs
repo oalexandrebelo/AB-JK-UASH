@@ -100,9 +100,12 @@ function csvValue(key,value) {
 }
 
 export function decodeImport(input) {
-  onlyKeys(input,['source','scope','mode','dataset','files','previewHash']);
+  onlyKeys(input,['source','scope','mode','dataset','files','previewHash','nativeCustomerMode']);
   if (input.source !== 'jumpcar' || (input.scope !== undefined && input.scope !== 'jk') || (input.mode !== undefined && input.mode !== 'historical')) fail('UNSUPPORTED_IMPORT_SCOPE','Esta importação atende somente Jumpcar, cliente JK e modo histórico.');
   if (Boolean(input.dataset) === Boolean(input.files)) fail('IMPORT_INPUT_REQUIRED','Informe dataset ou files, exclusivamente.');
+  const nativeModeProvided = Object.hasOwn(input,'nativeCustomerMode');
+  if (nativeModeProvided && !['customers-only','customers-and-vehicles'].includes(input.nativeCustomerMode)) fail('UNSUPPORTED_NATIVE_CUSTOMER_MODE','Escolha somente clientes ou clientes e veículos para o arquivo nativo.');
+  if (nativeModeProvided && (input.dataset || !Array.isArray(input.files) || input.files.length !== 1 || input.files[0]?.entity !== 'customers')) fail('NATIVE_CUSTOMER_MODE_REQUIRES_NATIVE_FILE','Este modo exige um único arquivo nativo de clientes, com suas nove colunas originais.');
   const normalizedInput = {...input}; delete normalizedInput.previewHash;
   if (Buffer.byteLength(JSON.stringify(normalizedInput)) > MAX_IMPORT_BYTES) fail('IMPORT_TOO_LARGE','A importação excede 8 MiB.');
   const result = {source:'jumpcar',scope:'jk',mode:'historical',inputHash:hashObject(normalizedInput),rows:Object.fromEntries(ENTITIES.map(entity => [entity,[]])),warnings:[],snapshots:[]};
@@ -128,13 +131,15 @@ export function decodeImport(input) {
         const snapshotHash = sha256(file.content);
         result.snapshots.push(snapshotHash);
         result.rows.customers = rows.map((row,index) => ({value:{sourceId:null,name:row[0],email:row[1] === '--' ? '' : row[1],phone:row[2] === '--' ? '' : row[2],notes:row[8] === '--' ? '' : row[8]},origin:{provenance:'snapshot-row',snapshotHash,row:index + 2,originKey:`snapshot:${snapshotHash}:${index + 2}`,archive:Object.fromEntries(headers.map((header,column) => [header,row[column]]))}}));
-        let ambiguousVehicles = 0, shortNames = 0, extractedVehicles = 0;
+        const customersOnly = input.nativeCustomerMode === 'customers-only';
+        let ambiguousVehicles = 0, shortNames = 0, extractedVehicles = 0, deferredVehicleEntries = 0, deferredVehicleRows = 0;
         for (const [index,row] of rows.entries()) {
           if (row[0].trim().length === 1) shortNames++;
           const rawPlates = row[6].trim();
           if (!rawPlates || rawPlates === '--') continue;
           const plates = rawPlates.toUpperCase().split(/[\s,;|/]+/u).map(plate => plate.replaceAll('-',''));
           if (!plates.every(plate => /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/u.test(plate))) { ambiguousVehicles++; continue; }
+          if (customersOnly) { deferredVehicleEntries += plates.length; deferredVehicleRows++; continue; }
           const customerKey = `snapshot:${snapshotHash}:${index + 2}`;
           for (const plate of plates) {
             result.rows.vehicles.push({value:{sourceId:null,customerImportId:technicalImportId('customers',customerKey),plate,model:''},origin:{provenance:'snapshot-row',snapshotHash,row:index + 2,originKey:`${customerKey}:vehicle:${plate}`,derived:'native-plate'}});
@@ -145,7 +150,10 @@ export function decodeImport(input) {
         if (shortNames) result.warnings.push({code:'LEGACY_SHORT_NAMES',count:shortNames,message:'Nomes legados de um caractere são preservados sem renomear. Revise a qualidade desses cadastros.'});
         if (extractedVehicles) result.warnings.push({code:'NATIVE_PLATES_EXTRACTED',count:extractedVehicles,message:'Placas brasileiras inequívocas foram vinculadas ao cliente da linha. Modelo vazio significa desconhecido; categoria small é um valor operacional inicial não verificado.'});
         if (ambiguousVehicles) result.warnings.push({code:'VEHICLE_LAYOUT_REVIEW_REQUIRED',count:ambiguousVehicles,message:'Linhas com veículos em formato ambíguo foram preservadas para revisão; seus veículos não foram criados.'});
+        if (nativeModeProvided) result.nativeCustomerImport = {mode:input.nativeCustomerMode,sourceRows:rows.length,sourceColumns:CUSTOMER_HEADERS.length,snapshotHash,deferredVehicleEntries,deferredVehicleRows,ambiguousVehicleRows:ambiguousVehicles,reason:customersOnly ? 'EXPLICIT_CUSTOMERS_ONLY' : 'NATIVE_PLATE_EXTRACTION'};
+        if (customersOnly) result.warnings.push({code:'NATIVE_VEHICLES_DEFERRED',count:deferredVehicleEntries,message:'Por escolha explícita, somente clientes serão cadastrados. Nenhum veículo ou proprietário será vinculado; todas as nove colunas originais permanecem preservadas para revisão posterior.'});
       } else {
+        if (nativeModeProvided) fail('NATIVE_CUSTOMER_MODE_REQUIRES_NATIVE_FILE','Este modo exige o arquivo nativo intacto de clientes, com suas nove colunas originais.');
         if (file.format === 'jumpcar-html') fail('UNRECOGNIZED_JUMPCAR_HEADERS','Somente o layout nativo de clientes com nove colunas é reconhecido em HTML.');
         if (!headers.includes('sourceId')) fail('SOURCE_ID_REQUIRED','O CSV canônico exige a coluna sourceId. O layout nativo de clientes deve preservar seus nove cabeçalhos.');
         result.rows[file.entity].push(...rows.map(row => ({value:Object.fromEntries(headers.map((key,index) => [key,csvValue(key,row[index])])),origin:null})));

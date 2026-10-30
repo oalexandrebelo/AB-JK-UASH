@@ -223,7 +223,7 @@ async function preparePlan(db,input) {
   for (const key of rejected) counts[key.split(':')[0]].rejected++;
   const reconciliation = {ordersTotalCents,itemNetTotalCents,paymentsTotalCents,historicalOutstandingCents:ordersTotalCents - paymentsTotalCents,operationalWrites:{orders:0,payments:0,cashMovements:0,invoices:0,fiscalDocuments:0,messages:0,stockMovements:0,commissions:0}};
   const previewHash = hashObject({version:1,inputHash:decoded.inputHash,state:hashObject(state),counts,reconciliation,issues,totalIssueCount});
-  const report = {status:totalIssueCount ? 'REJECTED' : 'PREVIEW',previewHash,inputHash:decoded.inputHash,canCommit:totalIssueCount === 0,mode:'historical',source:'jumpcar',scope:'jk',counts,issues,totalIssueCount,warnings:decoded.warnings,reconciliation,identityMap,sourceVerified:false};
+  const report = {status:totalIssueCount ? 'REJECTED' : 'PREVIEW',previewHash,inputHash:decoded.inputHash,canCommit:totalIssueCount === 0,mode:'historical',source:'jumpcar',scope:'jk',counts,issues,totalIssueCount,warnings:decoded.warnings,reconciliation,identityMap,sourceVerified:false,...(decoded.nativeCustomerImport ? {nativeCustomerImport:decoded.nativeCustomerImport} : {})};
   return {decoded,entries,report};
 }
 
@@ -272,7 +272,7 @@ export async function commitJkMigration(db,input,{previewHash = input?.previewHa
     for (const entry of entries) if (entry.action === 'insert') await insertEntry(db,entry,batchId,committedAt);
     const invalidForeignKeys = await db.prepare('PRAGMA foreign_key_check').all();
     assert(invalidForeignKeys.length === 0,409,'IMPORT_FOREIGN_KEY_FAILURE','A reconciliação de vínculos falhou. A transação foi revertida.');
-    await audit(db,{actorId,action:'jk.migration.committed',resourceType:'jk_migration_batch',resourceId:batchId,metadata:{mode:'historical',inputHash:decoded.inputHash,previewHash,counts:Object.fromEntries(ENTITIES.map(entity => [entity,report.counts[entity].insert]))}});
+    await audit(db,{actorId,action:'jk.migration.committed',resourceType:'jk_migration_batch',resourceId:batchId,metadata:{mode:'historical',inputHash:decoded.inputHash,previewHash,counts:Object.fromEntries(ENTITIES.map(entity => [entity,report.counts[entity].insert])),...(report.nativeCustomerImport ? {nativeCustomerImport:report.nativeCustomerImport} : {})}});
     return result;
   };
   if (idempotencyKey !== undefined) {
@@ -288,11 +288,11 @@ export async function jkMigrationStatus(db) {
   if (db.mode !== 'local') return {supported:false,mode:'historical',source:'jumpcar',scope:'jk',reason:'SQLITE_LOCAL_REQUIRED',limits:{maxBytes:MAX_IMPORT_BYTES,maxRows:MAX_IMPORT_ROWS}};
   const counts = {};
   for (const entity of ENTITIES) counts[entity] = (await db.prepare('SELECT COUNT(*) AS count FROM jk_migration_records WHERE entity=?').get(entity)).count;
-  const batches = await db.prepare('SELECT id,committed_at,report_json FROM jk_migration_batches ORDER BY committed_at DESC,id DESC LIMIT 20').all();
+  const batches = await db.prepare('SELECT id,committed_at,report_json FROM jk_migration_batches ORDER BY committed_at DESC,rowid DESC LIMIT 20').all();
   const totals = await db.prepare('SELECT COALESCE(SUM(total_cents),0) AS ordersTotalCents FROM jk_history_orders').get();
   totals.paymentsTotalCents = (await db.prepare('SELECT COALESCE(SUM(amount_cents),0) AS total FROM jk_history_payments').get()).total;
   totals.historicalOutstandingCents = totals.ordersTotalCents - totals.paymentsTotalCents;
-  return {supported:true,mode:'historical',source:'jumpcar',scope:'jk',counts,totals,limits:{maxBytes:MAX_IMPORT_BYTES,maxRows:MAX_IMPORT_ROWS},latestBatches:batches.map(row => { const report = JSON.parse(row.report_json); return {batchId:row.id,committedAt:row.committed_at,counts:report.counts,reconciliation:report.reconciliation,previewHash:report.previewHash}; })};
+  return {supported:true,mode:'historical',source:'jumpcar',scope:'jk',counts,totals,limits:{maxBytes:MAX_IMPORT_BYTES,maxRows:MAX_IMPORT_ROWS},latestBatches:batches.map(row => { const report = JSON.parse(row.report_json); return {batchId:row.id,committedAt:row.committed_at,counts:report.counts,reconciliation:report.reconciliation,previewHash:report.previewHash,...(report.nativeCustomerImport ? {nativeCustomerImport:report.nativeCustomerImport} : {})}; })};
 }
 
 export async function jkMigrationHistory(db,url) {

@@ -1,3 +1,4 @@
+import { assertJkMutationAllowed } from './jk-transition.mjs';
 import { createHash, randomUUID } from 'node:crypto';
 import { transaction, audit } from './db.mjs';
 import { assert } from './errors.mjs';
@@ -64,6 +65,7 @@ async function getDraft(db, id) {
 
 async function reserveOperation(ctx, identity, action) {
   await requireLiveRole(ctx.db, ctx.session, FISCAL_ROLES);
+  await assertJkMutationAllowed(ctx.db,ctx.method,ctx.pathname);
   const inserted = await ctx.db.prepare('INSERT INTO fiscal_operations(actor_id,idempotency_key,request_hash,draft_id,action,response_json,created_at) VALUES(?,?,?,?,?,?,?) ON CONFLICT(actor_id,idempotency_key) DO NOTHING')
     .run(identity.actorId, identity.key, identity.hash, null, action, null, nowIso(ctx.fiscal));
   if (Number(inserted.changes) > 0) return null;

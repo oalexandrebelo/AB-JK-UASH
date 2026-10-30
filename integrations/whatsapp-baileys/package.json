@@ -1,0 +1,15 @@
+{
+  "name": "@ab-jk-uash/whatsapp-baileys",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Adapter opcional WhatsApp Web para AB-JK-UASH, sem conexão automática",
+  "engines": { "node": ">=24.0.0 <25" },
+  "scripts": {
+    "status": "node cli.mjs status",
+    "pair": "node cli.mjs pair",
+    "verify:installed": "node verify-installed.mjs",
+    "test": "node --test ../../tests/baileys-adapter.test.mjs"
+  },
+  "dependencies": { "baileys": "7.0.0-rc14" }
+}

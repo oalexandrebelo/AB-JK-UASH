@@ -1,3 +1,4 @@
+import { assertJkMutationAllowed } from './jk-transition.mjs';
 import { randomUUID } from 'node:crypto';
 import { ApiError, assert } from './errors.mjs';
 import * as v from './validation.mjs';
@@ -62,7 +63,7 @@ export async function changed(ctx, action, type, recordId, metadata = {}) {
 export async function mutate(ctx, roles, operation, status = 200) {
   const actor = requireRole(ctx.session, roles);
   const body = v.object(await readJson(ctx.request));
-  const response = (await idempotentWrite(ctx.db, { actorId: actor.id, key: ctx.request.headers['idempotency-key'], method: ctx.method, path: ctx.pathname, body, authorize: async () => (await requireLiveRole(ctx.db, ctx.session, roles)) }, async () => {
+  const response = (await idempotentWrite(ctx.db, { actorId: actor.id, key: ctx.request.headers['idempotency-key'], method: ctx.method, path: ctx.pathname, body, authorize: async () => { await requireLiveRole(ctx.db, ctx.session, roles); await assertJkMutationAllowed(ctx.db,ctx.method,ctx.pathname); } }, async () => {
     (await requireLiveRole(ctx.db, ctx.session, roles));
     return { status, data: { item: (await operation(body)) } };
   }));

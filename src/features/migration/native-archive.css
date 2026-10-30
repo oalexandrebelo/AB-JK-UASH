@@ -1,0 +1,33 @@
+.native-archive {display:grid; gap:24px; padding-top:24px; min-width:0;}
+.native-archive [data-slot=card] {min-width:0; box-shadow:none; border:1px solid var(--line); border-radius:16px; background:var(--surface, #fff);}
+.native-archive [data-slot=card-header], .native-archive [data-slot=card-content] {padding:24px;}
+.native-archive [data-slot=card-header] {padding-bottom:0;}
+.native-archive [data-slot=card-title] h2 {font-size:1.375rem; margin:0;}
+.native-archive [data-slot=card-description], .native-archive [data-slot=alert-description] {font-size:1rem; line-height:1.6;}
+.native-archive [data-slot=alert] {border:1px solid var(--line); padding:20px; border-radius:12px; background:#f3f7fc;}
+.archive-upload, .archive-toolbar, .archive-heading {display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+.archive-upload > div:first-child {flex:1 1 280px; min-width:0; overflow-wrap:anywhere;}
+.archive-upload p, .archive-caption {font-size:.875rem; color:var(--muted); line-height:1.6;}
+.archive-heading {justify-content:space-between;}
+.archive-preview {margin-top:24px; padding-top:24px; border-top:1px solid var(--line);}
+.archive-preview h3 {margin:0; font-size:1.125rem;}
+.archive-confirm {display:flex; flex-direction:column; align-items:flex-start; gap:16px; margin-top:24px;}
+.archive-summary {display:flex; flex-wrap:wrap; gap:24px 40px; margin:24px 0;}
+.archive-summary > div {display:grid; gap:8px;}
+.archive-summary dt {font-size:.875rem; color:var(--muted);}
+.archive-summary dd {font-size:1.125rem; font-weight:600; font-variant-numeric:tabular-nums; margin:0;}
+.archive-success {display:flex; align-items:center; gap:12px; color:#17683f; line-height:1.6;}
+.archive-table-scroll {max-width:100%; overflow:auto; border:1px solid var(--line); border-radius:10px;}
+.archive-table-scroll:focus-visible {outline:3px solid #5575c7; outline-offset:3px;}
+.archive-table-scroll table {border-collapse:collapse; text-align:left; font-size:.875rem; width:max-content; min-width:100%;}
+.archive-table-scroll caption {text-align:left; padding:16px; font-weight:600; font-size:1rem;}
+.archive-table-scroll th, .archive-table-scroll td {padding:14px 16px; border-top:1px solid var(--line); max-width:420px; white-space:pre-wrap; overflow-wrap:anywhere;}
+.archive-table-scroll thead th {background:#f4f6fa; white-space:nowrap; font-weight:600;}
+.archive-table-scroll tbody th {color:var(--muted); font-weight:400;}
+.archive-table-scroll tbody tr:hover {background:#f8faff;}
+@media (max-width:640px) {
+  .native-archive [data-slot=card-header], .native-archive [data-slot=card-content] {padding:20px;}
+  .native-archive [data-slot=card-header] {padding-bottom:0;}
+  .archive-upload > button, .archive-toolbar > div {width:100%;}
+  .archive-summary {gap:20px 24px;}
+}

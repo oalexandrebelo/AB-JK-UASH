@@ -2,7 +2,7 @@
 
 Cliente TypeScript e JavaScript ESM da API AB-UASH. O pacote não tem dependências de execução. Usa as APIs Web `fetch`, `Headers`, `AbortController` e `crypto.randomUUID`, disponíveis no Node 24 distribuído com o projeto e em navegadores modernos.
 
-O contrato cobre **97 operações: 89 da aplicação e 8 fiscais**. Os modelos, entradas e assinaturas são gerados da definição revisada em `scripts/sdk-contract.mjs`. O contrato HTTP está em `docs/api/openapi.json` (OpenAPI 3.1). A API usa o mesmo endereço e as mesmas operações com SQLite local ou PostgreSQL no servidor.
+O contrato cobre **136 operações: 90 da aplicação/autenticação, 8 fiscais, 2 de transição, 4 de acervo documental, 4 de preparação/diagnóstico TEF, 3 de equipe, 12 da ponte de integrações JK, 4 do importador operacional/histórico, 5 de conciliação documental e 4 do catálogo da origem**. Os modelos, entradas e assinaturas são gerados da definição revisada em `scripts/sdk-contract.mjs`. O contrato HTTP está em `docs/api/openapi.json` (OpenAPI 3.1). O cliente usa a origem do aplicativo tanto com SQLite local quanto com PostgreSQL no servidor. Recursos exclusivos de SQLite, como o importador JK, a conciliação e os acervos documentais, informam a indisponibilidade nos demais ambientes.
 
 ## Compilar e usar
 
@@ -265,6 +265,90 @@ Um rascunho pode existir localmente com integração desativada. Ele não é uma
 
 ## Escopo de verificação
 
-A suíte realiza chamadas HTTP reais com SQLite temporário, percorre todas as 97 operações e confere entradas/saídas contra os schemas, incluindo os seis formatos de relatório. Também cobre quatro papéis, campos condicionais, sessão revogada, troca de senha, token de setup, timeout durante leitura do corpo, cancelamento, bloqueio de redirecionamento e resposta de pagamento perdida seguida de replay.
+A suíte realiza chamadas HTTP reais com SQLite temporário, percorre as 136 operações do SDK em dois cenários isolados e confere entradas/saídas contra os schemas, incluindo os seis formatos de relatório, propostas documentais, revisão explícita de veículo e as três coleções do catálogo da origem. Também cobre quatro papéis, campos condicionais, sessão revogada, troca de senha, token de setup, timeout durante leitura do corpo, cancelamento, bloqueio de redirecionamento e resposta de pagamento perdida seguida de replay.
 
-O transporte fiscal desses testes é um fixture em memória; nenhum documento é emitido. Os testes do SDK não comprovam homologação fiscal nem implantação real em Vercel/Supabase. Essas verificações pertencem à integração e ao ambiente de destino.
+Os transportes fiscal, Asaas e Baileys desses testes são fixtures em memória; nenhum documento é emitido, cobrança é feita ou mensagem é enviada. O teste dos 12 contratos JK usa Asaas em homologação e uma instância Baileys simulada; isso não prova funcionamento desses provedores. O webhook é exercitado separadamente sem cookie, com header próprio, para conferir persistência/deduplicação e ausência de baixa financeira. Os testes do SDK não comprovam homologação fiscal nem implantação real em Vercel/Supabase. Essas verificações pertencem à integração e ao ambiente de destino.
+
+## Preparação TEF e acervo documental
+
+`getJkTefCatalog`, `getJkTefPlan` e `getJkTefDiagnostics` permitem consulta por administrador ou gestor. O catálogo inclui `reviewedAt` e `preparationSteps` com ação/evidência por família. O diagnóstico lê somente o plano, com `localOnly:true`, `networkAttempted:false` e `hardwareInspected:false`; não retorna notas/modelo nem verifica terminal. `updateJkTefPlan` exige administrador, versão atual, CSRF e chave de idempotência; recebe somente fornecedores escolhidos, modelo de equipamento e observações. Não envie credenciais ou dados de cartão. O estado é sempre `preparation_only`, com `canSubmit`, `connectionVerified` e `homologated` falsos. Salvar preparação não implementa conectores nem ativa pagamentos; funciona também em consulta paralela.
+
+`getJkHistoryArchiveStatus`, `listJkHistoryArchiveRows`, `previewJkHistoryArchive` e `commitJkHistoryArchive` são administrativos e preservam documentos localmente no SQLite. A prévia exige CSRF; o commit também exige hash revisado e idempotência. Não criam pagamentos, cadastros operacionais ou estoque. `sourceVerified:false` indica ausência de confirmação da origem; os documentos não são sincronizados automaticamente.
+
+
+## Contas pendentes e equipe
+
+`createUser` aceita dois formatos exclusivos: nome/e-mail/papel/senha ou nome/e-mail/papel/`pendingPassword:true` sem senha. O segundo cria conta inativa, com `passwordSetupRequired:true`. A propriedade é opcional em `User` e deixa de aparecer quando a senha existe. Cadastro de acesso e cadastro de profissional são distintos.
+
+`setInitialUserPassword` exige administrador atual, CSRF e idempotência. Recebe `{password}` sem `version`, define a senha somente de uma conta pendente/inativa e ativa seu acesso. Não redefine uma senha já configurada. Para recuperar perda de resposta, preserve o objeto preparado e sua chave em memória; ele contém a senha e não deve ser salvo em logs ou armazenamento público.
+
+```ts
+const pending = (await client.api.createUser({body:{
+  name: inputName, email: inputEmail, role: 'operator', pendingPassword: true,
+}})).user;
+const activation = client.prepare('setInitialUserPassword', {
+  path: {userId: pending.id}, body: {password: passwordEnteredPrivately},
+});
+const {user} = await activation.execute();
+```
+
+`getJkTeamStatus`, `previewJkTeam` e `commitJkTeam` são administrativos. A entrada traz `source:'jumpcar-ui'`, `establishmentId:24453` e de 1 a 100 pessoas explicitamente revisadas, com nome, e-mail, cargo na origem, papel `manager|operator|viewer`, `createEmployee` e telefone opcional. A prévia exige CSRF, sem idempotência; o commit exige também o `previewHash` exato e chave idempotente. O resultado preserva contas sem senha e inativas, profissionais opcionais inativos e remuneração não configurada. `accessEnabled:false` e `payrollEnabled:false` não são aprovação de ativação ou folha.
+
+## Integrações JK por atendimento
+
+`getJkIntegrationReadiness`, `getJkOrderIntegrations`, `getJkOrderFiscalSource`, `getJkPix` e `getJkMessage` permitem consulta aos quatro papéis. Preparar, enviar, conciliar ou cancelar exige administrador/gestor atual, CSRF, versão e idempotência. O resumo da ordem tem listas sem paginação: até 100 registros Pix/mensagens combinados e até 100 rascunhos fiscais.
+
+Use a prontidão para escolher o formato correto de `prepareJkPix`: Asaas exige `customerId` do cliente já cadastrado no Asaas e `dueDate`; não aceita `expiresInSeconds`. Efí/Inter ou preparação sem provedor aceitam `version` e `expiresInSeconds` opcional de 60 a 86400 segundos (padrão 3600). O corpo não recebe valor, `txid`, conta ou provedor: esses dados vêm do servidor. A união TypeScript impede misturar os ramos; o servidor confere o provedor efetivo.
+
+`prepareJkMessage` recebe `templateName`, `languageCode`, `bodyParameters` opcionais e `consentConfirmed:true`; resolve o destinatário pelo cliente da ordem. Cloud usa modelo aprovado pela Meta; Baileys usa modelo local explicitamente configurado. Não aceita telefone arbitrário ou texto livre por essa rota.
+
+`submitJkPix` e `submitJkMessage` iniciam o envio explícito. Resultado incerto não autoriza novo envio: use `reconcileJkPix` para consulta autenticada da mesma referência/conta/ambiente, com intervalo opcional `start/end` de até 31 dias. `cancelJkPix` e `cancelJkMessage` cancelam somente preparações nunca enviadas; não cancelam cobrança no provedor. Respostas 202 mantêm pendência/incerteza e não equivalem a pagamento ou entrega. Homologação nunca quita a ordem de produção.
+
+A prontidão Baileys pode incluir `connection`, `connectionVerified`, `sendEnabled`, `qrAvailable`, `reconnectAttempts` e `deliveryVerified:false`. Esses campos são condicionais à configuração/instância local. Não há QR, código de pareamento ou credenciais nas respostas. `delivery:'unconfirmed'` continua explícito mesmo quando o socket aceita o envio.
+
+## Receptor Asaas e limites do inventário
+
+O OpenAPI também documenta `POST /api/jk/integrations/asaas/webhook`, que **não é método do SDK de usuário**. O provedor usa `asaas-access-token` próprio, sem sessão, CSRF ou `Idempotency-Key`, e envia JSON bruto UTF-8 não comprimido de até 256 KiB. O receptor confere conta e esquema, admite campos adicionais e só responde 200 após persistir a pista sanitizada; reentrega igual é deduplicada por ambiente/conta/evento. Isso não confirma quitação: a baixa requer a consulta autenticada explícita.
+
+O contrato do SDK não inclui as sondas de infraestrutura `/api/ready` nem o perfil público `/api/public/profile`. O OpenAPI contém 137 operações documentadas (136 de usuário + receptor Asaas); essa contagem não deve ser apresentada como inventário de todo caminho interno do servidor.
+
+### Conciliação documental e revisão de veículos
+
+`getJkReconciliationStatus`, `listJkReconciliationVehicles` e `listJkReconciliationHistory` exigem administrador atual. A preparação usa os acervos já preservados no servidor e o mapa de clientes por arquivo/linha. `previewJkReconciliation({body:{}})` é somente leitura; confirmar seu hash com `commitJkReconciliation` registra vínculos e propostas documentais. Categoria, modelo e `vehicleId` permanecem `null`, e `sourceId` é sempre `null`. Números de OS repetidos continuam sendo linhas diferentes.
+
+Para promover um único candidato, a prévia recebe `vehicleReviews:[{vehicleRef,category,model,color?}]`. Categoria e modelo são obrigatórios e devem ter sido revisados; não há categoria padrão. A confirmação deve repetir essas escolhas e o hash obtido. Placa conflitante, cliente inativo, proprietário existente ou estado alterado bloqueiam a criação. O cadastro de clientes e as informações financeiras não são modificados.
+
+As consultas aceitam `customerId`, `plate`, `status`, `limit` e `offset`. A placa é um filtro exato. No histórico, `customerId` identifica um candidato documental, inclusive quando há divergência: sempre exiba `proposal.status`. `proposal` representa concordância de campos, `insufficient_identity` ausência de contato suficiente e os demais estados descrevem impedimentos. Nenhum deles prova identidade Jumpcar, titularidade histórica ou pagamento. Preserve `sourceVerified:false` e as 30 células originais.
+
+### Catálogo e posições da origem
+
+`previewJkSourceCatalog` e `commitJkSourceCatalog` recebem um `snapshot` completo com `schemaVersion:1`, `source:'jumpcar-ui'`, `establishmentId:24453`, `observedAt` e as listas `services`, `products` e `balances`. Todos os campos de cada linha são obrigatórios; desconhecidos são `null`. Dinheiro usa centavos inteiros, quantidades da origem permanecem texto, e `raw` preserva somente valores simples. Um ID técnico nunca deve ser enviado como `sourceId` da origem.
+
+`getJkSourceCatalogStatus` e `listJkSourceCatalogRows` consultam a última versão preservada. A listagem aceita `collection`, `q`, `limit` e `offset`, e cada linha traz a proveniência do snapshot. Nova versão não soma saldos das anteriores. Esses métodos não ativam serviços ou produtos, não abrem estoque e não criam recebimentos, caixa, títulos ou pacotes. Consulte o [contrato detalhado de catálogo](../docs/migration/source-catalog.md).
+
+
+## Importador nativo: somente clientes (0.3.1)
+
+`getJkMigrationStatus`, `getJkMigrationHistory`, `previewJkMigration` e `commitJkMigration` expõem as rotas administrativas já existentes do importador. São diferentes do acervo original e do cadastro de equipe. A prévia exige sessão/CSRF; o commit também exige `previewHash` e idempotência. A API é local SQLite; o histórico não gera OS atual, recebimento operacional, caixa, estoque ou folha.
+
+A nova opção `nativeCustomerMode:'customers-only'` é **explícita** e exclusiva de um único arquivo de clientes nativo CSV/HTML com nove colunas, íntegro. Importa clientes, sem criar veículos nem decidir proprietários. `customers-and-vehicles` solicita explicitamente o tratamento completo, sujeito às validações de placa; omitir a opção conserva o comportamento anterior. Não use essa opção com `dataset` canônico, arquivos extras ou outra entidade.
+
+```ts
+const input = {
+  source: 'jumpcar' as const,
+  nativeCustomerMode: 'customers-only' as const,
+  files: [{entity: 'customers' as const, format: 'csv' as const, content: originalContent}],
+};
+const preview = await client.api.previewJkMigration({body: input});
+// A pessoa deve conferir contagens, avisos e decisão de não criar veículos.
+// Somente após essa conferência explícita:
+const operation = client.prepare('commitJkMigration', {
+  body: {...input, previewHash: preview.previewHash},
+});
+```
+
+O trecho prepara a chamada; a aplicação só deve executar `operation.execute()` após o aceite humano. Envie exatamente os mesmos bytes textuais/opção na prévia e no commit. Em navegador, preserve BOM com `new TextDecoder('utf-8',{fatal:true,ignoreBOM:true})`; não remova BOM, espaços ou finais de linha. Qualquer mudança de arquivo ou escolha exige nova prévia e novo consentimento. O servidor vincula a opção a `inputHash` e `previewHash` e rejeita adulteração.
+
+O relatório opcional `nativeCustomerImport` contém modo, `sourceRows`, `sourceColumns:9`, `snapshotHash`, `deferredVehicleEntries`, `deferredVehicleRows`, `ambiguousVehicleRows` e motivo. Linhas originais e as nove colunas ficam preservadas no histórico privado `sourceRows`. `identityMap` informa IDs técnicos de arquivo/linha, com `provenance:'snapshot-row'` e **`sourceId:null` somente leitura**, também `readonly` no TypeScript. Não invente IDs Jumpcar nem deduplique clientes por nome/e-mail/telefone.
+
+A importação somente de clientes não resolve os proprietários adiados. Um snapshot posterior continua exigindo reconciliação explícita; o modo não sincroniza dados e não permite substituir silenciosamente o arquivo original. Consulte [o contrato completo do importador](../docs/migration-jk.md).

@@ -1,0 +1,24 @@
+.integration-guides {display:grid; gap:20px; margin-top:40px; padding-top:32px; border-top:1px solid var(--line);}
+.integration-guides-heading {display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:24px;}
+.integration-guides-heading > div:first-child {flex:1 1 460px;}
+.integration-guides-heading h2 {margin:8px 0 12px; font-size:1.75rem; letter-spacing:-.025em;}
+.integration-guides-heading p {margin:0; color:var(--jk-secondary, #4e6670); line-height:1.65; max-width:75ch;}
+.integration-guides-heading .integration-guides-eyebrow {font-size:.875rem; font-weight:600; letter-spacing:.06em;}
+.integration-guides-status {margin:0; color:var(--jk-secondary, #4e6670); font-size:.875rem; line-height:1.6;}
+.integration-guides-grid {display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; align-items:start;}
+.integration-guide {border:1px solid var(--line); border-radius:12px; min-width:0;}
+.integration-guide summary {display:flex; align-items:flex-start; justify-content:space-between; gap:16px; cursor:pointer; padding:20px; list-style:none;}
+.integration-guide summary::-webkit-details-marker {display:none;}
+.integration-guide summary > span:first-child {display:grid; gap:8px;}
+.integration-guide summary strong {font-size:1.125rem;}
+.integration-guide summary strong::before {content:'+'; display:inline-block; width:1.25em;}
+.integration-guide[open] summary strong::before {content:'−';}
+.integration-guide summary > span:first-child > span {color:var(--jk-secondary, #4e6670); font-size:.875rem; line-height:1.65;}
+.integration-guide summary:focus-visible {outline:3px solid var(--brand); outline-offset:4px; border-radius:12px;}
+.integration-guide-body {padding:0 20px 20px;}
+.integration-guide-body ol {padding-left:24px; margin:0 0 20px; font-size:.9375rem; line-height:1.7;}
+.integration-guide-body li + li {margin-top:12px;}
+.integration-guide-actions {display:flex; flex-wrap:wrap; align-items:center; gap:12px;}
+.integration-guide-actions a {font-size:.875rem; line-height:1.65; color:#355ca8; text-underline-offset:3px;}
+@media(max-width:900px) {.integration-guides-grid {grid-template-columns:minmax(0,1fr);}}
+@media(max-width:480px) {.integration-guide summary {flex-wrap:wrap;}.integration-guides-heading h2 {font-size:1.5rem;}}

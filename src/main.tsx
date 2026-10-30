@@ -4,6 +4,7 @@ import {Provider} from '@react-spectrum/s2/Provider';
 import {App} from './App';
 import '@react-spectrum/s2/page.css';
 import '@fontsource-variable/inter';
+import './shadcn.css';
 import './styles.css';
 import './jk.css';
 
