@@ -51,5 +51,21 @@
     "Postpaid concurrency test uses two SQLite connections in one Node process.",
     "The main suite preceded the version metadata bump; DOM and infra suites ran on the final build. Remote CI rechecks the published commit.",
     "Local environment has no Docker CLI; Docker evidence belongs to remote CI and Oficina."
-  ]
+  ],
+  "remoteCi": {
+    "sourceCommit": "ac1a1bf13f422b113b6f9675aae328e9409baa4c",
+    "url": "https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40999978430",
+    "conclusion": "success",
+    "completedAt": "2026-10-30T03:56:42Z",
+    "scope": [
+      "build",
+      "sdk",
+      "main tests",
+      "DOM tests",
+      "infra tests",
+      "Compose config",
+      "Docker smoke",
+      "cleanup"
+    ]
+  }
 }

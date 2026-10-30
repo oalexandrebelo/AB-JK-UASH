@@ -1,8 +1,6 @@
 # Validação histórica · AB-JK-UASH 0.1.0 · 28–29/10/2026
 
-**Documento histórico.** Os resultados, hashes e bloqueios abaixo pertencem à rodada local de 28 de outubro de 2026 e ao fechamento remoto de 29 de outubro de 2026. O estado atual está em [RELEASE-0.1.1.md](RELEASE-0.1.1.md); não interpretar as contagens deste documento como testes da release 0.1.1.
-
-Naquele fechamento, a implantação no AB-PCSRV, o bootstrap privado, a migração real e a homologação externa estavam pendentes. Em 30/10, o baseline `5304ee6` foi instalado no AB-PCSRV e teve backup/restauração de prova comprovados; o bloqueio de instalação descrito nesta evidência foi superado para esse baseline. A release final 0.1.1 segue em validação, com gates próprios de administrador, importação, provedores e HTTPS externo no relatório atual. Build, teste ou análise estática não constituem, isoladamente, prontidão integral de produção.
+**Documento histórico de validação sintética.** Os resultados e hashes abaixo pertencem à rodada de testes de 28–29/10/2026 e não representam testes da 0.1.1. **0.1.1 publicada; implantação e aceite operacional possuem registro privado entregue ao titular.** Consulte a [release pública](RELEASE-0.1.1.md) para o escopo atual. Configuração, identificadores e observações do ambiente real não são publicados neste documento.
 
 ## Resultado executado
 
@@ -32,7 +30,7 @@ A soma dos gates de teste acima é **189 aprovações**, com cinco testes não e
 
 O snapshot não inclui bancos, segredos, `node_modules`, distribuição compilada, SDK gerado, testes, mídia ou infraestrutura. O escopo é explícito; seu hash não pretende representar cada arquivo do repositório. A fonte foi conferida novamente após os testes.
 
-**Distribuição separada do REA.** A revisão automática de aprovação bloqueou a publicação dos envelopes completos comprimidos e opacos no GitHub público. O repositório contém os relatórios legíveis, a cobertura, os planos, os manifestos e os hashes; os 17 arquivos de evidência completa foram preservados e entregues ao usuário no pacote privado `AB-JK-UASH-REA-20261028.zip`, com 26 arquivos, 20.305.635 bytes e SHA-256 `d38592abc191252355598c30f319f6b9be8fe1d3b0b4258b22c759a4b4980387`. O pacote mantém os relatórios originais e o `SHA256SUMS` completo. O `SHA256SUMS` público cobre somente os arquivos publicados em `docs/rea`. Os resultados, IDs de Evidence e hashes das fontes permanecem iguais; nenhum link privado é publicado. [Detalhes de distribuição](rea/README.md).
+**Distribuição separada do REA.** Relatórios legíveis, cobertura e hashes das fontes públicas são preservados no repositório. Evidências completas que requeiram tratamento privado são entregues separadamente ao titular. Este documento não publica nomes, identificadores ou manifestos de pacotes privados. O `SHA256SUMS` público cobre somente os arquivos publicados em `docs/rea`. [Detalhes de distribuição](rea/README.md).
 
 ## Correções verificadas na revisão final
 
@@ -60,13 +58,9 @@ A entrada autenticada no navegador não foi automatizada: o canal de navegador e
 
 A instância temporária foi **encerrada** após a inspeção. Ela não é um endereço de produção e não é fornecida como implantação permanente.
 
-## Implantação: bloqueio observado
+## Registro de implantação
 
-A Oficina criou o projeto `ab-jk-uash`, com dados separados e faixa de portas **9220–9229**. O destino preparado é `https://ab-pcsrv.tail6bac78.ts.net:9220`. A criação do projeto não equivale à publicação do app.
-
-Durante o fechamento, o conector passou a responder **MCP `-32603: Internal error`** em renovação da sessão, consulta de capacidade e tentativa de preparar o primeiro lote de fontes. O lote de fontes não foi confirmado nem enviado. Nesse destino, não foi executado build Docker, `compose up`, configuração HTTPS ou health. O build e o smoke test de contêineres aprovados na CI usaram um runner isolado, sem acesso à Oficina. Não se afirma que o servidor esteja indisponível; o bloqueio observado está no canal de implantação.
-
-O `compose.yaml`, Dockerfile, CI, manutenção e [runbook](operations-jk.md) estão prontos no código. O primeiro administrador também precisa de um canal privado de stdin/segredos. Os comandos de bootstrap recusam instalação que já contenha usuários e não imprimem credenciais. Nenhum acesso administrativo do cliente foi criado no destino remoto.
+**0.1.1 publicada; implantação e aceite operacional possuem registro privado entregue ao titular.** Os dados de ambiente e as observações da implantação real foram removidos desta documentação pública. Os testes de CI descritos acima usam infraestrutura temporária e dados sintéticos; não representam a instalação do titular.
 
 ## Requisitos para o teste de produção
 
@@ -78,7 +72,7 @@ O `compose.yaml`, Dockerfile, CI, manutenção e [runbook](operations-jk.md) est
 | Pix | Credenciais/certificado e conta corretos; homologação; demonstrar timeout/consulta e baixa exatamente uma vez; só depois habilitar produção. |
 | Fiscal | Cadastro do contribuinte, município, classificação tributária e provedor efetivamente habilitados; emissão/reconciliação homologadas antes de uso real. |
 | WhatsApp | Conta/remetente/modelos aprovados, consentimento e credenciais; homologação. Aceite do provedor continua distinto de entrega. |
-| Continuidade | Executar backup/restauração no volume real e definir cópia externa. Não há alta disponibilidade ou cópia fora do equipamento configurada. |
+| Continuidade | Validar backup/restauração e definir cópia externa, retenção e recuperação no aceite privado da instalação. |
 | Dispositivos | Conferir câmera/OCR, impressão, aparelho móvel e eventual SmartPOS. Adaptadores/homologação de adquirente não são supridos por um registro manual de cartão. |
 | Escala e perfis alternativos | Fazer teste de carga com volume e concorrência esperados; aplicar/testar DDL JK antes de considerar PostgreSQL. |
 

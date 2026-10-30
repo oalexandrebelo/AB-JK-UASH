@@ -1,10 +1,12 @@
 # AB-JK-UASH · Lava Rápido JK
 
-Cliente independente do AB-UASH para a operação do Lava Rápido JK, em Rio Verde (GO). Landing page pública em `/` e gestão autenticada em `/app`, com React, TypeScript e Adobe Spectrum 2.
+Cliente independente do AB-UASH para a operação do Lava Rápido JK, em Rio Verde (GO). Landing page sem login em `/` e gestão autenticada em `/app`, com React, TypeScript e Adobe Spectrum 2. A disponibilidade de uma instalação concreta é tratada no aceite operacional privado.
 
-**Versão em fechamento: 0.1.1 · revisão de 30/10/2026.** O código implementa operação local, migração conferida, retirada/entrega e conectores opcionais. O baseline `5304ee6` foi efetivamente instalado no AB-PCSRV, com backup e restauração de prova comprovados. A release final 0.1.1 está em validação; a instalação desse baseline não significa que a revisão final já foi instalada. O estado atual de testes, implantação e limites está em [RELEASE-0.1.1.md](docs/RELEASE-0.1.1.md).
+**0.1.1 publicada; implantação e aceite operacional possuem registro privado entregue ao titular.** O código implementa operação local, migração conferida, retirada/entrega e conectores opcionais. A [release pública](docs/RELEASE-0.1.1.md) reúne o escopo e a validação sintética; a [CI pública](https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40999978430) registra a execução automatizada.
 
-Permanecem gates reais: criação privada do administrador, importação e reconciliação dos dados autorizados, configuração/homologação dos provedores adotados e validação do acesso HTTPS externo. Saúde de processo, build ou backup aprovado não encerram esses gates. A [CI remota de 0.1.0](https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791408960) e [VALIDATION-JK.md](docs/VALIDATION-JK.md) preservam a evidência histórica de 28–29/10; seus resultados não são reclassificados como teste da release atual.
+Os critérios gerais de aceite incluem acesso seguro, provisionamento autorizado, teste de autenticação, importação/reconciliação e homologação dos provedores adotados. A situação de cada critério e as evidências do ambiente real permanecem no registro privado. Consulte o [roteiro de teste de produção](docs/PRODUCTION-TEST-JK.md).
+
+A [CI de 0.1.0](https://github.com/oalexandrebelo/AB-JK-UASH/actions/runs/40791408960) e [VALIDATION-JK.md](docs/VALIDATION-JK.md) preservam evidências históricas de testes sintéticos de 28–29/10. Seus resultados não devem ser atribuídos automaticamente a outra revisão.
 
 ## Executar localmente
 
@@ -17,7 +19,7 @@ npm run build
 npm start
 ```
 
-Abra `http://127.0.0.1:4173/` para o site e `/app` para a operação. A instalação começa vazia, sem conta ou senha padrão. O perfil local usa SQLite; o servidor e a interface compilados funcionam sem dependências npm de runtime quando PostgreSQL não está habilitado. Preserve o banco ao atualizar o código.
+Abra o endereço informado pelo launcher para o site e acrescente `/app` para a operação. O produto não fornece conta ou senha padrão. O perfil local usa SQLite; o servidor e a interface compilados funcionam sem dependências npm de runtime quando PostgreSQL não está habilitado. Preserve os dados privados ao atualizar o código.
 
 ```sh
 # Desenvolvimento: servidor e Vite em terminais separados
@@ -30,7 +32,7 @@ npm run test:infra
 npm run release:check
 ```
 
-O frontend em desenvolvimento usa a API local; abrir o HTML diretamente não inicia o banco nem o backend. O launcher legado mantém o nome `data/ab-uash.sqlite` como padrão local. Na implantação JK, `DB_PATH=/data/ab-jk-uash.sqlite` torna a separação explícita. Nunca aponte este cliente para um banco AB-UASH existente sem uma migração específica.
+O frontend em desenvolvimento usa a API do servidor local; abrir o HTML diretamente não inicia banco nem backend. Configure armazenamento persistente privado e separado por instalação. Não reutilize uma base de outra versão do AB-UASH sem uma migração compatível.
 
 ## Funcionalidades disponíveis
 
@@ -45,25 +47,26 @@ O frontend em desenvolvimento usa a API local; abrir o HTML diretamente não ini
 
 A [matriz completa](docs/FEATURE-MATRIX.md) relaciona capacidades, evidência no código, testes e pendências. Pagamentos manuais não processam a adquirente. A folha interna não substitui cálculo trabalhista. O histórico migrado não cria recebimento, emissão fiscal ou mensagem retroativa.
 
-## Implantação JK no AB-PCSRV
+## Implantação e recuperação
 
-O perfil de destino é `compose.yaml`: app em `127.0.0.1:9220`, banco e arquivos privados em `../dados`, execução UID 1001 e imagem somente leitura. O serviço de manutenção executa backup consistente, restaura uma cópia de prova e retém 28 backups válidos. Esse perfil já foi utilizado para instalar o baseline `5304ee6` no AB-PCSRV, com backup/restauração verificados. O estado da atualização final e do acesso externo fica no [relatório da release 0.1.1](docs/RELEASE-0.1.1.md).
+**0.1.1 publicada; implantação e aceite operacional possuem registro privado entregue ao titular.** Endereços, topologia, configuração e observações do ambiente real não fazem parte deste README público.
 
-[Procedimentos de operação e recuperação](docs/operations-jk.md) incluem implantação, bootstrap privado, configuração, backup, atualização e rollback. `docker-compose.yml`, `deploy/`, `api/`, `supabase/` e `vercel.json` são perfis herdados: sua presença não significa implantação ou homologação nesta entrega. Use `-f compose.yaml` no destino JK.
+Os requisitos gerais do produto incluem armazenamento persistente, controle de acesso, segredos fora do código, backup consistente e restauração de prova. Os perfis de implantação disponíveis têm requisitos próprios; a presença de um arquivo de configuração no repositório não comprova uma instalação ou homologação. Consulte os [procedimentos gerais de operação](docs/operations-jk.md) e o [PRT](docs/PRT-JK.md).
 
-Nenhum banco, exportação de cliente, senha, token ou certificado pertence ao repositório público. A criação do administrador por CLI recebe JSON em **stdin privado**, sem credenciais em argumentos ou logs. A opção explícita de importação de conta legada existe para conservar um acesso previamente autorizado; ela não cria uma conta padrão nem modifica contas existentes.
+Dados operacionais, exportações de clientes, credenciais, certificados e configurações reais permanecem privados. O provisionamento deve ocorrer por canal autorizado, sem credenciais em argumentos, logs ou documentação pública.
 
 ## Migração do Jumpcar
 
 Consulte [migration-jk.md](docs/migration-jk.md) para os formatos e limites. A exportação nativa de clientes observada é texto delimitado por ponto e vírgula com extensão `.xls`. O importador também aceita CSV, JSON canônico e a variante HTML de planilha; arquivos binários XLS/XLSX exigem conversão prévia. A interface recusa formatos não suportados.
 
-A importação dos dados reais permanece pendente. Na sessão histórica de 28/10, o acesso autenticado permitiu observar a unidade e parte dos cadastros; o download da exportação ficou bloqueado na origem. A migração final depende dos arquivos autorizados e da conferência de contagens, valores e vínculos. Usuários e hashes de senha não são presumidos a partir de um CSV de clientes. A revisão 0.1.1 corrige integridade do importador e a liberação da tela em instalações sem suporte; detalhes estão na [revisão do núcleo](docs/CORE-REVIEW-2026-10-30.md) e no [relatório atual](docs/RELEASE-0.1.1.md).
+A migração exige arquivos autorizados completos e conferência de contagens, valores e vínculos. Usuários e hashes de senha não são presumidos a partir de um CSV de clientes. A revisão 0.1.1 corrige integridade do importador e a liberação da tela em instalações sem suporte; detalhes estão na [revisão do núcleo](docs/CORE-REVIEW-2026-10-30.md) e na [release pública](docs/RELEASE-0.1.1.md). O aceite de dados reais possui registro privado.
 
 ## Documentação
 
 | Documento | Conteúdo |
 | --- | --- |
-| [RELEASE-0.1.1.md](docs/RELEASE-0.1.1.md) | Estado atual da release, validação, baseline instalado e gates restantes |
+| [RELEASE-0.1.1.md](docs/RELEASE-0.1.1.md) | Release pública, capacidades e validação sintética |
+| [PRODUCTION-TEST-JK.md](docs/PRODUCTION-TEST-JK.md) | Roteiro para acesso, administrador, rotina real, importação e provedores |
 | [PRD-JK.md](docs/PRD-JK.md) | Requisitos de produto, jornadas, escopo e critérios de aceite |
 | [PRT-JK.md](docs/PRT-JK.md) | Requisitos técnicos, contratos, segurança e critérios de validação |
 | [MANUAL-JK.md](docs/MANUAL-JK.md) | Operação de cada módulo e roteiro do primeiro teste |

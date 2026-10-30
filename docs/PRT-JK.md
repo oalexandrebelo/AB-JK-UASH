@@ -1,12 +1,12 @@
 # PRT — Plano de requisitos técnicos do AB-JK-UASH
 
-**Revisão:** 30/10/2026. **Versão de referência:** `0.1.1`, em fechamento. Este documento especifica a base técnica, os contratos que a implementação deve preservar e a evidência necessária para liberar a instalação JK. Complementa o [PRD](PRD-JK.md), a [arquitetura](ARCHITECTURE.md) e a [matriz funcional](FEATURE-MATRIX.md). O baseline `5304ee6` está instalado no AB-PCSRV, com prova de backup/restauração; a validação da release final e os demais gates são registrados em [RELEASE-0.1.1.md](RELEASE-0.1.1.md). [VALIDATION-JK.md](VALIDATION-JK.md) preserva a evidência histórica de 28–29/10, sem reclassificá-la como resultado atual.
+**Revisão:** 30/10/2026. **Versão de referência:** `0.1.1`. **0.1.1 publicada; implantação e aceite operacional possuem registro privado entregue ao titular.** Este documento especifica requisitos e contratos técnicos gerais, complementando o [PRD](PRD-JK.md), a [arquitetura](ARCHITECTURE.md) e a [matriz](FEATURE-MATRIX.md). A [release pública](RELEASE-0.1.1.md) registra escopo e validação sintética. [VALIDATION-JK.md](VALIDATION-JK.md) preserva evidências históricas de 28–29/10; identificadores, configuração e observações do ambiente real não são publicados aqui.
 
 ## 1. Base técnica e fronteiras
 
 | Camada | Implementação e requisito |
 | --- | --- |
-| Frontend | React/TypeScript, Vite e `@react-spectrum/s2`, com versões e integridades do manifesto/lock raiz. SPA pública em `/`, operação autenticada em `/app` e rotas por hash. |
+| Frontend | React/TypeScript, Vite e `@react-spectrum/s2`, com versões e integridades do manifesto/lock raiz. Landing sem login em `/`, operação autenticada em `/app` e rotas por hash. Disponibilidade e acesso de uma instalação concreta são objeto de aceite privado. |
 | Runtime | Node.js 24 conforme `engines`; servidor HTTP nativo em `server/application.mjs`. O browser chama somente `/api` da mesma origem. |
 | Dados locais | SQLite via `node:sqlite`, privado, persistente, com transações e migrações do produto JK. O banco da aplicação de origem não pode ser reutilizado sem migração compatível. |
 | PostgreSQL | Store alternativo de backend via `pg`, com schema/privilégios preparados pela implantação; não deve existir conexão direta do browser ao banco. Migração Jumpcar continua restrita ao perfil local. |
@@ -156,13 +156,13 @@ As suítes UI importam o bundle em `dist`; executar depois do build atualizado e
 
 Nenhum resultado numérico de performance, acurácia, disponibilidade ou contagem de testes aprovados é presumido aqui. Cada execução deve registrar revisão, comando, ambiente, data, resultado e skips no fechamento.
 
-## 11. Pendências técnicas para o aceite final
+## 11. Critérios técnicos para o aceite operacional
 
-1. Confirmar a atualização da release final no destino e repetir os gates pertinentes sobre essa revisão. A instalação e a prova de backup/restauração do baseline `5304ee6` já foram concluídas; acesso administrativo privado e backup externo definido continuam como aceites próprios.
-2. Obter exportações autorizadas completas, reconciliar a migração real e manter o material privado; suporte técnico do parser não resolve extração bloqueada ou ausência de dados.
+1. Validar acesso seguro, provisionamento autorizado, autenticação, persistência e restauração na instalação adotada. Registrar configuração, resultados, responsáveis e limitações somente no relatório operacional privado.
+2. Obter exportações autorizadas completas e reconciliar a migração real em ambiente privado. Suporte técnico do parser não comprova a completude ou a correção do material de origem.
 3. Configurar e homologar somente provedores efetivamente adotados, com responsável fiscal/financeiro e evidências de ambiente/conta corretos.
 4. Executar QA de tela, teclado, impressão e OCR no equipamento JK, registrando limitações e correções necessárias.
 5. Definir procedimentos de privacidade, retenção e recuperação; não apresentar mecanismos técnicos como certificado LGPD.
 6. Implementar ou aceitar explicitamente as lacunas de paridade da [matriz](FEATURE-MATRIX.md). Multiunidade, offline sincronizado, SmartPOS, loja, CRM e outros módulos ausentes exigem desenvolvimento; não se resolvem por configuração.
 
-As pendências devem manter responsável, evidência exigida e estado no registro de entrega. Este PRT permite avaliar o que está pronto tecnicamente e o que falta, sem emitir uma declaração de “zero bloqueios”.
+O aceite deve manter responsável, evidência exigida e estado no registro privado entregue ao titular. Este PRT define critérios públicos de avaliação; não divulga o resultado de uma instalação real nem emite uma declaração de “zero bloqueios”.

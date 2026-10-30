@@ -1,6 +1,6 @@
 # Revisão independente histórica JK — 28/10/2026
 
-**Documento histórico.** Esta evidência registra a revisão de 28/10/2026. Resultados e hashes abaixo não são a validação da release 0.1.1. O estado atual, incluindo o baseline `5304ee6` instalado no AB-PCSRV e a prova de backup/restauração, está em [RELEASE-0.1.1.md](RELEASE-0.1.1.md). A revisão adicional do núcleo em 30/10 está em [CORE-REVIEW-2026-10-30.md](CORE-REVIEW-2026-10-30.md).
+**Documento histórico de revisão com dados sintéticos.** Esta evidência registra a revisão de 28/10/2026; resultados e hashes abaixo não são a validação da 0.1.1. **0.1.1 publicada; implantação e aceite operacional possuem registro privado entregue ao titular.** O escopo atual está na [release pública](RELEASE-0.1.1.md). A revisão adicional do núcleo em 30/10 está em [CORE-REVIEW-2026-10-30.md](CORE-REVIEW-2026-10-30.md). Identificadores, configuração e observações do ambiente real não são publicados aqui.
 
 A revisão de 28/10 verificou o bundle de produção, os fluxos novos de migração, transporte e integrações, os controles de acesso e o conteúdo elegível para publicação. Todos os dados de teste são sintéticos. Não houve importação de dados reais, criação de conta real, chamada a PSP, emissão fiscal, envio de WhatsApp ou implantação nessa frente histórica.
 

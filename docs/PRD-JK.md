@@ -1,10 +1,10 @@
 # PRD — AB-JK-UASH / Lava Rápido JK
 
-**Revisão:** 30/10/2026. **Base do produto:** versão `0.1.1` do manifesto, em fechamento. **Natureza:** requisitos de produto e critérios de aceite do cliente JK, confrontados com a implementação existente. O baseline `5304ee6` já foi instalado no AB-PCSRV com prova de backup/restauração; isso não declara a release final instalada, migração real, homologação fiscal/bancária ou paridade integral concluídas. O estado atual pertence a [RELEASE-0.1.1.md](RELEASE-0.1.1.md); [VALIDATION-JK.md](VALIDATION-JK.md) é evidência histórica de 28–29/10. Capacidades e lacunas estão na [FEATURE-MATRIX.md](FEATURE-MATRIX.md).
+**Revisão:** 30/10/2026. **Base do produto:** `0.1.1`. **0.1.1 publicada; implantação e aceite operacional possuem registro privado entregue ao titular.** Este documento define requisitos de produto e critérios de aceite, sem divulgar o estado de uma instalação concreta nem declarar paridade integral. A [release pública](RELEASE-0.1.1.md) registra escopo e validação sintética; [VALIDATION-JK.md](VALIDATION-JK.md) preserva evidências históricas de 28–29/10. Capacidades e lacunas estão na [FEATURE-MATRIX.md](FEATURE-MATRIX.md).
 
 ## 1. Problema, público e objetivo
 
-O produto reúne atendimento, cadastros, ordens de serviço, agenda, recebimentos e controle administrativo de uma operação de lava-rápido. A JK precisa consultar os dados anteriores do Jumpcar sem transformar serviços e recebimentos históricos em novas cobranças, receitas ou comissões. A página pública apresenta a empresa e encaminha o contato para o canal informado. A equipe utiliza uma área autenticada própria. [Arquitetura](ARCHITECTURE.md), [migração](migration-jk.md), [interface pública](../src/pages/LandingPage.tsx).
+O produto reúne atendimento, cadastros, ordens de serviço, agenda, recebimentos e controle administrativo de uma operação de lava-rápido. A JK precisa consultar dados anteriores do Jumpcar sem transformar serviços e recebimentos históricos em novas cobranças, receitas ou comissões. A landing sem login apresenta a empresa e encaminha o contato para o canal informado; a equipe utiliza uma área autenticada própria. Disponibilidade e aceite da instalação são tratados no registro privado. [Arquitetura](ARCHITECTURE.md), [migração](migration-jk.md), [landing](../src/pages/LandingPage.tsx).
 
 O objetivo é permitir uma rotina rastreável, desde a entrada do veículo até a entrega e o fechamento financeiro, com interface Adobe Spectrum 2, valores consistentes, acesso por papel e tratamento explícito de falhas. A meta de paridade com o Jumpcar permanece verificável por capacidade: uma tela com o mesmo nome não equivale a integração homologada ou comportamento completo. As páginas públicas do fornecedor são referência de escopo; regras internas não observadas não devem ser presumidas. [Matriz de escopo](FEATURE-MATRIX.md).
 
@@ -83,7 +83,7 @@ Aceite: Pix só baixa com evidência autenticada elegível de produção; homolo
 
 ### J06 — LP e ajuda
 
-A LP utiliza o nome JK, o [perfil informado](https://www.instagram.com/lavar.apidojk/) e catálogo público permitido pelo backend. A indicação histórica de Rio Verde não equivale a nova verificação de endereço ou horários. Campos de contato, serviços e preços precisam ter origem autorizada. O catálogo vazio continua vazio; links não devem simular reserva ou mensagem concluída. [Perfil público](../server/jk-public.mjs), [LP](../src/pages/LandingPage.tsx).
+A LP utiliza o nome JK, o [perfil informado](https://www.instagram.com/lavar.apidojk/) e o catálogo permitido pelo backend. Dados de localização, contato, serviços e preços precisam de origem autorizada e revisão do titular. O catálogo vazio continua vazio; links não devem simular reserva ou mensagem concluída. [Perfil público](../server/jk-public.mjs), [LP](../src/pages/LandingPage.tsx).
 
 Aceite: informações privadas não aparecem no endpoint público; ilustrações não são apresentadas como fotos do estabelecimento; navegação e contato funcionam em tela pequena e por teclado. A ajuda de atendimento abre voluntariamente, permite ler texto/diagrama sem vídeo e não inicia áudio automaticamente. [Ajuda](../src/components/HelpFlow.tsx), [design e mídia](DESIGN-MEDIA.md).
 
